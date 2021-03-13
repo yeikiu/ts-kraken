@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": "ts",
     "ignore": [],
-    "exec": "ts-node -r dotenv/config src/ts-kraken-ws/private_events/get_open_orders_stream.ts"
+    "exec": "ts-node -r dotenv/config src/<watch_path>"
 }

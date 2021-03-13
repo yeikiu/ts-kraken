@@ -1,25 +1,32 @@
 import { gethWsAuthToken, privateWSClient } from '../private_ws_client'
 import { InjectedApiKeys } from '../../types/injected_api_keys'
-import { Observable } from 'rxjs/internal/Observable'
 import { filter, map } from 'rxjs/operators'
-import { Subject } from 'rxjs'
+import { ReplaySubject, Subject } from 'rxjs'
 import { OrderSnapshot } from '../../types/order_snapshot'
 
-type GetWSopenOrdersStreamParams = {
+type GetOpenOrdersStreamParams = {
     injectedApiKeys?: InjectedApiKeys;
     wsToken?: string;
 }
-export type WSopenOrdersStream = {
-    openOrders$: Observable<OrderSnapshot[]>;
+
+export type OpenOrdersStream = {
+    openOrders$: ReplaySubject<OrderSnapshot[]>;
     currentOpenOrdersMap: Map<string, OrderSnapshot>;
     openOrderIn$: Subject<OrderSnapshot>;
     closedOrderOut$: Subject<OrderSnapshot>;
     closedOrdersIds: Set<string>;
+    openOrdersUnsubscribe: () => void;
 }
-export const getWSOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetWSopenOrdersStreamParams): Promise<WSopenOrdersStream> => {
+
+// 
+// https://docs.kraken.com/websockets/#message-openOrders
+// 
+export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenOrdersStreamParams): Promise<OpenOrdersStream> => {
+    const openOrders$ = new ReplaySubject<OrderSnapshot[]>(1);
     const currentOpenOrdersMap = new Map<string, OrderSnapshot>()
     const openOrderIn$ = new Subject<OrderSnapshot>();
     const closedOrderOut$ = new Subject<OrderSnapshot>();
+
     const closedOrdersIds = new Set<string>();
     const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
     
@@ -37,7 +44,7 @@ export const getWSOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetWSo
         }
     }), (response) => Array.isArray(response) && response.length > 1 && response[1] === 'openOrders')
 
-    const openOrders$ = openOrdersWS.pipe(filter(Boolean), map(([ordersSnapshot]) => {
+    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.pipe(filter(Boolean), map(([ordersSnapshot]) => {
         const currentOpenOrders = ordersSnapshot.map(krakenOrder => {
             const [orderid] = Object.keys(krakenOrder)
 
@@ -66,8 +73,11 @@ export const getWSOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetWSo
         }).filter(krakenOrder => krakenOrder !== null)
 
         return currentOpenOrders
-    }))
-    openOrders$.subscribe()
+    })).subscribe(openOrders => { openOrders$.next(openOrders) }, openOrdersStreamError => {
+        openOrders$.error(openOrdersStreamError)
+        openOrderIn$.error(openOrdersStreamError)
+        closedOrderOut$.error(openOrdersStreamError)
+    })
 
     return {
         openOrders$,
@@ -75,5 +85,6 @@ export const getWSOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetWSo
         openOrderIn$,
         closedOrderOut$,
         closedOrdersIds,
+        openOrdersUnsubscribe
     }
 }

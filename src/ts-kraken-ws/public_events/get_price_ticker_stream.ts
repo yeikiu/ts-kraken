@@ -1,25 +1,26 @@
-import { Observable } from 'rxjs/internal/Observable'
 import { PriceTicker } from '../../types/price_ticker'
 import { publicWSClient } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
-import { Subject } from 'rxjs'
+import { ReplaySubject } from 'rxjs'
 
-type GetTickerStreamParams = {
+type GetPriceTickerParams = {
     baseAsset: string;
     quoteAsset: string;
 }
 
-export type TickerStream = {
-    priceTicker$: Observable<PriceTicker>;
-    lastPrice$: Subject<string>;
+export type PriceTickerStream = {
+    priceTicker$: ReplaySubject<PriceTicker>;
+    lastPrice$: ReplaySubject<string>;
+    priceTickerUnsubscribe: () => void;
 }
 
 //
 // https://docs.kraken.com/websockets/#message-ticker
 //
-const getTickerStream = ({ baseAsset, quoteAsset }: GetTickerStreamParams): TickerStream => {
+export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): PriceTickerStream => {
     const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
-    const lastPrice$ = new Subject<string>()
+    const priceTicker$ = new ReplaySubject<PriceTicker>(1)
+    const lastPrice$ = new ReplaySubject<string>(1)
 
     const priceTickerWS = publicWSClient.multiplex(() => ({
         event: 'subscribe',
@@ -35,7 +36,7 @@ const getTickerStream = ({ baseAsset, quoteAsset }: GetTickerStreamParams): Tick
         }
     }), (response): boolean => Array.isArray(response) && response.slice(-2).every(v => ['ticker', pair].includes(v)))
 
-    const priceTicker$ = priceTickerWS.pipe(filter(Boolean), map((rawKrakenPayload: any[]) => {
+    const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(filter(Boolean), map((rawKrakenPayload: any[]) => {
         const [,{ c: [price] }] = rawKrakenPayload
         lastPrice$.next(price)
         
@@ -45,15 +46,14 @@ const getTickerStream = ({ baseAsset, quoteAsset }: GetTickerStreamParams): Tick
             price,
             rawKrakenPayload
         } as PriceTicker
-    }))
-    priceTicker$.subscribe()
+    })).subscribe(priceTicker => { priceTicker$.next(priceTicker) }, priceTickerSteamError => {
+        priceTicker$.error(priceTickerSteamError)
+        lastPrice$.error(priceTickerSteamError)
+    })
 
     return {
         priceTicker$,
-        lastPrice$
+        lastPrice$,
+        priceTickerUnsubscribe
     }
-}
-
-export {
-    getTickerStream
 }
