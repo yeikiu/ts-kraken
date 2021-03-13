@@ -1,0 +1,23 @@
+{
+  "root": true,
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/typescript"
+  ],
+  "rules": {
+    "quotes": [
+      2,
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ]
+  }
+}
