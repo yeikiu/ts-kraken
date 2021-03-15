@@ -11,6 +11,7 @@ type GetPriceTickerParams = {
 export type PriceTickerStream = {
     priceTicker$: ReplaySubject<PriceTicker>;
     lastPrice$: ReplaySubject<string>;
+    getLastPrice: () => string;
     priceTickerUnsubscribe: () => void;
 }
 
@@ -21,6 +22,7 @@ export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerPa
     const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
     const priceTicker$ = new ReplaySubject<PriceTicker>(1)
     const lastPrice$ = new ReplaySubject<string>(1)
+    let lastPrice: string = null
 
     const priceTickerWS = publicWSClient.multiplex(() => ({
         event: 'subscribe',
@@ -38,6 +40,7 @@ export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerPa
 
     const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(filter(Boolean), map((rawKrakenPayload: any[]) => {
         const [,{ c: [price] }] = rawKrakenPayload
+        lastPrice = price
         lastPrice$.next(price)
         
         return {
@@ -51,9 +54,12 @@ export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerPa
         lastPrice$.error(priceTickerSteamError)
     })
 
+    const getLastPrice = () => lastPrice
+
     return {
         priceTicker$,
         lastPrice$,
+        getLastPrice,
         priceTickerUnsubscribe
     }
 }
