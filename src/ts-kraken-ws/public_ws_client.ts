@@ -18,7 +18,3 @@ export const publicWSClient = webSocket({
 })
 
 export const WSPublicHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
-
-// publicWSClient.subscribe(rawData => {
-//     debug(JSON.stringify(rawData, null, 4))
-// })
