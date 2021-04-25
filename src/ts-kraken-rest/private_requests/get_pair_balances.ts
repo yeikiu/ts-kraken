@@ -4,14 +4,12 @@ const getPairBalances = async ([base, quote]: string[]): Promise<string[]> => {
     let rawBalances = await privateRESTRequest({ url: 'Balance' })
     rawBalances = {
         ...rawBalances,
-        'USD': rawBalances['ZUSD'] || 0
+        'USD': rawBalances['ZUSD'] || 0,
+        'EUR': rawBalances['ZEUR'] || 0,
+        'ETH': rawBalances['XETH'] || 0,
     }
-    const rawCurrencies = Object.keys(rawBalances)
-    const [baseBalance, quoteBalance] = rawCurrencies
-        .filter(rc => [base, quote].includes(rc))
-        .map(rc => rawBalances[rc])
-
-    return [baseBalance, quoteBalance]
+    
+    return [rawBalances[base], rawBalances[quote]]
 }
 
 export default getPairBalances
