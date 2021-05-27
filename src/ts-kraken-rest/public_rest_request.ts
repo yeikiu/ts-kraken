@@ -1,21 +1,15 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { krakenAxiosConfig } from './axios_config'
-import { PublicEndpoint } from '../types/rest_endpoints'
+import axios, { AxiosInstance } from 'axios'
+import { krakenAxiosConfig, PublicAxiosRequest } from './axios_config'
 import debugHelper from '../util/debug_helper'
 
 const { debug, logError } = debugHelper(__filename)
 
 const publicRESTClient: AxiosInstance = axios.create(krakenAxiosConfig)
 publicRESTClient.defaults.baseURL = `${publicRESTClient.defaults.baseURL}/public`
+publicRESTClient.defaults.method = 'GET'
 
-interface PublicRequestConfig extends AxiosRequestConfig {
-    method?: 'POST' | 'post';
-    url: PublicEndpoint;
-    data?: any;
-}
-
-export const publicRESTRequest = async ({ url, data }: PublicRequestConfig): Promise<any> => {
-    const { data: { result: krakenPublicResponse, error }} = await publicRESTClient.request({ url, data }) || {}
+export const publicRESTRequest = async ({ url, params }: PublicAxiosRequest): Promise<any> => {
+    const { data: { result: krakenPublicResponse, error }} = await publicRESTClient.request({ url, params }) || {}
     if (error?.length) {
         const errorStr = error.join(' | ')
         logError(errorStr)

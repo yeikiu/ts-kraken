@@ -1,6 +1,5 @@
 import { gethWsAuthToken, privateWSClient } from '../private_ws_client'
 import { InjectedApiKeys } from '../../types/injected_api_keys'
-import { filter, map } from 'rxjs/operators'
 import { ReplaySubject, Subject } from 'rxjs'
 import { OrderSnapshot } from '../../types/order_snapshot'
 
@@ -44,36 +43,39 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
         }
     }), (response) => Array.isArray(response) && response.length > 1 && response[1] === 'openOrders')
 
-    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.pipe(filter(Boolean), map(([ordersSnapshot]) => {
-        const currentOpenOrders = ordersSnapshot.map(krakenOrder => {
+    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {
+        ordersSnapshot.forEach(krakenOrder => {
             const [orderid] = Object.keys(krakenOrder)
 
-            if (closedOrdersIds.has(orderid)) { return null }
+            if (closedOrdersIds.has(orderid)) { 
+                currentOpenOrdersMap.delete(orderid)
+                return
+            }
 
             const orderSnapshot: OrderSnapshot = {
                 orderid, // injected
                 price: krakenOrder[orderid].avg_price, // injected
-                ...krakenOrder[orderid]
+                ...currentOpenOrdersMap.get(orderid),
+                ...krakenOrder[orderid],
             }
 
-            if (!currentOpenOrdersMap.has(orderSnapshot.orderid)) {
+            if (!currentOpenOrdersMap.has(orderid)) {
+                currentOpenOrdersMap.set(orderid, orderSnapshot)
                 openOrderIn$.next(orderSnapshot)
-                currentOpenOrdersMap.set(orderSnapshot.orderid, { ...orderSnapshot })
             
             } else if (['closed', 'expired', 'canceled'].includes(orderSnapshot.status)) {
+                closedOrdersIds.add(orderid)
+                currentOpenOrdersMap.delete(orderid)
                 closedOrderOut$.next(orderSnapshot)
-                closedOrdersIds.add(orderSnapshot.orderid)
-                currentOpenOrdersMap.delete(orderSnapshot.orderid)
             
             } else {
-                currentOpenOrdersMap.set(orderSnapshot.orderid, { ...currentOpenOrdersMap.get(orderSnapshot.orderid), ...orderSnapshot })
+                currentOpenOrdersMap.set(orderid, orderSnapshot)
             }
+        })
 
-            return orderSnapshot
-        }).filter(krakenOrder => krakenOrder !== null)
+        openOrders$.next(Array.from(currentOpenOrdersMap.values()))
 
-        return currentOpenOrders
-    })).subscribe(openOrders => { openOrders$.next(openOrders) }, openOrdersStreamError => {
+    }, openOrdersStreamError => {
         openOrders$.error(openOrdersStreamError)
         openOrderIn$.error(openOrdersStreamError)
         closedOrderOut$.error(openOrdersStreamError)

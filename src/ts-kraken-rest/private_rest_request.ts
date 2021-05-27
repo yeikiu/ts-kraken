@@ -1,8 +1,7 @@
 import { getMessageSignature } from './message_signature'
 import debugHelper from '../util/debug_helper'
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { krakenAxiosConfig, apiVersion } from './axios_config'
-import { PrivateEndpoint } from '../types/rest_endpoints'
+import axios, { AxiosInstance } from 'axios'
+import { krakenAxiosConfig, apiVersion, PrivateAxiosRequest } from './axios_config'
 import { stringify } from 'qs'
 import { InjectedApiKeys } from '../types/injected_api_keys'
 
@@ -12,6 +11,7 @@ export const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
     privateApiClient.defaults.baseURL = `${privateApiClient.defaults.baseURL}/private`
     privateApiClient.defaults.headers['API-Key'] = apikey
+    privateApiClient.defaults.method = 'POST'
     
     privateApiClient.interceptors.request.use((config) => {
         const { url } = config
@@ -36,14 +36,8 @@ export const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '
     return privateApiClient
 }
 
-interface PrivateRequestConfig extends AxiosRequestConfig {
-    method?: 'POST' | 'post';
-    url: PrivateEndpoint;
-    data?: any;
-}
-
 let defaultClient = createPrivateRESTClient()
-export const privateRESTRequest = async ({ url, data }: PrivateRequestConfig, injectedApiKeys?: InjectedApiKeys): Promise<any> => {
+export const privateRESTRequest = async ({ url, data }: PrivateAxiosRequest, injectedApiKeys?: InjectedApiKeys): Promise<any> => {
     const apiClient = injectedApiKeys ? createPrivateRESTClient(injectedApiKeys.apiKey, injectedApiKeys.apiSecret) : defaultClient
     const { data: { result: krakenPrivateResponse, error }} = await apiClient.request({ url, data }) || {}
     if (error?.length) {

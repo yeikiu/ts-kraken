@@ -14,7 +14,7 @@ export const getOpenOrders = async (params?: GetOpenOrdersParams): Promise<Order
     const openOrdersIds = Object.keys(open)
     return openOrdersIds.map(orderid => ({
         orderid,
-        avg_price: closed[orderid].price, // injected
-        ...closed[orderid]
+        avg_price: open[orderid].price, // injected
+        ...open[orderid]
     }) as OrderSnapshot)
 }
