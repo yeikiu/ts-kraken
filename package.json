@@ -25,6 +25,6 @@
 	"scripts": {
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
-		"kraken-repl": "node -r dotenv/config ."
+		"kraken-repl": "node ."
 	}
 }

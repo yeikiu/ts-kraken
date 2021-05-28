@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": "ts",
     "ignore": [],
-    "exec": "ts-node -r dotenv/config src/<watch_path>"
+    "exec": "ts-node -r dotenv/config src/ts-kraken-repl/repl_cli.ts"
 }
