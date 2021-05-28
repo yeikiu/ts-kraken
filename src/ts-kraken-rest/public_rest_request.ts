@@ -1,8 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, PublicAxiosRequest } from './axios_config'
-import debugHelper from '../util/debug_helper'
-
-const { debug, logError } = debugHelper(__filename)
 
 const publicRESTClient: AxiosInstance = axios.create(krakenAxiosConfig)
 publicRESTClient.defaults.baseURL = `${publicRESTClient.defaults.baseURL}/public`
@@ -12,9 +9,9 @@ export const publicRESTRequest = async ({ url, params }: PublicAxiosRequest): Pr
     const { data: { result: krakenPublicResponse, error }} = await publicRESTClient.request({ url, params }) || {}
     if (error?.length) {
         const errorStr = error.join(' | ')
-        logError(errorStr)
+        console.error(errorStr)
         throw new Error(errorStr)
     }
-    debug(JSON.stringify(krakenPublicResponse, null, 4))
+    // console.log(JSON.stringify(krakenPublicResponse, null, 4))
     return krakenPublicResponse
 }

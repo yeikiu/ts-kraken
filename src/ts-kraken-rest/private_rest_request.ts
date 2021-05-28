@@ -1,11 +1,8 @@
 import { getMessageSignature } from './message_signature'
-import debugHelper from '../util/debug_helper'
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, apiVersion, PrivateAxiosRequest } from './axios_config'
 import { stringify } from 'qs'
 import { InjectedApiKeys } from '../types/injected_api_keys'
-
-const { logError, debug } = debugHelper(__filename)
 
 export const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiSecret = process.env.KRAKEN_API_SECRET || ''): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
@@ -42,10 +39,10 @@ export const privateRESTRequest = async ({ url, data }: PrivateAxiosRequest, inj
     const { data: { result: krakenPrivateResponse, error }} = await apiClient.request({ url, data }) || {}
     if (error?.length) {
         const errorStr = error.join(' | ')
-        logError(errorStr)
+        console.error(errorStr)
         throw new Error(errorStr)
     }
-    debug(JSON.stringify(krakenPrivateResponse, null, 4))
+    // console.log(JSON.stringify(krakenPrivateResponse, null, 4))
     return krakenPrivateResponse
 }
 

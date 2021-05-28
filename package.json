@@ -1,6 +1,10 @@
 {
 	"name": "ts-kraken",
-	"version": "0.0.17",
+	"version": "0.0.20",
+	"main": "src/js_entrypoint.js",
+	"bin": {
+		"kraken-repl": "src/js_entrypoint.js"
+	},
 	"devDependencies": {
 		"@types/node": "11.11.0",
 		"@typescript-eslint/eslint-plugin": "^4.4.0",
@@ -14,13 +18,13 @@
 	},
 	"dependencies": {
 		"axios": "^0.21.1",
-		"debug": "^4.3.1",
 		"qs": "^6.9.6",
 		"rxjs": "^6.6.6",
 		"ws": "^7.4.4"
 	},
 	"scripts": {
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
-		"watch": "nodemon"
+		"watch": "nodemon",
+		"kraken-repl": "node -r dotenv/config ."
 	}
 }

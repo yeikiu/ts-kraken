@@ -3,10 +3,7 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
 import { privateRESTRequest } from '../ts-kraken-rest/private_rest_request'
-import debugHelper from '../util/debug_helper'
 import { InjectedApiKeys } from '../types/injected_api_keys'
-
-const { logError } = debugHelper(__filename)
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()
@@ -28,7 +25,7 @@ export const gethWsAuthToken = async (injectedApiKeys?: InjectedApiKeys): Promis
         return token
         
     } catch({ code, message }) {
-        logError('Kraken gethWsAuthToken error', { code, message })
+        console.error('Kraken gethWsAuthToken error', { code, message })
         throw ({ code, message })
     }
 }

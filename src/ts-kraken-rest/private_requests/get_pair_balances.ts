@@ -1,4 +1,4 @@
-import { privateRESTRequest } from "../private_rest_request"
+import { privateRESTRequest } from '../private_rest_request'
 
 const getPairBalances = async ([base, quote]: string[]): Promise<string[]> => {
     let rawBalances = await privateRESTRequest({ url: 'Balance' })
