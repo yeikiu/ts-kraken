@@ -6,11 +6,9 @@ publicRESTClient.defaults.baseURL = `${publicRESTClient.defaults.baseURL}/public
 publicRESTClient.defaults.method = 'GET'
 
 export const publicRESTRequest = async ({ url, params }: PublicAxiosRequest): Promise<any> => {
-    const { data: { result: krakenPublicResponse, error }} = await publicRESTClient.request({ url, params }) || {}
-    if (error?.length) {
-        const errorStr = error.join(' | ')
-        console.error(errorStr)
-        throw new Error(errorStr)
+    const { data: { result: krakenPublicResponse, error: publicRESTerror }} = await publicRESTClient.request({ url, params }) || {}
+    if (publicRESTerror?.length) {
+        throw new Error(publicRESTerror)
     }
     // console.log(JSON.stringify(krakenPublicResponse, null, 4))
     return krakenPublicResponse

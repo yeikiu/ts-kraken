@@ -6,9 +6,11 @@ import { privateRESTRequest } from '../ts-kraken-rest/private_rest_request';
 import { publicWSClient } from '../ts-kraken-ws/public_ws_client';
 import { Subscription } from 'rxjs';
 import { gethWsAuthToken, privateWSClient } from '../ts-kraken-ws/private_ws_client';
+import printKrakenHeader from './print_kraken_header'
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
+
 const myRepl = repl.start('kraken-repl >> ');
 
 myRepl.defineCommand('setKeys', {
@@ -26,31 +28,63 @@ myRepl.defineCommand('showKeys', {
 })
 
 myRepl.defineCommand('get', {
-  help: 'endpoint?param1=value1&param_list2[]=value2,value3',
+  help: `
+      - Fetch PUBLIC REST data. Usage >> PublicEndpoint?param1=value1&params_list[]=val1,val2,val3 | outFilter1,outFfilter2
+
+        i.e --> .get Time | rfc1123
+  `,
 
   action: async (paramsStr) => {
-
-    const [endpoint, rawParams = ''] = paramsStr.split('?')
+    const [rawEndpoint, outFilter] = paramsStr.split(' | ')
+    const [endpoint, ...rawParams] = rawEndpoint.split('?')
     const params = parse(rawParams)
+    console.log({ endpoint, params, outFilter })
+    
+    try {
+      const response = await publicRESTRequest({ url: endpoint as PublicEndpoint, params })
+      if (outFilter) {
+        const filteredResponse = outFilter.split(',').reduce((p, c) => ({
+            ...p,
+            [c]: response[c]
+        }), {})
+        return console.log(filteredResponse)
+      }
+      console.log(JSON.stringify({ response }, null, 4))
 
-    const response = await publicRESTRequest({ url: endpoint as PublicEndpoint, params })
-    console.log(JSON.stringify({ response }, null, 4))
+    } catch (publicRESTerror) {
+      console.error({ publicRESTerror })
+    }
   }
 })
 
 myRepl.defineCommand('post', {
-  help: 'endpoint?param1=value1&param_list2[]=value2,value3',
+  help: `
+      - Fetch PRIVATE REST data. Usage >> PrivateEndpoint?param1=value1&params_list[]=val1,val2,val3
 
+        i.e --> .post ClosedOrders?trades=true
+  `,
   action: async (paramsStr) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
     }
-
-    const [endpoint, rawParams = ''] = paramsStr.split('?')
+    const [rawEndpoint, outFilter] = paramsStr.split(' | ')
+    const [endpoint, ...rawParams] = rawEndpoint.split('?')
     const params = parse(rawParams)
+    console.log({ endpoint, params, outFilter })
 
-    const response = await privateRESTRequest({ url: endpoint as PrivateEndpoint, params })
-    console.log(JSON.stringify({ response }, null, 4))
+    try {
+      const response = await privateRESTRequest({ url: endpoint as PrivateEndpoint, params })
+      if (outFilter) {
+        const filteredResponse = outFilter.split(',').reduce((p, c) => ({
+            ...p,
+            [c]: response[c]
+        }), {})
+        return console.log(filteredResponse)
+      }
+      console.log(JSON.stringify({ response }, null, 4))
+    } catch (privateRESTerror) {
+      console.error({ privateRESTerror })
+    }
   }
 })
 
@@ -114,7 +148,7 @@ myRepl.defineCommand('privateSubscription', {
 })
 
 myRepl.defineCommand('closeSubscription', {
-  help: 'closes all open public WebSocket streams',
+  help: 'closes WebSocket stream for given subscriptionName',
 
   action: async (subscriptionName) => {
     wsSubscriptions.get(subscriptionName)?.unsubscribe()
@@ -125,7 +159,7 @@ myRepl.defineCommand('closeSubscription', {
 })
 
 myRepl.defineCommand('closeAllSubscriptions', {
-  help: 'closes all open public WebSocket streams',
+  help: 'closes all open WebSocket streams',
 
   action: async () => {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
@@ -136,3 +170,8 @@ myRepl.defineCommand('closeAllSubscriptions', {
     })
   }
 })
+
+console.log(printKrakenHeader())
+setTimeout(() => myRepl.write('.help\n'), 500)
+setTimeout(() => myRepl.write('.get Time | rfc1123'), 750)
+setTimeout(() => console.log('\n\nPress enter to start...'), 1000)

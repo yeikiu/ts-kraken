@@ -2,7 +2,7 @@ import { OrderSnapshot } from '../../types/order_snapshot'
 import { privateRESTRequest } from '../private_rest_request'
 
 // 
-// https://www.kraken.com/features/api#get-open-orders 
+// https://docs.kraken.com/rest/#operation/getOpenOrders
 //
 type GetOpenOrdersParams = {
     trades?: true | null;

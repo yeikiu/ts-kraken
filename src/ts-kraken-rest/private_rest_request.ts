@@ -36,11 +36,9 @@ export const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '
 let defaultClient = createPrivateRESTClient()
 export const privateRESTRequest = async ({ url, data }: PrivateAxiosRequest, injectedApiKeys?: InjectedApiKeys): Promise<any> => {
     const apiClient = injectedApiKeys ? createPrivateRESTClient(injectedApiKeys.apiKey, injectedApiKeys.apiSecret) : defaultClient
-    const { data: { result: krakenPrivateResponse, error }} = await apiClient.request({ url, data }) || {}
-    if (error?.length) {
-        const errorStr = error.join(' | ')
-        console.error(errorStr)
-        throw new Error(errorStr)
+    const { data: { result: krakenPrivateResponse, error: privateRESTerror }} = await apiClient.request({ url, data }) || {}
+    if (privateRESTerror?.length) {
+        throw new Error(privateRESTerror)
     }
     // console.log(JSON.stringify(krakenPrivateResponse, null, 4))
     return krakenPrivateResponse

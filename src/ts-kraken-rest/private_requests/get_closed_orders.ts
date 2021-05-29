@@ -13,7 +13,7 @@ type GetClosedOrdersParams = {
 }
 
 // 
-// https://www..com/features/api#get-closed-orders
+// https://docs.kraken.com/rest/#operation/getClosedOrders
 //
 export const getClosedOrders = async (params?: GetClosedOrdersParams): Promise<OrderSnapshot[]> => {
     const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: { ...params ? params : {} }}) || {}
@@ -31,13 +31,13 @@ export const findClosedOrder = async (orderFilter: (orderFilter: Partial<OrderSn
     const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter)
     if (lastSuccessfullyClosedOrder) {
         return lastSuccessfullyClosedOrder
-    } else {
-        // Delay exec. 1.5 seconds to avoid rate limits
-        await timer(1500).pipe(take(1)).toPromise()
-        const { ofs: lastOffset = 0 } = params
-        return findClosedOrder(
-            orderFilter,
-            { ...params, ofs: closedOrders.length + lastOffset }
-        )
     }
+    
+    // Delay exec. 1.5 seconds to avoid rate limits
+    await timer(1500).pipe(take(1)).toPromise()
+    const { ofs: lastOffset = 0 } = params
+    return findClosedOrder(
+        orderFilter,
+        { ...params, ofs: closedOrders.length + lastOffset }
+    )
 }
