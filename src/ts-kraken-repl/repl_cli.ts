@@ -7,6 +7,7 @@ import { publicWSClient } from '../ts-kraken-ws/public_ws_client';
 import { Subscription } from 'rxjs';
 import { gethWsAuthToken, privateWSClient } from '../ts-kraken-ws/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
+import { run } from 'node-jq'
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
@@ -29,27 +30,24 @@ myRepl.defineCommand('showKeys', {
 
 myRepl.defineCommand('get', {
   help: `
-      - Fetch PUBLIC REST data. Usage >> PublicEndpoint?param1=value1&params_list[]=val1,val2,val3 | outFilter1,outFfilter2
+      - Fetch PUBLIC REST data. Usage >> PublicEndpoint?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
         i.e --> .get Time | rfc1123
   `,
 
   action: async (paramsStr) => {
-    const [rawEndpoint, outFilter] = paramsStr.split(' | ')
-    const [endpoint, ...rawParams] = rawEndpoint.split('?')
+    const [rawEndpoint, jqFilter] = paramsStr.split(' ')
+    const [endpoint, rawParams] = rawEndpoint.split('?')
     const params = parse(rawParams)
-    console.log({ endpoint, params, outFilter })
-    
+    console.log({ endpoint, params, jqFilter })
+
     try {
       const response = await publicRESTRequest({ url: endpoint as PublicEndpoint, params })
-      if (outFilter) {
-        const filteredResponse = outFilter.split(',').reduce((p, c) => ({
-            ...p,
-            [c]: response[c]
-        }), {})
-        return console.log(filteredResponse)
+      if (jqFilter) {
+        const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
+        return console.log({ jqResponse })
       }
-      console.log(JSON.stringify({ response }, null, 4))
+      console.log({ response })
 
     } catch (publicRESTerror) {
       console.error({ publicRESTerror })
@@ -59,7 +57,7 @@ myRepl.defineCommand('get', {
 
 myRepl.defineCommand('post', {
   help: `
-      - Fetch PRIVATE REST data. Usage >> PrivateEndpoint?param1=value1&params_list[]=val1,val2,val3
+      - Fetch PRIVATE REST data. Usage >> PrivateEndpoint?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
         i.e --> .post ClosedOrders?trades=true
   `,
@@ -67,21 +65,19 @@ myRepl.defineCommand('post', {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
     }
-    const [rawEndpoint, outFilter] = paramsStr.split(' | ')
-    const [endpoint, ...rawParams] = rawEndpoint.split('?')
+    const [rawEndpoint, jqFilter] = paramsStr.split(' ')
+    const [endpoint, rawParams] = rawEndpoint.split('?')
     const params = parse(rawParams)
-    console.log({ endpoint, params, outFilter })
+    console.log({ endpoint, params, jqFilter })
 
     try {
       const response = await privateRESTRequest({ url: endpoint as PrivateEndpoint, params })
-      if (outFilter) {
-        const filteredResponse = outFilter.split(',').reduce((p, c) => ({
-            ...p,
-            [c]: response[c]
-        }), {})
-        return console.log(filteredResponse)
+      if (jqFilter) {
+        const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
+        return console.log({ jqResponse })
       }
-      console.log(JSON.stringify({ response }, null, 4))
+      console.log({ response })
+
     } catch (privateRESTerror) {
       console.error({ privateRESTerror })
     }
@@ -89,15 +85,18 @@ myRepl.defineCommand('post', {
 })
 
 myRepl.defineCommand('publicSubscription', {
-  help: 'subscriptionName?param1=value1&param_list2[]=value2,value3',
+  help: 'subscriptionName?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr',
 
   action: async (paramsStr) => {
-    const [name, rawParams = ''] = paramsStr.split('?')
+    const [rawSubscription, jqFilter] = paramsStr.split(' ')
+    const [name, rawParams] = rawSubscription.split('?')
     const params = parse(rawParams)
+    console.log({ subscription: name, params, jqFilter })
+
     const subscription = publicWSClient.multiplex(() => ({
       event: 'subscribe',
       subscription: {
-        name
+        name,
       },
       ...params
     }), () => ({
@@ -107,7 +106,13 @@ myRepl.defineCommand('publicSubscription', {
       },
       ...params
     }), (response): boolean => Array.isArray(response) && response.some(v => v === name))
-      .subscribe(payload => console.log(JSON.stringify({ payload }, null, 4)))
+      .subscribe(async payload => {
+        if (jqFilter) {
+          const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
+          return console.log({ jqPayload })
+        }
+        console.log({ payload })
+      })
 
     console.log(`Subscribing to ${name} stream...`)
     wsSubscriptions.set(name, subscription)
@@ -115,7 +120,7 @@ myRepl.defineCommand('publicSubscription', {
 })
 
 myRepl.defineCommand('privateSubscription', {
-  help: 'subscriptionName?param1=value1&param_list2[]=value2,value3',
+  help: 'subscriptionName?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr',
 
   action: async (paramsStr) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
@@ -123,8 +128,11 @@ myRepl.defineCommand('privateSubscription', {
     }
     const token = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
 
-    const [name, rawParams = ''] = paramsStr.split('?')
+    const [rawSubscription, jqFilter] = paramsStr.split(' ')
+    const [name, rawParams] = rawSubscription.split('?')
     const params = parse(rawParams)
+    console.log({ subscription: name, params, jqFilter })
+
     const subscription = privateWSClient.multiplex(() => ({
       event: 'subscribe',
       subscription: {
@@ -140,7 +148,13 @@ myRepl.defineCommand('privateSubscription', {
       },
       ...params
     }), (response): boolean => Array.isArray(response) && response.some(v => v === name))
-      .subscribe(payload => console.log(JSON.stringify({ payload }, null, 4)))
+      .subscribe(async payload => {
+        if (jqFilter) {
+          const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
+          return console.log({ jqPayload })
+        }
+        console.log({ payload })
+      })
 
     console.log(`Subscribing to ${name} stream...`)
     wsSubscriptions.set(name, subscription)
@@ -173,5 +187,5 @@ myRepl.defineCommand('closeAllSubscriptions', {
 
 console.log(printKrakenHeader())
 setTimeout(() => myRepl.write('.help\n'), 500)
-setTimeout(() => myRepl.write('.get Time | rfc1123'), 750)
+setTimeout(() => myRepl.write('.get Time .rfc1123'), 750)
 setTimeout(() => console.log('\n\nPress enter to start...'), 1000)
