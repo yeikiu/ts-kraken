@@ -132,7 +132,7 @@ myRepl.defineCommand('post', {
 myRepl.defineCommand('pubSub', {
   help: `Subscribe to PUBLIC WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
-          i.e. >> .pubSub ticker pair[]=XBT/USD .[1].p[0]
+          i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
 `,
 
   action: async (cmdArgs: string) => {
@@ -175,10 +175,10 @@ myRepl.defineCommand('privSub', {
   }
 })
 
-myRepl.defineCommand('closeSub', {
+myRepl.defineCommand('unSub', {
   help: `Closes WebSocket stream for GIVEN subscriptionName.
 
-          i.e. >> .closeSub ticker
+          i.e. >> .unSub ticker
 `,
 
   action: async (subscriptionName) => {
@@ -189,10 +189,10 @@ myRepl.defineCommand('closeSub', {
   }
 })
 
-myRepl.defineCommand('closeAllSubs', {
+myRepl.defineCommand('unSubAll', {
   help: `Closes WebSocket stream for ALL subscriptions.
 
-          i.e. >> .closeAllSubs
+          i.e. >> .unSubAll
 `,
 
   action: async () => {
