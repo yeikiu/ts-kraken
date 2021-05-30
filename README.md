@@ -7,7 +7,7 @@
 - `>> .post Balance -table`
 
 ### Trade Balances
-- `>> .post Balance -table`
+- `>> .post TradeBalance -table`
 
 ### Status of Recent BTC Deposits
 - `>> .post DepositStatus asset=XBT -table`
@@ -19,7 +19,7 @@
 - `>> .post ClosedOrders .closed as $closed|.closed|keys|map($closed[.].descr) -table`
 
 ### Track pair price
-- `.pubSub ticker pair[]=XBT/USD .[1].p[0]`
+- `>> .pubSub ticker pair[]=XBT/USD .[1].p[0]`
 
 ### Track multiple pair prices
-- `.pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|.[3] as $pair|$base[1].p[0] as $price| {$pair,$price}`
+- `>> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|.[3] as $pair|$base[1].p[0] as $price| {$pair,$price}`

@@ -175,8 +175,11 @@ myRepl.defineCommand('privSub', {
   }
 })
 
-myRepl.defineCommand('closeSubscription', {
-  help: 'closes WebSocket stream for given subscriptionName',
+myRepl.defineCommand('closeSub', {
+  help: `Closes WebSocket stream for GIVEN subscriptionName.
+
+          i.e. >> .closeSub ticker
+`,
 
   action: async (subscriptionName) => {
     wsSubscriptions.get(subscriptionName)?.unsubscribe()
@@ -186,8 +189,11 @@ myRepl.defineCommand('closeSubscription', {
   }
 })
 
-myRepl.defineCommand('closeAllSubscriptions', {
-  help: 'closes all open WebSocket streams',
+myRepl.defineCommand('closeAllSubs', {
+  help: `Closes WebSocket stream for ALL subscriptions.
+
+          i.e. >> .closeAllSubs
+`,
 
   action: async () => {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
