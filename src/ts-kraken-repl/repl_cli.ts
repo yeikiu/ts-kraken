@@ -8,10 +8,51 @@ import { Subscription } from 'rxjs';
 import { gethWsAuthToken, privateWSClient } from '../ts-kraken-ws/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
+import { WebSocketSubject } from 'rxjs/webSocket';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
+const cmdRegExp = /\s*?(\w+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
 
+// TODO: extract to util imports
+const print = (content: unknown, asTable = false) => asTable ? console.table(content) : console.log(content)
+
+// TODO: extract to util imports
+const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionName: string, params: any, jqFilter: string, asTable?: boolean, token?: string) => wsClient.multiplex(() => ({
+  event: 'subscribe',
+  subscription: {
+    name: subscriptionName,
+    ...token ? { token } : {}
+  },
+  ...params
+}), () => ({
+  event: 'unsubscribe',
+  subscription: {
+    name: subscriptionName,
+    ...token ? { token } : {}
+  },
+  ...params
+}), (response): boolean => Array.isArray(response) && response.some(v => v === subscriptionName)
+).subscribe(async payload => {
+  if (jqFilter) {
+    const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
+    return print(jqPayload, asTable)
+  }
+  print(payload, asTable)
+}, async (subscriptionError) => {
+  console.error({ subscriptionError })
+  wsSubscriptions.get(subscriptionName)?.unsubscribe()
+  if (wsSubscriptions.delete(subscriptionName)) {
+    print(`${subscriptionName} unsubscribed! Re-attempting subscription in 5 seconds...`)
+  }
+  const freshToken = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }) 
+  setTimeout(() => {
+    const reSubscription = subscriptionHandler(wsClient, subscriptionName, params, jqFilter, asTable, freshToken)
+    wsSubscriptions.set(subscriptionName, reSubscription)
+  }, 5000)
+})
+
+print(printKrakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
 
 myRepl.defineCommand('setKeys', {
@@ -25,29 +66,31 @@ myRepl.defineCommand('setKeys', {
 
 myRepl.defineCommand('showKeys', {
   help: 'Display current context api key/secret',
-  action: () => console.log({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
+  action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
 })
 
 myRepl.defineCommand('get', {
-  help: `
-      - Fetch PUBLIC REST data. Usage >> PublicEndpoint?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `Fetch PUBLIC REST data. Usage >> PublicEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
-        i.e --> .get Time | rfc1123
+          i.e. >> .get Time .rfc1123
   `,
 
-  action: async (paramsStr) => {
-    const [rawEndpoint, jqFilter] = paramsStr.split(' ')
-    const [endpoint, rawParams] = rawEndpoint.split('?')
+  action: async (cmdArgs: string) => {
+    const paramsStr = cmdArgs.replace(' -table', '')
+    const asTable = cmdArgs.includes(' -table')
+
+    const [fullMatch, endpoint, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
-    console.log({ endpoint, params, jqFilter })
+    print({ endpoint, params, jqFilter })
+    if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     try {
       const response = await publicRESTRequest({ url: endpoint as PublicEndpoint, params })
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
-        return console.log({ jqResponse })
+        return print(jqResponse, asTable)
       }
-      console.log({ response })
+      print(response, asTable)
 
     } catch (publicRESTerror) {
       console.error({ publicRESTerror })
@@ -56,27 +99,29 @@ myRepl.defineCommand('get', {
 })
 
 myRepl.defineCommand('post', {
-  help: `
-      - Fetch PRIVATE REST data. Usage >> PrivateEndpoint?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `Fetch PRIVATE REST data. Usage >> PrivateEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
-        i.e --> .post ClosedOrders?trades=true
+          i.e. >> .post ClosedOrders trades=true .closed
   `,
-  action: async (paramsStr) => {
+  action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
     }
-    const [rawEndpoint, jqFilter] = paramsStr.split(' ')
-    const [endpoint, rawParams] = rawEndpoint.split('?')
-    const params = parse(rawParams)
-    console.log({ endpoint, params, jqFilter })
+    const paramsStr = cmdArgs.replace(' -table', '')
+    const asTable = cmdArgs.includes(' -table')
+
+    const [fullMatch, endpoint, rawData, jqFilter] = paramsStr.match(cmdRegExp) ?? []
+    const data = parse(rawData)
+    print({ endpoint, data, jqFilter })
+    if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     try {
-      const response = await privateRESTRequest({ url: endpoint as PrivateEndpoint, params })
+      const response = await privateRESTRequest({ url: endpoint as PrivateEndpoint, data }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
-        return console.log({ jqResponse })
+        return print(jqResponse, asTable)
       }
-      console.log({ response })
+      print(response, asTable)
 
     } catch (privateRESTerror) {
       console.error({ privateRESTerror })
@@ -84,80 +129,49 @@ myRepl.defineCommand('post', {
   }
 })
 
-myRepl.defineCommand('publicSubscription', {
-  help: 'subscriptionName?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr',
+myRepl.defineCommand('pubSub', {
+  help: `Subscribe to PUBLIC WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
-  action: async (paramsStr) => {
-    const [rawSubscription, jqFilter] = paramsStr.split(' ')
-    const [name, rawParams] = rawSubscription.split('?')
+          i.e. >> .pubSub ticker pair[]=XBT/USD .[1].p[0]
+`,
+
+  action: async (cmdArgs: string) => {
+    const paramsStr = cmdArgs.replace(' -table', '')
+    const asTable = cmdArgs.includes(' -table')
+
+    const [fullMatch, subscriptionName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
-    console.log({ subscription: name, params, jqFilter })
+    print({ subscriptionName, params, jqFilter })
+    if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
-    const subscription = publicWSClient.multiplex(() => ({
-      event: 'subscribe',
-      subscription: {
-        name,
-      },
-      ...params
-    }), () => ({
-      event: 'unsubscribe',
-      subscription: {
-        name
-      },
-      ...params
-    }), (response): boolean => Array.isArray(response) && response.some(v => v === name))
-      .subscribe(async payload => {
-        if (jqFilter) {
-          const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
-          return console.log({ jqPayload })
-        }
-        console.log({ payload })
-      })
-
-    console.log(`Subscribing to ${name} stream...`)
-    wsSubscriptions.set(name, subscription)
+    print(`Subscribing to PUBLIC ${subscriptionName} stream...`)
+    const subscription = subscriptionHandler(publicWSClient, subscriptionName, params, jqFilter, asTable)
+    wsSubscriptions.set(subscriptionName, subscription)
   }
 })
 
-myRepl.defineCommand('privateSubscription', {
-  help: 'subscriptionName?paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr',
+myRepl.defineCommand('privSub', {
+  help: `Subscribe to PRIVATE WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
-  action: async (paramsStr) => {
+          i.e. >> .privSub openOrders .[0]|map(. as $order|keys[0]|$order[.])
+`,
+
+  action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
     }
-    const token = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
+    const paramsStr = cmdArgs.replace(' -table', '')
+    const asTable = cmdArgs.includes(' -table')
 
-    const [rawSubscription, jqFilter] = paramsStr.split(' ')
-    const [name, rawParams] = rawSubscription.split('?')
+    const [fullMatch, subscriptionName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
-    console.log({ subscription: name, params, jqFilter })
+    print({ subscriptionName, params, jqFilter })
+    if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
-    const subscription = privateWSClient.multiplex(() => ({
-      event: 'subscribe',
-      subscription: {
-        name,
-        token
-      },
-      ...params
-    }), () => ({
-      event: 'unsubscribe',
-      subscription: {
-        name,
-        token
-      },
-      ...params
-    }), (response): boolean => Array.isArray(response) && response.some(v => v === name))
-      .subscribe(async payload => {
-        if (jqFilter) {
-          const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
-          return console.log({ jqPayload })
-        }
-        console.log({ payload })
-      })
-
-    console.log(`Subscribing to ${name} stream...`)
-    wsSubscriptions.set(name, subscription)
+    print(`Subscribing to PRIVATE ${subscriptionName} stream...`)
+    const token = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
+    const subscription = subscriptionHandler(privateWSClient, subscriptionName, params, jqFilter, asTable, token)
+    wsSubscriptions.set(subscriptionName, subscription)
   }
 })
 
@@ -167,7 +181,7 @@ myRepl.defineCommand('closeSubscription', {
   action: async (subscriptionName) => {
     wsSubscriptions.get(subscriptionName)?.unsubscribe()
     if (wsSubscriptions.delete(subscriptionName)) {
-      console.log(`${subscriptionName} unsubscribed!`)
+      print(`${subscriptionName} unsubscribed!`)
     }
   }
 })
@@ -179,13 +193,12 @@ myRepl.defineCommand('closeAllSubscriptions', {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
       sub.unsubscribe()
       if (wsSubscriptions.delete(subscriptionName)) {
-        console.log(`${subscriptionName} unsubscribed!`)
+        print(`${subscriptionName} unsubscribed!`)
       }
     })
   }
 })
 
-console.log(printKrakenHeader())
-setTimeout(() => myRepl.write('.help\n'), 500)
-setTimeout(() => myRepl.write('.get Time .rfc1123'), 750)
-setTimeout(() => console.log('\n\nPress enter to start...'), 1000)
+myRepl.write('.help\n')
+myRepl.write('\n\n.get Time .rfc1123')
+setTimeout(() => print('\n\nPress enter to start...'), 10)

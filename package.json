@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "0.0.22",
+	"version": "0.0.23",
 	"main": "src/js_entrypoint.js",
 	"bin": {
 		"kraken-repl": "src/js_entrypoint.js"

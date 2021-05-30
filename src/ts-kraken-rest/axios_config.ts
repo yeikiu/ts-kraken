@@ -1,13 +1,13 @@
 import { AxiosRequestConfig } from 'axios'
 import { PrivateEndpoint, PublicEndpoint } from '../types/rest_endpoints'
 
-export interface PublicAxiosRequest extends AxiosRequestConfig {
+export interface PublicAxiosRequest {
     url: PublicEndpoint;
     method?: 'GET' | 'get';
     params?: any;
 }
 
-export interface PrivateAxiosRequest extends AxiosRequestConfig {
+export interface PrivateAxiosRequest {
     url: PrivateEndpoint;
     method?: 'POST' | 'post';
     data?: any;
