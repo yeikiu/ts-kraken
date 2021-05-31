@@ -73,6 +73,7 @@ myRepl.defineCommand('get', {
   help: `Fetch PUBLIC REST data. Usage >> PublicEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .get Time .rfc1123
+               >> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
   `,
 
   action: async (cmdArgs: string) => {
@@ -101,7 +102,8 @@ myRepl.defineCommand('get', {
 myRepl.defineCommand('post', {
   help: `Fetch PRIVATE REST data. Usage >> PrivateEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
-          i.e. >> .post ClosedOrders trades=true .closed
+          i.e. >> .post OpenOrders
+               >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
   `,
   action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
@@ -133,6 +135,7 @@ myRepl.defineCommand('pubSub', {
   help: `Subscribe to PUBLIC WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
+               >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].p[0]}
 `,
 
   action: async (cmdArgs: string) => {
@@ -179,6 +182,7 @@ myRepl.defineCommand('unSub', {
   help: `Closes WebSocket stream for GIVEN subscriptionName.
 
           i.e. >> .unSub ticker
+               >> .unSub openOrders
 `,
 
   action: async (subscriptionName) => {
