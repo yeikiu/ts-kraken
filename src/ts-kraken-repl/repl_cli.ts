@@ -61,14 +61,15 @@ const editedCoreMethods = coreMethods.reduce((p, c) => ({
   ...p,
   [c]: { 
     ...myRepl.commands[c],
-    help: `${myRepl.commands[c].help}\n---`
+    help: `👉 ${myRepl.commands[c].help}\n---`
   }
 }), {})
 Object.assign(myRepl.commands, editedCoreMethods)
 
 // Custom commands
 myRepl.defineCommand('setKeys', {
-  help: 'Safely set api key/secret in-memory just in the current context',
+  help: `👉 Safely set api key/secret in-memory just in the current context
+---`,
 
   action: () => myRepl.question('API-key: ', (key) => {
     KRAKEN_API_KEY = key
@@ -77,13 +78,13 @@ myRepl.defineCommand('setKeys', {
 })
 
 myRepl.defineCommand('showKeys', {
-  help: `Display current api key/secret
+  help: `👉 Display current api key/secret
 ---`,
   action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
 })
 
 myRepl.defineCommand('get', {
-  help: `Fetch PUBLIC REST data. Usage >> PublicEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Fetch PUBLIC REST data. Usage >> PublicEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .get Time .rfc1123
                >> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
@@ -113,7 +114,7 @@ myRepl.defineCommand('get', {
 })
 
 myRepl.defineCommand('post', {
-  help: `Fetch PRIVATE REST data. Usage >> PrivateEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Fetch PRIVATE REST data. Usage >> PrivateEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .post OpenOrders
                >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
@@ -145,7 +146,7 @@ myRepl.defineCommand('post', {
 })
 
 myRepl.defineCommand('pubSub', {
-  help: `Subscribe to PUBLIC WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Subscribe to PUBLIC WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
                >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].p[0]}
@@ -167,7 +168,7 @@ myRepl.defineCommand('pubSub', {
 })
 
 myRepl.defineCommand('privSub', {
-  help: `Subscribe to PRIVATE WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Subscribe to PRIVATE WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .privSub openOrders .[0]|map(. as $order|keys[0]|$order[.])
 ---`,
@@ -192,7 +193,7 @@ myRepl.defineCommand('privSub', {
 })
 
 myRepl.defineCommand('unSub', {
-  help: `Closes WebSocket stream for GIVEN subscriptionName.
+  help: `👉 Closes WebSocket stream for GIVEN subscriptionName.
 
           i.e. >> .unSub ticker
                >> .unSub openOrders
@@ -207,7 +208,7 @@ myRepl.defineCommand('unSub', {
 })
 
 myRepl.defineCommand('unSubAll', {
-  help: `Closes WebSocket stream for ALL subscriptions.
+  help: `👉 Closes WebSocket stream for ALL subscriptions.
 
           i.e. >> .unSubAll
 ---`,
@@ -223,5 +224,5 @@ myRepl.defineCommand('unSubAll', {
 })
 
 myRepl.write('.help\n')
-myRepl.write('\n\n.get Time .rfc1123')
-setTimeout(() => print('\n\nPress enter to start...'), 10)
+myRepl.write('.get Time .rfc1123')
+setTimeout(() => print('\nPress enter to start...'), 10)
