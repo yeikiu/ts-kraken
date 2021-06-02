@@ -2,10 +2,17 @@
 
 > A versatile _repl-cli_ and _node-lib_ to operate against **[Kraken](https://kraken.com) Crypto Exchange** REST and WS API
 
-## Fun with the REPL
+## Setup
 
-> Install: `npm i`
-> Play: `node .`
+> Install: `git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i`
+
+> Play with the repl-cli: `node .` or `npx kraken-repl`
+
+> Depend on the module as a library for your TypeScript project:
+
+````
+import { publicRESTrequest, privateREStrequest, publicWSClient, privateWSClient } from 'ts-kraken'
+````
 
 
 ### Demo REPL requests
