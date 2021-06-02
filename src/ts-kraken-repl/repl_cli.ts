@@ -55,6 +55,18 @@ const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionNa
 print(printKrakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
 
+// Delete and rename some core methods
+const coreMethods = Object.keys(myRepl.commands)
+const editedCoreMethods = coreMethods.reduce((p, c) => ({
+  ...p,
+  [c]: { 
+    ...myRepl.commands[c],
+    help: `${myRepl.commands[c].help}\n---`
+  }
+}), {})
+Object.assign(myRepl.commands, editedCoreMethods)
+
+// Custom commands
 myRepl.defineCommand('setKeys', {
   help: 'Safely set api key/secret in-memory just in the current context',
 
@@ -65,7 +77,8 @@ myRepl.defineCommand('setKeys', {
 })
 
 myRepl.defineCommand('showKeys', {
-  help: 'Display current context api key/secret',
+  help: `Display current api key/secret
+---`,
   action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
 })
 
@@ -74,7 +87,7 @@ myRepl.defineCommand('get', {
 
           i.e. >> .get Time .rfc1123
                >> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
-  `,
+---`,
 
   action: async (cmdArgs: string) => {
     const paramsStr = cmdArgs.replace(' -table', '')
@@ -104,7 +117,7 @@ myRepl.defineCommand('post', {
 
           i.e. >> .post OpenOrders
                >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
-  `,
+---`,
   action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
@@ -136,7 +149,7 @@ myRepl.defineCommand('pubSub', {
 
           i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
                >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].p[0]}
-`,
+---`,
 
   action: async (cmdArgs: string) => {
     const paramsStr = cmdArgs.replace(' -table', '')
@@ -157,7 +170,7 @@ myRepl.defineCommand('privSub', {
   help: `Subscribe to PRIVATE WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
 
           i.e. >> .privSub openOrders .[0]|map(. as $order|keys[0]|$order[.])
-`,
+---`,
 
   action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
@@ -183,7 +196,7 @@ myRepl.defineCommand('unSub', {
 
           i.e. >> .unSub ticker
                >> .unSub openOrders
-`,
+---`,
 
   action: async (subscriptionName) => {
     wsSubscriptions.get(subscriptionName)?.unsubscribe()
@@ -197,7 +210,7 @@ myRepl.defineCommand('unSubAll', {
   help: `Closes WebSocket stream for ALL subscriptions.
 
           i.e. >> .unSubAll
-`,
+---`,
 
   action: async () => {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
