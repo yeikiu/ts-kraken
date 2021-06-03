@@ -1,6 +1,6 @@
 import { privateRESTRequest } from '../private_rest_request'
 
-const getPairBalances = async ([base, quote]: string[]): Promise<string[]> => {
+export const getPairBalances = async ([base, quote]: string[]): Promise<string[]> => {
     let rawBalances = await privateRESTRequest({ url: 'Balance' })
     rawBalances = {
         ...rawBalances,
@@ -11,5 +11,3 @@ const getPairBalances = async ([base, quote]: string[]): Promise<string[]> => {
     
     return [rawBalances[base], rawBalances[quote]]
 }
-
-export default getPairBalances

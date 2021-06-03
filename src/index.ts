@@ -1,6 +1,6 @@
 import { getClosedOrders } from './ts-kraken-rest/private_requests/get_closed_orders'
 import { getOpenOrders } from './ts-kraken-rest/private_requests/get_open_orders'
-import getPairBalances from './ts-kraken-rest/private_requests/get_pair_balances'
+import { getPairBalances } from './ts-kraken-rest/private_requests/get_pair_balances'
 import { privateRESTRequest } from './ts-kraken-rest/private_rest_request'
 import { getTickerInfo } from './ts-kraken-rest/public_requests/get_ticker_info'
 import { publicRESTRequest } from './ts-kraken-rest/public_rest_request'
