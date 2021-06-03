@@ -55,7 +55,7 @@ const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionNa
 print(printKrakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
 
-// Delete and rename some core methods
+// Modify core methods
 const coreMethods = Object.keys(myRepl.commands)
 const editedCoreMethods = coreMethods.reduce((p, c) => ({
   ...p,
@@ -84,7 +84,7 @@ myRepl.defineCommand('showKeys', {
 })
 
 myRepl.defineCommand('get', {
-  help: `👉 Fetch PUBLIC REST data. Usage >> PublicEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Fetch PUBLIC REST data. Usage >> .get PublicEndpoint <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
           i.e. >> .get Time .rfc1123
                >> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
@@ -114,7 +114,7 @@ myRepl.defineCommand('get', {
 })
 
 myRepl.defineCommand('post', {
-  help: `👉 Fetch PRIVATE REST data. Usage >> PrivateEndpoint paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Fetch PRIVATE REST data. Usage >> .post PrivateEndpoint <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
           i.e. >> .post OpenOrders
                >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
@@ -146,7 +146,7 @@ myRepl.defineCommand('post', {
 })
 
 myRepl.defineCommand('pubSub', {
-  help: `👉 Subscribe to PUBLIC WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubSub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
           i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
                >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].p[0]}
@@ -168,7 +168,7 @@ myRepl.defineCommand('pubSub', {
 })
 
 myRepl.defineCommand('privSub', {
-  help: `👉 Subscribe to PRIVATE WS stream. Usage >> subscriptionName paramA=valueA&param_list[]=value1&param_list[]=value2 jqFilterExpr
+  help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privSub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
           i.e. >> .privSub openOrders .[0]|map(. as $order|keys[0]|$order[.])
 ---`,
@@ -223,6 +223,7 @@ myRepl.defineCommand('unSubAll', {
   }
 })
 
+// Shell entrypoint
 myRepl.write('.help\n')
 myRepl.write('.get Time .rfc1123')
 setTimeout(() => print('\nPress enter to start...'), 10)
