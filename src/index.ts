@@ -1,10 +1,10 @@
-import { getClosedOrders } from './ts-kraken-rest/private_requests/get_closed_orders'
+import { findClosedOrder, getClosedOrders } from './ts-kraken-rest/private_requests/get_closed_orders'
 import { getOpenOrders } from './ts-kraken-rest/private_requests/get_open_orders'
 import { getPairBalances } from './ts-kraken-rest/private_requests/get_pair_balances'
 import { privateRESTRequest } from './ts-kraken-rest/private_rest_request'
 import { getTickerInfo } from './ts-kraken-rest/public_requests/get_ticker_info'
 import { publicRESTRequest } from './ts-kraken-rest/public_rest_request'
-import { getOpenOrdersStream } from './ts-kraken-ws/private_events/get_open_orders_stream'
+import { getOpenOrdersStream, OpenOrdersStream } from './ts-kraken-ws/private_events/get_open_orders_stream'
 import { gethWsAuthToken, onPrivateWSClosed, privateWSClient, WSPrivateHeartbeat$ } from './ts-kraken-ws/private_ws_client'
 import { getPriceTickerStream } from './ts-kraken-ws/public_events/get_price_ticker_stream'
 import { onPublicWSClosed, publicWSClient, WSPublicHeartbeat$ } from './ts-kraken-ws/public_ws_client'
@@ -20,6 +20,7 @@ export {
     privateRESTRequest,
     getTickerInfo,
     getClosedOrders,
+    findClosedOrder,
     getOpenOrders,
     getPairBalances,
 
@@ -41,4 +42,5 @@ export {
     PriceTicker,
     OrderSnapshot,
     InjectedApiKeys,
+    OpenOrdersStream,
 }
