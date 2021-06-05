@@ -3,6 +3,9 @@
 	"version": "1.0.0",
 	"main": "src/index.ts",
 	"license": "CC0-1.0",
+	"bin": {
+		"kraken-repl": "js_repl_entrypoint.js"
+	},
 	"devDependencies": {
 		"@types/node": "11.11.0",
 		"@typescript-eslint/eslint-plugin": "^4.4.0",
