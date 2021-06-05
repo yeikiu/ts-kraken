@@ -1,6 +1,6 @@
 # ts-kraken
 
-> A versatile unofficial _repl-cli/node-lib_ to operate against the **[Kraken](https://kraken.com) Crypto Exchange** REST and WebSocket APIs
+> A versatile unofficial _repl-cli/node-lib_ to operate against the **[Kraken](https://kraken.com) Crypto Exchange** [REST](https://docs.kraken.com/rest/) and [WebSocket](https://docs.kraken.com/websockets/) APIs
 ---
 
 ## Setup
