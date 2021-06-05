@@ -31,8 +31,9 @@ import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient 
 
 
 ## Demo Private REPL requests (requires API key/secret)
+
 >_**Tip:**_ To display current keys in use the `.showKeys` command.
->To load your keys, you can either use the `.setKeys` method or create a `.env` file like the following under project root directory:
+>To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory:
 
 ````
 KRAKEN_API_KEY=yourApiKey
@@ -61,3 +62,10 @@ KRAKEN_API_SECRET=yourApiSecret
 * [Kraken REST API docs](https://docs.kraken.com/rest/)
 * [Kraken WebSockets API docs](https://docs.kraken.com/websockets/)
 * [jq Manual](https://stedolan.github.io/jq/manual)
+---
+
+
+## Upcoming features
+
+- Option to record all requests and incoming streams to json files
+- Wrapper-REPL-Command prompting user for request params (with pre-flight validations) for each endpoint/subscription
