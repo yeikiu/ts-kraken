@@ -10,14 +10,21 @@
 
 - `npm i https://github.com/yeikiu/ts-kraken`
 
-- Then in any of your _*.ts_ files you can cherry-pick-import the bits you'll need:
+- Load your keys as env variables. You can use a .env file like:
+````
+KRAKEN_API_KEY=yourApiKey
+KRAKEN_API_SECRET=yourApiSecret
+````
+
+- If you prefer to use multiple keypairs in runtime, the `privateRESTRequest` method takes a convenient 2nd argument `InjectedApiKeys`
+
+- Then you can cherry-pick-import the bits you'll need in any of your _*.ts_ files like:
 
 ````
-import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient } from 'ts-kraken'
+import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient /* etc... */ } from 'ts-kraken'
 ````
 
 Check all the exported methods and types under [the index file](https://github.com/yeikiu/ts-kraken/blob/master/src/index.ts)
-
 
 ## Setup in a standalone directory and have fun with the REPL:
 
@@ -25,12 +32,11 @@ Check all the exported methods and types under [the index file](https://github.c
 
 - `npm run kraken-repl`
 
+<img src=".github/ts_kraken_demo.gif" />
 ---
 
 
 ## Demo Public REPL requests
-
-<img src=".github/ts_kraken_demo.gif" />
 
 ### Track pair price
 - `>> .pubSub ticker pair[]=XBT/USD .[1].c[0]`

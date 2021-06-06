@@ -15,25 +15,29 @@ import { PublicEndpoint, PrivateEndpoint } from './types/rest_endpoints'
 import { KrakenTradesHistoryItem } from './types/trade_history_item'
 
 export {
-    // REST API
+    // REST Clients
     publicRESTRequest,
     privateRESTRequest,
+
+    // REST Methods
     getTickerInfo,
     getClosedOrders,
     findClosedOrder,
     getOpenOrders,
     getPairBalances,
 
-    // WS API
+    // Public-WS
     publicWSClient,
     onPublicWSClosed,
     WSPublicHeartbeat$,
+    getPriceTickerStream,
+
+    // Private-WS
     gethWsAuthToken,
     privateWSClient,
     onPrivateWSClosed,
     WSPrivateHeartbeat$,
-    getPriceTickerStream,
-    getOpenOrdersStream,
+    getOpenOrdersStream,  
 
     // Types
     PublicEndpoint,

@@ -10,6 +10,6 @@ export const publicRESTRequest = async ({ url, params }: PublicAxiosRequest): Pr
     if (publicRESTerror?.length) {
         throw new Error(publicRESTerror)
     }
-    // console.log(JSON.stringify(krakenPublicResponse, null, 4))
+    
     return krakenPublicResponse
 }
