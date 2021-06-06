@@ -36,7 +36,7 @@ npm run kraken-repl
 .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
 ````
 
-### Track pair price
+### Track pair price as simple string output
 ````
 .pubSub ticker pair[]=XBT/USD .[1].c[0]
 ````
@@ -56,7 +56,7 @@ npm run kraken-repl
 .pubSub book depth=10&pair[]=ETH/EUR .[3] as $pair|{pair:$pair,book:.[1].a[0]}
 ````
 
-### Track filtered fields for multiple pair prices
+### Track filtered ticker-fields for pair(s) price(s)
 ````
 .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
 ````
@@ -65,12 +65,12 @@ npm run kraken-repl
 ````
 .pubSub ohlc interval=5&pair[]=XBT/USD&pair[]=USDT/USD .[1] as $ohlc|{pair:.[3],o:$ohlc[2],h:$ohlc[3],l:$ohlc[4],c:$ohlc[5]}
 ---
-
+````
 
 ## Demo Private REPL requests (requires API key/secret)
 
->_**Tip:**_ Use the `.showKeys` command to display current keys in use
->To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory to reuse persistent keys:
+> _**Tip:**_ Use the `.showKeys` command to display current keys in use
+> To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory to reuse persistent keys:
 
 ````
 KRAKEN_API_KEY=yourApiKey
