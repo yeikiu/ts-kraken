@@ -64,8 +64,9 @@ npm run kraken-repl
 ### Track pair(s) 5-mins ohlc flags
 ````
 .pubSub ohlc interval=5&pair[]=XBT/USD&pair[]=USDT/USD .[1] as $ohlc|{pair:.[3],o:$ohlc[2],h:$ohlc[3],l:$ohlc[4],c:$ohlc[5]}
----
 ````
+---
+
 
 ## Demo Private REPL requests (requires API key/secret)
 
