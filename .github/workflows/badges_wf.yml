@@ -1,7 +1,7 @@
 name: badges_wf
 on:
   push:
-    branches: [ master, feat/build-dist ]
+    branches: [ master ]
 
 jobs:
 
@@ -22,7 +22,7 @@ jobs:
 
       - uses: ad-m/github-push-action@master
         with:
-          branch: $(echo ${GITHUB_REF#refs/heads/})
+          branch: master
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v2
