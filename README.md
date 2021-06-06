@@ -31,9 +31,29 @@ npm run kraken-repl
 
 ## Demo Public REPL requests
 
+### List filtered fields from all available trading pairs
+````
+.get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
+````
+
 ### Track pair price
 ````
 .pubSub ticker pair[]=XBT/USD .[1].c[0]
+````
+
+### Track pair(s) trades
+````
+.pubSub trade pair[]=XBT/USD&pair[]=USDT/USD
+````
+
+### Track pair(s) spread
+````
+.pubSub spread pair[]=XBT/USD&pair[]=USDT/USD
+````
+
+### Track pair(s) book
+````
+.pubSub book depth=10&pair[]=ETH/EUR .[3] as $pair|{pair:$pair,book:.[1].a[0]}
 ````
 
 ### Track filtered fields for multiple pair prices
@@ -41,10 +61,9 @@ npm run kraken-repl
 .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
 ````
 
-### List filtered fields from all available trading pairs
+### Track pair(s) 5-mins ohlc flags
 ````
-.get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
-````
+.pubSub ohlc interval=5&pair[]=XBT/USD&pair[]=USDT/USD .[1] as $ohlc|{pair:.[3],o:$ohlc[2],h:$ohlc[3],l:$ohlc[4],c:$ohlc[5]}
 ---
 
 

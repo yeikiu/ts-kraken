@@ -18,21 +18,25 @@ const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
 const print = (content: unknown, asTable = false) => asTable ? console.table(content) : console.log(content)
 
 // TODO: extract to util imports
-const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionName: string, params: any, jqFilter: string, asTable?: boolean, token?: string) => wsClient.multiplex(() => ({
-  event: 'subscribe',
-  subscription: {
-    name: subscriptionName,
-    ...token ? { token } : {}
-  },
-  ...params
-}), () => ({
+const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, name: string, { interval = null, pair = null, depth = null }: any, jqFilter: string, asTable?: boolean, token?: string) => wsClient.multiplex(() => ({
+    event: 'subscribe',
+    ...pair ? { pair } : {},
+    subscription: {
+      name,
+      ...interval ? { interval: Number(interval) } : {},
+      ...depth ? { depth: Number(depth) } : {},
+      ...token ? { token } : {}
+    },
+  }), () => ({
   event: 'unsubscribe',
+  ...pair ? { pair } : {},
   subscription: {
-    name: subscriptionName,
+    name,
+    ...interval ? { interval: Number(interval) } : {},
+    ...depth ? { depth: Number(depth) } : {},
     ...token ? { token } : {}
   },
-  ...params
-}), (response): boolean => Array.isArray(response) && response.some(v => v === subscriptionName)
+}), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(name))
 ).subscribe(async payload => {
   if (jqFilter) {
     const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
@@ -43,14 +47,14 @@ const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionNa
   print(payload, asTable)
 }, async (subscriptionError) => {
   console.error({ subscriptionError })
-  wsSubscriptions.get(subscriptionName)?.unsubscribe()
-  if (wsSubscriptions.delete(subscriptionName)) {
-    print(`${subscriptionName} unsubscribed! Re-attempting subscription in 5 seconds...`)
+  wsSubscriptions.get(name)?.unsubscribe()
+  if (wsSubscriptions.delete(name)) {
+    print(`${name} unsubscribed! Re-attempting subscription in 5 seconds...`)
   }
   const freshToken = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }) 
   setTimeout(() => {
-    const reSubscription = subscriptionHandler(wsClient, subscriptionName, params, jqFilter, asTable, freshToken)
-    wsSubscriptions.set(subscriptionName, reSubscription)
+    const reSubscription = subscriptionHandler(wsClient, name, { interval, pair, depth }, jqFilter, asTable, freshToken)
+    wsSubscriptions.set(name, reSubscription)
   }, 5000)
 })
 
@@ -122,6 +126,7 @@ myRepl.defineCommand('post', {
           i.e. >> .post OpenOrders
                >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
 ---`,
+
   action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
@@ -195,11 +200,11 @@ myRepl.defineCommand('privSub', {
   }
 })
 
-myRepl.defineCommand('unSub', {
+myRepl.defineCommand('unsub', {
   help: `👉 Closes WebSocket stream for GIVEN subscriptionName.
 
-          i.e. >> .unSub ticker
-               >> .unSub openOrders
+          i.e. >> .unsub ticker
+               >> .unsub openOrders
 `,
 
   action: async (subscriptionName) => {
@@ -210,10 +215,10 @@ myRepl.defineCommand('unSub', {
   }
 })
 
-myRepl.defineCommand('unSubAll', {
+myRepl.defineCommand('unsubAll', {
   help: `👉 Closes WebSocket stream for ALL subscriptions.
 
-          i.e. >> .unSubAll
+          i.e. >> .unsubAll
 `,
 
   action: async () => {
