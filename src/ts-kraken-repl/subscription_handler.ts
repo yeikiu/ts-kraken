@@ -35,4 +35,4 @@ export const subscriptionHandler = ({ wsClient, name, token, pair, interval, dep
         ...token ? { token } : {}
     },
 
-}), (response): boolean => true) //Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(name)))
+}), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(name)))
