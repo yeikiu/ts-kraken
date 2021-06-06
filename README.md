@@ -39,6 +39,7 @@ npm run kraken-repl
 ````
 
 <img src=".github/ts_kraken_demo.gif" />
+
 ---
 
 
