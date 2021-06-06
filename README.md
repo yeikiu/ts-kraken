@@ -20,10 +20,10 @@ import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient 
 ## Demo Public REPL requests
 
 ### Track pair price
-- `>> .pubSub ticker pair[]=XBT/USD .[1].p[0]`
+- `>> .pubSub ticker pair[]=XBT/USD .[1].c[0]`
 
 ### Track filtered fields for multiple pair prices
-- `>> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].p[0]}`
+- `>> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}`
 
 ### List filtered fields from all available trading pairs
 - `>> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table`

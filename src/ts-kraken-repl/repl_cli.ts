@@ -36,6 +36,8 @@ const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionNa
 ).subscribe(async payload => {
   if (jqFilter) {
     const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
+    // The `.payload|` jq prefix helps with a strange node-jq bug where arrays
+    // are printed as text to console by default even with `output: 'json'`
     return print(jqPayload, asTable)
   }
   print(payload, asTable)
@@ -55,7 +57,8 @@ const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, subscriptionNa
 print(printKrakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
 
-// Modify core methods
+// Modify core methods (bit hacky, these are readonly)
+['save', 'load', 'editor', 'clear', 'break', 'exit'].forEach(c => delete (myRepl.commands  as any)[c])
 const coreMethods = Object.keys(myRepl.commands)
 const editedCoreMethods = coreMethods.reduce((p, c) => ({
   ...p,
@@ -68,8 +71,8 @@ Object.assign(myRepl.commands, editedCoreMethods)
 
 // Custom commands
 myRepl.defineCommand('setKeys', {
-  help: `👉 Safely set api key/secret in-memory just in the current context
----`,
+  help: `👉 Load API key/secret (non-persistent, use a .env to auto-load keys)
+`,
 
   action: () => myRepl.question('API-key: ', (key) => {
     KRAKEN_API_KEY = key
@@ -78,7 +81,7 @@ myRepl.defineCommand('setKeys', {
 })
 
 myRepl.defineCommand('showKeys', {
-  help: `👉 Display current api key/secret
+  help: `👉 Display currently loaded API key/secret
 ---`,
   action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
 })
@@ -149,7 +152,7 @@ myRepl.defineCommand('pubSub', {
   help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubSub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
           i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
-               >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].p[0]}
+               >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
 ---`,
 
   action: async (cmdArgs: string) => {
@@ -171,7 +174,7 @@ myRepl.defineCommand('privSub', {
   help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privSub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
           i.e. >> .privSub openOrders .[0]|map(. as $order|keys[0]|$order[.])
----`,
+`,
 
   action: async (cmdArgs: string) => {
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
@@ -197,7 +200,7 @@ myRepl.defineCommand('unSub', {
 
           i.e. >> .unSub ticker
                >> .unSub openOrders
----`,
+`,
 
   action: async (subscriptionName) => {
     wsSubscriptions.get(subscriptionName)?.unsubscribe()
@@ -211,7 +214,7 @@ myRepl.defineCommand('unSubAll', {
   help: `👉 Closes WebSocket stream for ALL subscriptions.
 
           i.e. >> .unSubAll
----`,
+`,
 
   action: async () => {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
