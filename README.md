@@ -1,27 +1,36 @@
 # ts-kraken
 
+<img src=".github/ts_kraken_logo.png" width="640px" />
+
 > A versatile unofficial _repl-cli/node-lib_ to operate against the **[Kraken](https://kraken.com) Crypto Exchange** [REST](https://docs.kraken.com/rest/) and [WebSocket](https://docs.kraken.com/websockets/) APIs
 ---
 
 
-<img src=".github/ts_kraken_demo.gif" />
+## Setup as a library in your TypeScript project:
 
+- `npm i https://github.com/yeikiu/ts-kraken`
 
-## Setup
-
-> Install: `git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i`
-
-* Play with the repl-cli: `npm run kraken-repl`
-
-- Depend on the module as a library in your TypeScript project:
+- Then in any of your _*.ts_ files you can cherry-pick-import the bits you'll need:
 
 ````
 import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient } from 'ts-kraken'
 ````
+
+Check all the exported methods and types under [the index file](https://github.com/yeikiu/ts-kraken/blob/master/src/index.ts)
+
+
+## Setup in a standalone directory and have fun with the REPL:
+
+- `git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i`
+
+- `npm run kraken-repl`
+
 ---
 
 
 ## Demo Public REPL requests
+
+<img src=".github/ts_kraken_demo.gif" />
 
 ### Track pair price
 - `>> .pubSub ticker pair[]=XBT/USD .[1].c[0]`
