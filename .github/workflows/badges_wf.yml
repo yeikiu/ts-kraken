@@ -19,10 +19,11 @@ jobs:
           git config --local user.name "GitHub Action"
           git add .ci_badges
           git commit -m "[CI:deploy] sync_badges job"
+          echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
 
       - uses: ad-m/github-push-action@master
         with:
-          branch: ${GITHUB_REF}
+          branch: $BRANCH_NAME
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/upload-artifact@v2
