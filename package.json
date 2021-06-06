@@ -30,6 +30,6 @@
 		"build": "rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
-		"start": "npm run build && node -r dotenv/config dist/ts-kraken-repl/repl_cli.js"
+		"kraken-repl": "ts-node -r dotenv/config src/ts-kraken-repl/repl_cli.ts"
 	}
 }

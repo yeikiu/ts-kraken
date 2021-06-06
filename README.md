@@ -1,3 +1,5 @@
+<img src=".ci_badges/npm-version-badge.svg" /> <img src=".ci_badges/npm-dependencies-badge.svg" /> <img src=".ci_badges/npm-devdependencies-badge.svg" />
+
 # ts-kraken
 
 <img src=".github/ts_kraken_logo.png" width="640px" />
@@ -19,7 +21,7 @@ git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
 ````
 
 ````
-npm run start
+npm run kraken-repl
 ````
 
 <img src=".github/ts_kraken_demo.gif" />
