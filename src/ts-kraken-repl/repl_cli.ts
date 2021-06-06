@@ -12,7 +12,7 @@ import { WebSocketSubject } from 'rxjs/webSocket';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
-const cmdRegExp = /\s*?(\w+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
+const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
 
 // TODO: extract to util imports
 const print = (content: unknown, asTable = false) => asTable ? console.table(content) : console.log(content)
