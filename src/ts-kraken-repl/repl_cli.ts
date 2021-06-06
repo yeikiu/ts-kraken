@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
 import { gethWsAuthToken, privateWSClient } from '../ts-kraken-ws/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
-import { WebSocketSubject } from 'rxjs/webSocket';
+import { SubscriptionHandlerParams, subscriptionHandler } from './subscription_handler';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
@@ -18,26 +18,15 @@ const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
 const print = (content: unknown, asTable = false) => asTable ? console.table(content) : console.log(content)
 
 // TODO: extract to util imports
-const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, name: string, { interval = null, pair = null, depth = null }: any, jqFilter: string, asTable?: boolean, token?: string) => wsClient.multiplex(() => ({
-    event: 'subscribe',
-    ...pair ? { pair } : {},
-    subscription: {
-      name,
-      ...interval ? { interval: Number(interval) } : {},
-      ...depth ? { depth: Number(depth) } : {},
-      ...token ? { token } : {}
-    },
-  }), () => ({
-  event: 'unsubscribe',
-  ...pair ? { pair } : {},
-  subscription: {
-    name,
-    ...interval ? { interval: Number(interval) } : {},
-    ...depth ? { depth: Number(depth) } : {},
-    ...token ? { token } : {}
-  },
-}), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(name))
-).subscribe(async payload => {
+const replSubscriptionHandler = ({ wsClient, name, token, pair, interval, depth }: SubscriptionHandlerParams, jqFilter?: string, asTable?: boolean) => subscriptionHandler({
+  wsClient,
+  name,
+  pair,
+  interval,
+  depth,
+  token
+})
+.subscribe(async payload => {
   if (jqFilter) {
     const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
     // The `.payload|` jq prefix helps with a strange node-jq bug where arrays
@@ -53,7 +42,7 @@ const subscriptionHandler = (wsClient: WebSocketSubject<unknown>, name: string, 
   }
   const freshToken = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }) 
   setTimeout(() => {
-    const reSubscription = subscriptionHandler(wsClient, name, { interval, pair, depth }, jqFilter, asTable, freshToken)
+    const reSubscription = replSubscriptionHandler({ wsClient, name, token: freshToken, pair, interval, depth }, jqFilter, asTable)
     wsSubscriptions.set(name, reSubscription)
   }, 5000)
 })
@@ -166,11 +155,12 @@ myRepl.defineCommand('pubSub', {
 
     const [fullMatch, subscriptionName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
+    const { pair, interval, depth } = params
     print({ subscriptionName, params, jqFilter })
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PUBLIC ${subscriptionName} stream...`)
-    const subscription = subscriptionHandler(publicWSClient, subscriptionName, params, jqFilter, asTable)
+    const subscription = replSubscriptionHandler({ wsClient: publicWSClient, name: subscriptionName, pair, interval, depth }, jqFilter, asTable)
     wsSubscriptions.set(subscriptionName, subscription)
   }
 })
@@ -190,12 +180,13 @@ myRepl.defineCommand('privSub', {
 
     const [fullMatch, subscriptionName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
+    const { pair, interval, depth } = params
     print({ subscriptionName, params, jqFilter })
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PRIVATE ${subscriptionName} stream...`)
     const token = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
-    const subscription = subscriptionHandler(privateWSClient, subscriptionName, params, jqFilter, asTable, token)
+    const subscription = replSubscriptionHandler({ wsClient: privateWSClient, name: subscriptionName, token, pair, interval, depth }, jqFilter, asTable)
     wsSubscriptions.set(subscriptionName, subscription)
   }
 })
