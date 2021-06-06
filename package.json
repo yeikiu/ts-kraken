@@ -1,10 +1,10 @@
 {
 	"name": "ts-kraken",
 	"version": "1.0.0",
-	"main": "src/index.ts",
+	"main": "dist/index.js",
 	"license": "CC0-1.0",
 	"bin": {
-		"kraken-repl": "js_repl_entrypoint.js"
+		"kraken-repl": "dist/ts-kraken-repl/repl_cli.js"
 	},
 	"devDependencies": {
 		"@types/node": "11.11.0",
@@ -13,6 +13,7 @@
 		"eslint": "^7.11.0",
 		"eslint-plugin-import": "^2.22.0",
 		"nodemon": "^2.0.4",
+		"rimraf": "^3.0.2",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.2.3"
 	},
@@ -26,8 +27,9 @@
 		"ws": "^7.4.4"
 	},
 	"scripts": {
+		"build": "rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
-		"kraken-repl": "ts-node -r dotenv/config src/ts-kraken-repl/repl_cli.ts"
+		"start": "npm run build && node -r dotenv/config dist/ts-kraken-repl/repl_cli.js"
 	}
 }

@@ -1,4 +1,4 @@
-import * as repl from 'repl'
+import repl from 'repl'
 import { publicRESTRequest } from '../ts-kraken-rest/public_rest_request';
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
 import { PrivateEndpoint, PublicEndpoint } from '../types/rest_endpoints';

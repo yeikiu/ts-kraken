@@ -1,4 +1,14 @@
 {
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "outDir": "dist",
+    "declaration": true,
+    "esModuleInterop": true
+  },
   "include": [
     "src/**/*.ts"
   ]

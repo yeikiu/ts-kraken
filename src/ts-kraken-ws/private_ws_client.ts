@@ -1,4 +1,4 @@
-import * as WebSocketCtor from 'ws'
+import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'

@@ -1,4 +1,4 @@
-import * as chalk from 'chalk'
+import chalk from 'chalk'
 
 export default () =>
 chalk.hex('#5842d9')(`
