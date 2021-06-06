@@ -35,7 +35,7 @@ git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
 ````
 
 ````
-npm run kraken-repl`
+npm run kraken-repl
 ````
 
 <img src=".github/ts_kraken_demo.gif" />
