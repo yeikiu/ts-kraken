@@ -2,6 +2,7 @@ import { PriceTicker } from '../../types/price_ticker'
 import { publicWSClient } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
+import { subscriptionHandler } from '../subscription_handler'
 
 type GetPriceTickerParams = {
     baseAsset: string;
@@ -24,20 +25,12 @@ export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerPa
     const lastPrice$ = new ReplaySubject<string>(1)
     let lastPrice: string = null
 
-    const priceTickerWS = publicWSClient.multiplex(() => ({
-        event: 'subscribe',
+    const priceTickerWS = subscriptionHandler({
+        wsClient: publicWSClient,
+        name: 'ticker',
         pair: [pair],
-        subscription: {
-            name: 'ticker'
-        }
-    }), () => ({
-        event: 'unsubscribe',
-        pair: [pair],
-        subscription: {
-            name: 'ticker'
-        }
-    }), (response): boolean => Array.isArray(response) && response.slice(-2).every(v => ['ticker', pair].includes(v)))
-
+    })
+    
     const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(filter(Boolean), map((rawKrakenPayload: any[]) => {
         const [,{ c: [price] }] = rawKrakenPayload
         lastPrice = price

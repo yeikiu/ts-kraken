@@ -2,6 +2,7 @@ import { gethWsAuthToken, privateWSClient } from '../private_ws_client'
 import { InjectedApiKeys } from '../../types/injected_api_keys'
 import { ReplaySubject, Subject } from 'rxjs'
 import { OrderSnapshot } from '../../types/order_snapshot'
+import { subscriptionHandler } from '../subscription_handler'
 
 type GetOpenOrdersStreamParams = {
     injectedApiKeys?: InjectedApiKeys;
@@ -29,20 +30,12 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
     const closedOrdersIds = new Set<string>();
     const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
     
-    const openOrdersWS = privateWSClient.multiplex(() => ({
-        event: 'subscribe',
-        subscription: {
-            name: 'openOrders',
-            token
-        }
-    }), () => ({
-        event: 'unsubscribe',
-        subscription: {
-            name: 'openOrders',
-            token
-        }
-    }), (response) => Array.isArray(response) && response.length > 1 && response[1] === 'openOrders')
-
+    const openOrdersWS = subscriptionHandler({
+        wsClient: privateWSClient,
+        name: 'openOrders',
+        token
+    })
+    
     const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {
         ordersSnapshot.forEach(krakenOrder => {
             const [orderid] = Object.keys(krakenOrder)

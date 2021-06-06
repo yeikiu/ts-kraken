@@ -9,4 +9,4 @@ export type PrivateEndpoint =
     'CancelOrder' | 'DepositMethods' | 'DepositAddresses' | 'DepositStatus' |
     'WithdrawInfo' | 'Withdraw' | 'WithdrawStatus' | 'WithdrawCancel' |
     'GetWebSocketsToken' | 'AddExport' | 'ExportStatus' | 'RetrieveExport' |
-    'RemoveExport' | 'CancelAll'
+    'RemoveExport' | 'CancelAll' | 'CancelAllOrdersAfter'

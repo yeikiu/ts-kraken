@@ -1,14 +1,12 @@
-import { WebSocketSubject } from 'rxjs/webSocket';
+import { WebSocketSubject } from 'rxjs/webSocket'
+import { PublicSubscription, PrivateSubscription, ValidInterval, ValidDepth } from '../types/ws_subscriptions'
 
 /* https://docs.kraken.com/websockets/#message-subscribe */
-type ValidInterval = 1 | '1' | 5 | '5' | 15 | '15' | 30 |'30' | 60 | '60' | 240 | '240' | 1440 | '1440' | 10080 | '10080' | 21600 | '21600';
-type ValidDepth = 10 | '10' | 25 | '25' | 100 | '100' | 500 | '500' | 1000 | '1000';
-
 export type SubscriptionHandlerParams = {
     wsClient: WebSocketSubject<unknown>;
-    name: string;
+    name: PublicSubscription | PrivateSubscription;
     token?: string; // Mandatory for private streams
-    pair?: string;
+    pair?: string[];
     interval?: ValidInterval;
     depth?: ValidDepth;
 }

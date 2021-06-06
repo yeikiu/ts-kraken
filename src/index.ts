@@ -8,11 +8,13 @@ import { getOpenOrdersStream, OpenOrdersStream } from './ts-kraken-ws/private_ev
 import { gethWsAuthToken, onPrivateWSClosed, privateWSClient, WSPrivateHeartbeat$ } from './ts-kraken-ws/private_ws_client'
 import { getPriceTickerStream } from './ts-kraken-ws/public_events/get_price_ticker_stream'
 import { onPublicWSClosed, publicWSClient, WSPublicHeartbeat$ } from './ts-kraken-ws/public_ws_client'
+import { subscriptionHandler } from './ts-kraken-ws/subscription_handler'
 import { InjectedApiKeys } from './types/injected_api_keys'
 import { OrderSnapshot } from './types/order_snapshot'
 import { PriceTicker } from './types/price_ticker'
 import { PublicEndpoint, PrivateEndpoint } from './types/rest_endpoints'
 import { KrakenTradesHistoryItem } from './types/trade_history_item'
+import { PublicSubscription, PrivateSubscription, ValidInterval, ValidDepth } from './types/ws_subscriptions'
 
 export {
     // REST Clients
@@ -25,6 +27,9 @@ export {
     findClosedOrder,
     getOpenOrders,
     getPairBalances,
+
+    // WS
+    subscriptionHandler,
 
     // Public-WS
     publicWSClient,
@@ -46,5 +51,9 @@ export {
     PriceTicker,
     OrderSnapshot,
     InjectedApiKeys,
+    PublicSubscription,
+    PrivateSubscription,
+    ValidInterval,
+    ValidDepth,
     OpenOrdersStream,
 }

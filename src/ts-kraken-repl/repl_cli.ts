@@ -8,7 +8,8 @@ import { Subscription } from 'rxjs';
 import { gethWsAuthToken, privateWSClient } from '../ts-kraken-ws/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
-import { SubscriptionHandlerParams, subscriptionHandler } from './subscription_handler';
+import { SubscriptionHandlerParams, subscriptionHandler } from '../ts-kraken-ws/subscription_handler';
+import { PrivateSubscription, PublicSubscription } from '../types/ws_subscriptions';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
@@ -160,7 +161,7 @@ myRepl.defineCommand('pubSub', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PUBLIC ${subscriptionName} stream...`)
-    const subscription = replSubscriptionHandler({ wsClient: publicWSClient, name: subscriptionName, pair, interval, depth }, jqFilter, asTable)
+    const subscription = replSubscriptionHandler({ wsClient: publicWSClient, name: subscriptionName as PublicSubscription, pair, interval, depth }, jqFilter, asTable)
     wsSubscriptions.set(subscriptionName, subscription)
   }
 })
@@ -186,7 +187,7 @@ myRepl.defineCommand('privSub', {
 
     print(`Subscribing to PRIVATE ${subscriptionName} stream...`)
     const token = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
-    const subscription = replSubscriptionHandler({ wsClient: privateWSClient, name: subscriptionName, token, pair, interval, depth }, jqFilter, asTable)
+    const subscription = replSubscriptionHandler({ wsClient: privateWSClient, name: subscriptionName as PrivateSubscription, token, pair, interval, depth }, jqFilter, asTable)
     wsSubscriptions.set(subscriptionName, subscription)
   }
 })
