@@ -71,7 +71,7 @@ Object.assign(myRepl.commands, editedCoreMethods)
 
 // Custom commands
 myRepl.defineCommand('setKeys', {
-  help: `👉 Load API key/secret (non-persistent, use a .env to auto-load keys)
+  help: `👉 Load API key/secret (non-persistent, use a .env file to reuse persistent keys)
 `,
 
   action: () => myRepl.question('API-key: ', (key) => {
@@ -81,7 +81,7 @@ myRepl.defineCommand('setKeys', {
 })
 
 myRepl.defineCommand('showKeys', {
-  help: `👉 Display currently loaded API key/secret
+  help: `👉 Display current API key/secret in use
 ---`,
   action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
 })

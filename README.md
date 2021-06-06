@@ -3,6 +3,10 @@
 > A versatile unofficial _repl-cli/node-lib_ to operate against the **[Kraken](https://kraken.com) Crypto Exchange** [REST](https://docs.kraken.com/rest/) and [WebSocket](https://docs.kraken.com/websockets/) APIs
 ---
 
+
+<img src=".github/ts_kraken_demo.gif" />
+
+
 ## Setup
 
 > Install: `git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i`
@@ -32,8 +36,8 @@ import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient 
 
 ## Demo Private REPL requests (requires API key/secret)
 
->_**Tip:**_ To display current keys in use the `.showKeys` command.
->To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory:
+>_**Tip:**_ Use the `.showKeys` command to display current keys in use
+>To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory to reuse persistent keys:
 
 ````
 KRAKEN_API_KEY=yourApiKey
