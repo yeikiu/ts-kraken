@@ -8,7 +8,9 @@
 
 ## Setup as a library in your TypeScript project:
 
-- `npm i https://github.com/yeikiu/ts-kraken`
+````
+npm i https://github.com/yeikiu/ts-kraken
+````
 
 - Load your keys as env variables. You can use a .env file like:
 ````
@@ -28,9 +30,13 @@ Check all the exported methods and types under [the index file](https://github.c
 
 ## Setup in a standalone directory and have fun with the REPL:
 
-- `git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i`
+````
+git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
+````
 
-- `npm run kraken-repl`
+````
+npm run kraken-repl`
+````
 
 <img src=".github/ts_kraken_demo.gif" />
 ---
@@ -39,13 +45,19 @@ Check all the exported methods and types under [the index file](https://github.c
 ## Demo Public REPL requests
 
 ### Track pair price
-- `>> .pubSub ticker pair[]=XBT/USD .[1].c[0]`
+````
+.pubSub ticker pair[]=XBT/USD .[1].c[0]
+````
 
 ### Track filtered fields for multiple pair prices
-- `>> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}`
+````
+.pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
+````
 
 ### List filtered fields from all available trading pairs
-- `>> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table`
+````
+.get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
+````
 ---
 
 
@@ -60,19 +72,29 @@ KRAKEN_API_SECRET=yourApiSecret
 ````
 
 ### Account Balances
-- `>> .post Balance -table`
+````
+.post Balance -table
+````
 
 ### Trade Balances
-- `>> .post TradeBalance -table`
+````
+.post TradeBalance -table
+````
 
 ### Status of Recent BTC Deposits
-- `>> .post DepositStatus asset=XBT -table`
+````
+.post DepositStatus asset=XBT -table
+````
 
 ### Print Open-Orders table
-- `>> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table`
+````
+.post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
+````
 
 ### Print Closed-Orders table
-- `>> .post ClosedOrders .closed as $closed|.closed|keys|map($closed[.].descr) -table`
+````
+.post ClosedOrders .closed as $closed|.closed|keys|map($closed[.].descr) -table
+````
 ---
 
 
