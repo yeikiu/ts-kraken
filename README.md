@@ -72,7 +72,7 @@ npm run kraken-repl
 
 > _**Tip:**_ Use the `.showKeys` command to display current keys in use.
 
-> To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory to reuse persistent keys:
+> To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project's root directory to reuse persistent keys:
 
 ````
 KRAKEN_API_KEY=yourApiKey
@@ -127,6 +127,8 @@ import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient,
 ````
 
 Check all the exported methods and types under [the index file](https://github.com/yeikiu/ts-kraken/blob/master/src/index.ts)
+
+> _**Tip:**_ Any project depending on `ts-kraken` will have a repl-bin ready to exec. in the shell with `npx kraken-repl` (will load from `node_modules`)
 ---
 
 
