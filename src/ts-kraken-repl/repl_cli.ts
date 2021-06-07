@@ -1,3 +1,6 @@
+#!/usr/bin/env node
+import { config } from 'dotenv'
+config()
 import repl from 'repl'
 import { publicRESTRequest } from '../ts-kraken-rest/public_rest_request';
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
