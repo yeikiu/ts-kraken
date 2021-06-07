@@ -70,7 +70,8 @@ npm run kraken-repl
 
 ## Demo Private REPL requests (requires API key/secret)
 
-> _**Tip:**_ Use the `.showKeys` command to display current keys in use
+> _**Tip:**_ Use the `.showKeys` command to display current keys in use.
+
 > To load your keys, you can either use the `.setKeys` command or create a `.env` file like the following under project root directory to reuse persistent keys:
 
 ````
