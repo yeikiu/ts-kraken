@@ -109,7 +109,7 @@ KRAKEN_API_SECRET=yourApiSecret
 ## Setup as a library in your TypeScript project:
 
 ````
-npm i https://github.com/yeikiu/ts-kraken
+npm i ts-kraken
 ````
 
 - Load your keys as env variables. You can use a .env file like:
