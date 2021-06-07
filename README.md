@@ -128,7 +128,7 @@ import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient,
 
 Check all the exported methods and types under [the index file](https://github.com/yeikiu/ts-kraken/blob/master/src/index.ts)
 
-> _**Tip:**_ Any project depending on `ts-kraken` will have a repl-bin ready to exec. in the shell with `npx kraken-repl` (will load from `node_modules`)
+> _**Tip:**_ Any project depending on `ts-kraken` will have a repl-bin ready to use with `npx kraken-repl` (will load from `node_modules`)
 ---
 
 
