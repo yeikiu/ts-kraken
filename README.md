@@ -122,7 +122,7 @@ KRAKEN_API_SECRET=yourApiSecret
 - Then you can cherry-pick-import the bits you'll need in any of your _*.ts_ files like:
 
 ````
-import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient /* etc... */ } from 'ts-kraken'
+import { publicRESTRequest, privateRESTRequest, publicWSClient, privateWSClient, subscriptionHandler /* etc... */ } from 'ts-kraken'
 ````
 
 Check all the exported methods and types under [the index file](https://github.com/yeikiu/ts-kraken/blob/master/src/index.ts)
