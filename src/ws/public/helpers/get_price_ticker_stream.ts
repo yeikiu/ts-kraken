@@ -1,8 +1,9 @@
-import { PriceTicker } from '../../types/price_ticker'
-import { publicWSClient } from './public_ws_client'
+import { Ticker } from '../../../types/rest'
+import { publicWSClient } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
-import { subscriptionHandler } from '../subscription_handler'
+import { subscriptionHandler } from '../../subscription_handler'
+import { PriceTicker } from '../../..'
 
 type GetPriceTickerParams = {
     baseAsset: string;
@@ -31,17 +32,17 @@ export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerPa
         pair: [pair],
     })
     
-    const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(filter(Boolean), map((rawKrakenPayload: any[]) => {
-        const [,{ c: [price] }] = rawKrakenPayload
-        lastPrice = price
+    const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(filter(Boolean), map((rawKrakenPayload: Ticker.Result) => {
+        const { c: [price] } = rawKrakenPayload[pair]
         lastPrice$.next(price)
-        
+        lastPrice = price
+
         return {
             utcTimestamp: new Date().getTime(),
             pair,
             price,
             rawKrakenPayload
-        } as PriceTicker
+        }
     })).subscribe(priceTicker => { priceTicker$.next(priceTicker) }, priceTickerSteamError => {
         priceTicker$.error(priceTickerSteamError)
         lastPrice$.error(priceTickerSteamError)

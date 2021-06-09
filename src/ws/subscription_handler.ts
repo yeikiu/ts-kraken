@@ -1,10 +1,10 @@
 import { WebSocketSubject } from 'rxjs/webSocket'
-import { PublicSubscription, PrivateSubscription, ValidInterval, ValidDepth } from '../types/ws_subscriptions'
+import { PublicChannel, PrivateChannel, ValidInterval, ValidDepth } from '../types/ws_subscriptions'
 
 /* https://docs.kraken.com/websockets/#message-subscribe */
 export type SubscriptionHandlerParams = {
     wsClient: WebSocketSubject<unknown>;
-    name: PublicSubscription | PrivateSubscription;
+    name: PublicChannel | PrivateChannel;
     token?: string; // Mandatory for private streams
     pair?: string[];
     interval?: ValidInterval;

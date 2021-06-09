@@ -1,9 +1,9 @@
 /* https://docs.kraken.com/websockets/#message-subscribe */
 
-export type PublicSubscription =
+export type PublicChannel =
     'ticker' | 'ohlc' | 'trade' | 'spread' | 'book'
 
-export type PrivateSubscription =
+export type PrivateChannel =
     'ownTrades' | 'openOrders' | 'addOrder' |
     'cancelOrder' | 'cancelAll' | 'cancelAllOrdersAfter'
 
