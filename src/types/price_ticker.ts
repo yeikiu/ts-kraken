@@ -11,9 +11,11 @@
     o = today's opening price
 */
 
+import { Ticker } from "./rest";
+
 export type PriceTicker = {
     utcTimestamp: number;
     pair: string;
     price: string;
-    rawKrakenPayload: any[];
+    rawKrakenPayload: Ticker.Result;
 }

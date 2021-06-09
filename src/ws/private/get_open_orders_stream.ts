@@ -1,4 +1,4 @@
-import { gethWsAuthToken, privateWSClient } from '../private_ws_client'
+import { gethWsAuthToken, privateWSClient } from './private_ws_client'
 import { InjectedApiKeys } from '../../types/injected_api_keys'
 import { ReplaySubject, Subject } from 'rxjs'
 import { OrderSnapshot } from '../../types/order_snapshot'

@@ -1,5 +1,5 @@
 import { PriceTicker } from '../../types/price_ticker'
-import { publicWSClient } from '../public_ws_client'
+import { publicWSClient } from './public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 import { subscriptionHandler } from '../subscription_handler'

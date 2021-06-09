@@ -2,16 +2,15 @@
 import { config } from 'dotenv'
 config()
 import repl from 'repl'
-import { publicRESTRequest } from '../ts-kraken-rest/public_rest_request';
+import { publicRESTRequest } from '../rest/public/public_rest_request';
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
-import { PrivateEndpoint, PublicEndpoint } from '../types/rest_endpoints';
-import { privateRESTRequest } from '../ts-kraken-rest/private_rest_request';
-import { publicWSClient } from '../ts-kraken-ws/public_ws_client';
+import { privateRESTRequest } from '../rest/private/private_rest_request';
+import { publicWSClient } from '../ws/public/public_ws_client';
 import { Subscription } from 'rxjs';
-import { gethWsAuthToken, privateWSClient } from '../ts-kraken-ws/private_ws_client';
+import { gethWsAuthToken, privateWSClient } from '../ws/private/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
-import { SubscriptionHandlerParams, subscriptionHandler } from '../ts-kraken-ws/subscription_handler';
+import { SubscriptionHandlerParams, subscriptionHandler } from '../ws/subscription_handler';
 import { PrivateSubscription, PublicSubscription } from '../types/ws_subscriptions';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
@@ -100,7 +99,7 @@ myRepl.defineCommand('get', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     try {
-      const response = await publicRESTRequest({ url: endpoint as PublicEndpoint, params })
+      const response = await publicRESTRequest({ url: endpoint, params } as any)
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
         return print(jqResponse, asTable)
@@ -133,7 +132,7 @@ myRepl.defineCommand('post', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     try {
-      const response = await privateRESTRequest({ url: endpoint as PrivateEndpoint, data }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
+      const response = await privateRESTRequest({ url: endpoint, data }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
         return print(jqResponse, asTable)

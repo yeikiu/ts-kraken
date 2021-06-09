@@ -1,8 +1,9 @@
 import { getMessageSignature } from './message_signature'
 import axios, { AxiosInstance } from 'axios'
-import { krakenAxiosConfig, apiVersion, PrivateAxiosRequest } from './axios_config'
+import { krakenAxiosConfig, apiVersion } from './../axios_config'
 import { stringify } from 'qs'
-import { InjectedApiKeys } from '../types/injected_api_keys'
+import { InjectedApiKeys } from '../../types/injected_api_keys'
+import { PrivateREST } from '../../types/rest'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiSecret = process.env.KRAKEN_API_SECRET || ''): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
@@ -34,7 +35,7 @@ const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiS
 }
 
 const defaultClient = createPrivateRESTClient()
-export const privateRESTRequest = async ({ url, data }: PrivateAxiosRequest, injectedApiKeys?: InjectedApiKeys): Promise<any> => {
+export const privateRESTRequest = async ({ url, data }: PrivateREST.AxiosRequest, injectedApiKeys?: InjectedApiKeys): Promise<any> => {
     const apiClient = injectedApiKeys ? createPrivateRESTClient(injectedApiKeys.apiKey, injectedApiKeys.apiSecret) : defaultClient
     const { data: { result: krakenPrivateResponse, error: privateRESTerror }} = await apiClient.request({ url, data }) || {}
     if (privateRESTerror?.length) {

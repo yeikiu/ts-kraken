@@ -1,6 +1,6 @@
 import { timer } from 'rxjs'
 import { take } from 'rxjs/operators'
-import { OrderSnapshot } from '../../types/order_snapshot'
+import { OrderSnapshot } from '../../../types/order_snapshot'
 import { privateRESTRequest } from '../private_rest_request'
 
 type GetClosedOrdersParams = {

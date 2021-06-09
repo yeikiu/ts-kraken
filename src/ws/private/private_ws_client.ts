@@ -2,8 +2,8 @@ import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
-import { privateRESTRequest } from '../ts-kraken-rest/private_rest_request'
-import { InjectedApiKeys } from '../types/injected_api_keys'
+import { privateRESTRequest } from '../../rest/private/private_rest_request'
+import { InjectedApiKeys } from '../../types/injected_api_keys'
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()
