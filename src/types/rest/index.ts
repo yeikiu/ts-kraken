@@ -39,9 +39,9 @@ export namespace PrivateREST {
         apiSecret: string;
     }
 
-    export type Params = {}
-    export type Response = {}
-    export type Result = {}
+    export type Params = OpenOrders.Params
+    export type Response = OpenOrders.Response
+    export type Result = OpenOrders.Result
 
     export interface Request {
         url: Endpoint;

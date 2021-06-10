@@ -34,7 +34,9 @@ const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiS
 }
 
 const defaultClient = createPrivateRESTClient()
-export async function privateRESTRequest({ url, data }: { url: 'OpenOrders', data: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
+export async function privateRESTRequest({ url, data }: { url: 'Balance', data?: Record<string, unknown> }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
+export async function privateRESTRequest({ url, data }: { url: 'ClosedOrders', data?: Record<string, unknown> }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
+export async function privateRESTRequest({ url, data }: { url: 'OpenOrders', data: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenOrders.Result>
 export async function privateRESTRequest({ url }: { url: 'GetWebSocketsToken' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
 export async function privateRESTRequest({ url, data }: PrivateREST.Request, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any> {
     const apiClient = injectedApiKeys ? createPrivateRESTClient(injectedApiKeys.apiKey, injectedApiKeys.apiSecret) : defaultClient
