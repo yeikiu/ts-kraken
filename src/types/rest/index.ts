@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from 'axios'
+import { OpenOrders } from './private/endpoints/OpenOrders'
 import { Assets, SystemStatus, Ticker, Time } from './public'
 
 export type TResponse<T> = {
@@ -16,13 +16,14 @@ export namespace PublicREST {
     export type Response = Time.Response | SystemStatus.Response | Ticker.Response | Assets.Response
     export type Result = Time.Result | SystemStatus.Result | Ticker.Result | Assets.Result
 
-    export interface AxiosRequest extends AxiosRequestConfig {
+    export type Request = {
         url: Endpoint;
         method?: 'GET' | 'get';
         params?: Params;
     }
 }
 
+export { OpenOrders }
 export namespace PrivateREST {
     export type Endpoint =
         'Balance' | 'TradeBalance' | 'OpenOrders' | 'ClosedOrders' |
@@ -33,11 +34,16 @@ export namespace PrivateREST {
         'GetWebSocketsToken' | 'AddExport' | 'ExportStatus' | 'RetrieveExport' |
         'RemoveExport' | 'CancelAll' | 'CancelAllOrdersAfter'
 
+    export type RuntimeApiKeys = {
+        apiKey: string;
+        apiSecret: string;
+    }
+
     export type Params = {}
     export type Response = {}
     export type Result = {}
 
-    export interface AxiosRequest extends AxiosRequestConfig {
+    export interface Request {
         url: Endpoint;
         method?: 'POST' | 'post';
         data?: any;

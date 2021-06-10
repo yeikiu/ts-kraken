@@ -5,13 +5,13 @@ import repl from 'repl'
 import { publicRESTRequest } from '../rest/public/public_rest_request';
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
 import { privateRESTRequest } from '../rest/private/private_rest_request';
-import { publicWSClient } from '../ws/public/public_ws_client';
-import { Subscription } from 'rxjs';
-import { gethWsAuthToken, privateWSClient } from '../ws/private/private_ws_client';
+import { publicSubscriptionHandler } from '../ws/public/public_ws_client';
+import { Observable, Subscription } from 'rxjs';
+import { privateSubscriptionHandler } from '../ws/private/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
-import { SubscriptionHandlerParams, subscriptionHandler } from '../ws/subscription_handler';
-import { PrivateSubscription, PublicSubscription } from '../types/ws_subscriptions';
+import { PrivateREST, PublicREST } from '../types/rest';
+import { PrivateWS, PublicWS } from '../types/ws';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
@@ -21,34 +21,28 @@ const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
 const print = (content: unknown, asTable = false) => asTable ? console.table(content) : console.log(content)
 
 // TODO: extract to util imports
-const replSubscriptionHandler = ({ wsClient, name, token, pair, interval, depth }: SubscriptionHandlerParams, jqFilter?: string, asTable?: boolean) => subscriptionHandler({
-  wsClient,
-  name,
-  pair,
-  interval,
-  depth,
-  token
-})
-.subscribe(async payload => {
-  if (jqFilter) {
-    const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
-    // The `.payload|` jq prefix helps with a strange node-jq bug where arrays
-    // are printed as text to console by default even with `output: 'json'`
-    return print(jqPayload, asTable)
-  }
-  print(payload, asTable)
-}, async (subscriptionError) => {
-  console.error({ subscriptionError })
-  wsSubscriptions.get(name)?.unsubscribe()
-  if (wsSubscriptions.delete(name)) {
-    print(`${name} unsubscribed! Re-attempting subscription in 5 seconds...`)
-  }
-  const freshToken = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }) 
-  setTimeout(() => {
-    const reSubscription = replSubscriptionHandler({ wsClient, name, token: freshToken, pair, interval, depth }, jqFilter, asTable)
-    wsSubscriptions.set(name, reSubscription)
-  }, 5000)
-})
+const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:string, jqFilter?: string, asTable?: boolean) => wsSubscription
+  .subscribe(async payload => {
+    if (jqFilter) {
+      const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
+      // The `.payload|` jq prefix helps with a strange node-jq bug where arrays
+      // are printed as text to console by default even with `output: 'json'`
+      return print(jqPayload, asTable)
+    }
+    print(payload, asTable)
+
+  }, async (subscriptionError) => {
+    console.error({ subscriptionError })
+    wsSubscriptions.get(channelName)?.unsubscribe()
+    if (wsSubscriptions.delete(channelName)) {
+      print(`${channelName} unsubscribed! Re-attempting subscription in 5 seconds...`)
+    }
+    
+    setTimeout(() => {
+      const reSubscription = replSubscriptionHandler(wsSubscription, channelName, jqFilter, asTable)
+      wsSubscriptions.set(channelName, reSubscription)
+    }, 5000)
+  })
 
 print(printKrakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
@@ -132,7 +126,7 @@ myRepl.defineCommand('post', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     try {
-      const response = await privateRESTRequest({ url: endpoint, data }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
+      const response = await privateRESTRequest({ url: endpoint, data } as any, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
         return print(jqResponse, asTable)
@@ -156,15 +150,16 @@ myRepl.defineCommand('pubSub', {
     const paramsStr = cmdArgs.replace(' -table', '')
     const asTable = cmdArgs.includes(' -table')
 
-    const [fullMatch, subscriptionName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
+    const [fullMatch, channelName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
     const { pair, interval, depth } = params
-    print({ subscriptionName, params, jqFilter })
+    print({ channelName, params, jqFilter })
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
-    print(`Subscribing to PUBLIC ${subscriptionName} stream...`)
-    const subscription = replSubscriptionHandler({ wsClient: publicWSClient, name: subscriptionName as PublicSubscription, pair, interval, depth }, jqFilter, asTable)
-    wsSubscriptions.set(subscriptionName, subscription)
+    print(`Subscribing to PUBLIC ${channelName} stream...`)
+    const subscription = publicSubscriptionHandler({ channelName: channelName as PublicWS.Channel, pair, interval, depth })
+    const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
+    wsSubscriptions.set(channelName, replSubscription)
   }
 })
 
@@ -181,16 +176,16 @@ myRepl.defineCommand('privSub', {
     const paramsStr = cmdArgs.replace(' -table', '')
     const asTable = cmdArgs.includes(' -table')
 
-    const [fullMatch, subscriptionName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
+    const [fullMatch, channelName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
-    const { pair, interval, depth } = params
-    print({ subscriptionName, params, jqFilter })
+    const { snapshot, ratecounter } = params
+    print({ channelName, params, jqFilter })
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
-    print(`Subscribing to PRIVATE ${subscriptionName} stream...`)
-    const token = await gethWsAuthToken({ apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
-    const subscription = replSubscriptionHandler({ wsClient: privateWSClient, name: subscriptionName as PrivateSubscription, token, pair, interval, depth }, jqFilter, asTable)
-    wsSubscriptions.set(subscriptionName, subscription)
+    print(`Subscribing to PRIVATE ${channelName} stream...`)
+    const subscription = await privateSubscriptionHandler({ channelName: channelName as PrivateWS.Channel, snapshot, ratecounter }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
+    const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
+    wsSubscriptions.set(channelName, replSubscription)
   }
 })
 

@@ -1,11 +1,10 @@
-import { gethWsAuthToken, privateWSClient } from './private_ws_client'
-import { InjectedApiKeys } from '../../types/injected_api_keys'
+import { privateSubscriptionHandler } from '../private_ws_client'
 import { ReplaySubject, Subject } from 'rxjs'
-import { OrderSnapshot } from '../../types/order_snapshot'
-import { subscriptionHandler } from '../subscription_handler'
+import { OrderSnapshot } from '../../../types/order_snapshot'
+import { PrivateREST } from '../../../types/rest'
 
 type GetOpenOrdersStreamParams = {
-    injectedApiKeys?: InjectedApiKeys;
+    injectedApiKeys?: PrivateREST.RuntimeApiKeys;
     wsToken?: string;
 }
 
@@ -28,12 +27,8 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
     const closedOrderOut$ = new Subject<OrderSnapshot>();
 
     const closedOrdersIds = new Set<string>();
-    const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
-    
-    const openOrdersWS = subscriptionHandler({
-        wsClient: privateWSClient,
-        name: 'openOrders',
-        token
+    const openOrdersWS = await privateSubscriptionHandler({
+        channelName: 'openOrders'
     })
     
     const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {

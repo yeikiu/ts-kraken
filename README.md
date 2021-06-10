@@ -118,7 +118,7 @@ KRAKEN_API_KEY=yourApiKey
 KRAKEN_API_SECRET=yourApiSecret
 ````
 
-- If you prefer to use multiple keypairs in runtime, the `privateRESTRequest` method takes a convenient 2nd argument `InjectedApiKeys`
+- If you prefer to use multiple keypairs in runtime, the `privateRESTRequest` method takes a convenient 2nd argument `RuntimeApiKeys`
 
 - Then you can cherry-pick-import the bits you'll need in any of your _*.ts_ files like:
 

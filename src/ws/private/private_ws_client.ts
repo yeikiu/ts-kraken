@@ -3,7 +3,8 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
 import { privateRESTRequest } from '../../rest/private/private_rest_request'
-import { InjectedApiKeys } from '../../types/injected_api_keys'
+import { PrivateWS } from '../../types/ws'
+import { PrivateREST } from '../../types/rest'
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()
@@ -16,7 +17,7 @@ export const privateWSClient = webSocket({
     closeObserver: onPrivateWSClosed
 })
 
-export const gethWsAuthToken = async (injectedApiKeys?: InjectedApiKeys): Promise<string> => {
+export const gethWsAuthToken = async (injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<string> => {
     try {
         const { token } = await privateRESTRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {}
         if (!token) {
@@ -31,3 +32,24 @@ export const gethWsAuthToken = async (injectedApiKeys?: InjectedApiKeys): Promis
 }
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
+
+export const privateSubscriptionHandler = async ({ channelName, ratecounter, snapshot }: PrivateWS.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys) => {
+    const token = await gethWsAuthToken(injectedApiKeys)
+    return privateWSClient.multiplex(() => ({
+        event: 'subscribe',
+        subscription: {
+            token,
+            name: channelName,
+            ...snapshot ? { snapshot } : {},
+            ...ratecounter ? { ratecounter } : {},
+        },
+    
+    }), () => ({
+        event: 'unsubscribe',
+        subscription: {
+            token,
+            name: channelName,
+        },
+    
+    }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(channelName)))
+}

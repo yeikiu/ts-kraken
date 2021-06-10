@@ -4,7 +4,9 @@ export namespace Ticker {
     export type Params = {
         pair: string;
     }
+
     export type Response = TResponse<Result>
+    
     export type Result = {
         [k: string]: {
             a: string[];

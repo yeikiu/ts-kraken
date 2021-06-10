@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": "ts",
     "ignore": [],
-    "exec": "ts-node src/ts-kraken-repl/repl_cli.ts"
+    "exec": "ts-node src/repl/repl_cli.ts"
 }

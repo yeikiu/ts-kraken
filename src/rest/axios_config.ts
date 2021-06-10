@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios"
+import { AxiosRequestConfig } from 'axios'
 
 export const apiVersion = '0'
 export const krakenAxiosConfig: AxiosRequestConfig = {

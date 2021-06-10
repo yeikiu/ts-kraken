@@ -1,8 +1,7 @@
 import { Ticker } from '../../../types/rest'
-import { publicWSClient } from '../public_ws_client'
+import { publicSubscriptionHandler } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
-import { subscriptionHandler } from '../../subscription_handler'
 import { PriceTicker } from '../../..'
 
 type GetPriceTickerParams = {
@@ -26,9 +25,8 @@ export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerPa
     const lastPrice$ = new ReplaySubject<string>(1)
     let lastPrice: string = null
 
-    const priceTickerWS = subscriptionHandler({
-        wsClient: publicWSClient,
-        name: 'ticker',
+    const priceTickerWS = publicSubscriptionHandler({
+        channelName: 'ticker',
         pair: [pair],
     })
     
