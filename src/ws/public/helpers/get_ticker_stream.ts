@@ -2,7 +2,7 @@ import { Ticker } from '../../../types/rest/public'
 import { publicSubscriptionHandler } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
-import { PriceTicker } from '../../..'
+import { IPriceTicker } from '../../..'
 
 type GetPriceTickerParams = {
     baseAsset: string;
@@ -10,7 +10,7 @@ type GetPriceTickerParams = {
 }
 
 export type PriceTickerStream = {
-    priceTicker$: ReplaySubject<PriceTicker>;
+    priceTicker$: ReplaySubject<IPriceTicker>;
     lastPrice$: ReplaySubject<string>;
     getLastPrice: () => string;
     priceTickerUnsubscribe: () => void;
@@ -19,9 +19,9 @@ export type PriceTickerStream = {
 //
 // https://docs.kraken.com/websockets/#message-ticker
 //
-export const getPriceTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): PriceTickerStream => {
+export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): PriceTickerStream => {
     const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
-    const priceTicker$ = new ReplaySubject<PriceTicker>(1)
+    const priceTicker$ = new ReplaySubject<IPriceTicker>(1)
     const lastPrice$ = new ReplaySubject<string>(1)
     let lastPrice: string = null
 

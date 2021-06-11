@@ -2,7 +2,7 @@ import { getMessageSignature } from './message_signature'
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, apiVersion } from './../axios_config'
 import { stringify } from 'qs'
-import { ClosedOrders, GetWebSocketsToken, OpenOrders, PrivateREST } from '../../types/rest/private'
+import { Balance, ClosedOrders, GetWebSocketsToken, OpenOrders, PrivateREST } from '../../types/rest/private'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiSecret = process.env.KRAKEN_API_SECRET || ''): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
@@ -34,7 +34,7 @@ const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiS
 }
 
 const defaultClient = createPrivateRESTClient()
-export async function privateRESTRequest({ url }: { url: 'Balance' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
+export async function privateRESTRequest({ url }: { url: 'Balance' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Balance.Result>
 export async function privateRESTRequest({ url, data }: { url: 'ClosedOrders', data?: ClosedOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<ClosedOrders.Result>
 export async function privateRESTRequest({ url, data }: { url: 'OpenOrders', data?: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenOrders.Result>
 export async function privateRESTRequest({ url }: { url: 'GetWebSocketsToken' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<GetWebSocketsToken.Result>

@@ -1,5 +1,6 @@
-import { ApiResponse } from '../../api_response'
-import { IOrderSnapshot } from '../../../order_snapshot'
+import { RESTResponse, RESTOrdersSnapshot } from '../../api_response'
+
+/* https://docs.kraken.com/rest/#operation/getOpenOrders */
 
 export namespace OpenOrders {
     export type Params = {
@@ -7,14 +8,9 @@ export namespace OpenOrders {
         userref?: number;
     }
     
-    export type Response = ApiResponse<Result>
+    export type Response = RESTResponse<Result>
 
     export type Result = {
-        open: {
-            [k: string]:
-                Omit<IOrderSnapshot, 'orderid'> &
-                Omit<IOrderSnapshot, 'avg_price'> &
-                Omit<IOrderSnapshot, 'cancel_reason'>
-        }
+        open: RESTOrdersSnapshot
     }
 }

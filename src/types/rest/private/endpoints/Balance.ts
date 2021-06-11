@@ -1,10 +1,11 @@
 import { RESTResponse } from '../../api_response'
 
-export namespace Time {
-    export type Params = {}
+/* https://docs.kraken.com/rest/#operation/getAccountBalance */
+
+export namespace Balance {
     export type Response = RESTResponse<Result>
+
     export type Result = {
-        unixtime: number;
-        rfc1123: string;
+        [k: string]: string;
     }
 }

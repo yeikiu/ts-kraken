@@ -1,7 +1,9 @@
-import { ApiResponse } from '../../api_response'
+import { RESTResponse } from '../../api_response'
+
+/* https://docs.kraken.com/rest/#operation/getWebsocketsToken */
 
 export namespace GetWebSocketsToken {
-    export type Response = ApiResponse<Result>
+    export type Response = RESTResponse<Result>
 
     export type Result = {
         token: string;

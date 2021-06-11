@@ -13,7 +13,7 @@
 
 import { Ticker } from './../types/rest/public';
 
-export type PriceTicker = {
+export type IPriceTicker = {
     utcTimestamp: number;
     pair: string;
     price: string;
