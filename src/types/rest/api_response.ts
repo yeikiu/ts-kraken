@@ -12,7 +12,7 @@ export type RESTOrdersSnapshot = {
         Omit<IOrderSnapshot, 'cancel_reason'>
 }
 
-export type RESTTradeInfo = {[ordertxid: string]: {
+export type RESTTradesInfo = {[ordertxid: string]: {
     pair: string;
     time: number;
     type: 'buy' | 'sell';

@@ -1,4 +1,4 @@
-import { RESTResponse, RESTTradeInfo } from '../../api_response'
+import { RESTResponse, RESTTradesInfo } from '../../api_response'
 
 /* https://docs.kraken.com/rest/#operation/getTradeHistory */
 
@@ -14,7 +14,7 @@ export namespace TradesHistory {
     export type Response = RESTResponse<Result>
 
     export type Result = {
-        trades: RESTTradeInfo;
+        trades: RESTTradesInfo;
         count: number;
     }
 }

@@ -1,4 +1,4 @@
-import { RESTResponse, RESTTradeInfo } from '../../api_response'
+import { RESTResponse, RESTTradesInfo } from '../../api_response'
 
 /* https://docs.kraken.com/rest/#operation/getTradesInfo */
 
@@ -10,5 +10,5 @@ export namespace QueryTrades {
     
     export type Response = RESTResponse<Result>
 
-    export type Result = RESTTradeInfo
+    export type Result = RESTTradesInfo
 }
