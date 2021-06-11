@@ -15,11 +15,9 @@ export const publicWSClient = webSocket<unknown>({
     closeObserver: onPublicWSClosed
 })
 
-export const WSPublicHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
-
+export const PublicWSHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
 export const publicSubscriptionHandler = ({ channelName, pair, interval, depth }: PublicWS.Subscription) => publicWSClient.multiplex(() => ({
-
     event: 'subscribe',
     ...pair ? { pair } : {},
     subscription: {
@@ -29,11 +27,9 @@ export const publicSubscriptionHandler = ({ channelName, pair, interval, depth }
     },
 
 }), () => ({
-
     event: 'unsubscribe',
     ...pair ? { pair } : {},
     subscription: {
         name: channelName,
     },
-
 }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(channelName)))

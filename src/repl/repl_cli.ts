@@ -25,8 +25,8 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:st
   .subscribe(async payload => {
     if (jqFilter) {
       const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
-      // The `.payload|` jq prefix helps with a strange node-jq bug where arrays
-      // are printed as text to console by default even with `output: 'json'`
+      /* The `.payload|` jq prefix helps with a strange node-jq bug where arrays
+      are printed as text to console by default even with `output: 'json'` */
       return print(jqPayload, asTable)
     }
     print(payload, asTable)

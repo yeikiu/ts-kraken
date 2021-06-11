@@ -35,6 +35,7 @@ export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }
 
 export async function privateSubscriptionHandler({ channelName, ratecounter = null, snapshot = null }: PrivateWS.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys) {
     const token = await gethWsAuthToken(injectedApiKeys)
+    
     return privateWSClient.multiplex(() => ({
         event: 'subscribe',
         subscription: {
@@ -50,6 +51,5 @@ export async function privateSubscriptionHandler({ channelName, ratecounter = nu
             token,
             name: channelName,
         },
-    
     }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(channelName)))
 }
