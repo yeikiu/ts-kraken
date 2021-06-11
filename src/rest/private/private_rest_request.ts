@@ -2,7 +2,7 @@ import { getMessageSignature } from './message_signature'
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, apiVersion } from './../axios_config'
 import { stringify } from 'qs'
-import { OpenOrders, PrivateREST } from '../../types/rest'
+import { ClosedOrders, GetWebSocketsToken, OpenOrders, PrivateREST } from '../../types/rest/private'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiSecret = process.env.KRAKEN_API_SECRET || ''): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
@@ -34,16 +34,16 @@ const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiS
 }
 
 const defaultClient = createPrivateRESTClient()
-export async function privateRESTRequest({ url, data }: { url: 'Balance', data?: Record<string, unknown> }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
-export async function privateRESTRequest({ url, data }: { url: 'ClosedOrders', data?: Record<string, unknown> }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
-export async function privateRESTRequest({ url, data }: { url: 'OpenOrders', data: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenOrders.Result>
-export async function privateRESTRequest({ url }: { url: 'GetWebSocketsToken' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
-export async function privateRESTRequest({ url, data }: PrivateREST.Request, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any> {
+export async function privateRESTRequest({ url }: { url: 'Balance' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<any>
+export async function privateRESTRequest({ url, data }: { url: 'ClosedOrders', data?: ClosedOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<ClosedOrders.Result>
+export async function privateRESTRequest({ url, data }: { url: 'OpenOrders', data?: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenOrders.Result>
+export async function privateRESTRequest({ url }: { url: 'GetWebSocketsToken' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<GetWebSocketsToken.Result>
+export async function privateRESTRequest({ url, data }: PrivateREST.Request, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<PrivateREST.Result> {
     const apiClient = injectedApiKeys ? createPrivateRESTClient(injectedApiKeys.apiKey, injectedApiKeys.apiSecret) : defaultClient
-    const { data: { result: krakenPrivateResponse, error: privateRESTerror }} = await apiClient.request({ url, data }) || {}
+    const { data: { result, error: privateRESTerror }} = await apiClient.request<PrivateREST.Response>({ url, data }) || {}
     if (privateRESTerror?.length) {
-        throw new Error(privateRESTerror)
+        throw new Error(privateRESTerror.join(' '))
     }
     
-    return krakenPrivateResponse
+    return result
 }

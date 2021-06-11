@@ -5,7 +5,7 @@ import { getOpenOrdersStream, OpenOrdersStream } from './ws/private/helpers/get_
 import { gethWsAuthToken, onPrivateWSClosed, privateWSClient, WSPrivateHeartbeat$ } from './ws/private/private_ws_client'
 import { getPriceTickerStream } from './ws/public/helpers/get_price_ticker_stream'
 import { onPublicWSClosed, publicWSClient, WSPublicHeartbeat$ } from './ws/public/public_ws_client'
-import { OrderSnapshot } from './types/order_snapshot'
+import { IOrderSnapshot } from './types/order_snapshot'
 import { PriceTicker } from './types/price_ticker'
 import { KrakenTradesHistoryItem } from './types/trade_history_item'
 
@@ -39,6 +39,6 @@ export {
     // PrivateEndpoint,
     KrakenTradesHistoryItem,
     PriceTicker,
-    OrderSnapshot,
+    IOrderSnapshot,
     OpenOrdersStream,
 }

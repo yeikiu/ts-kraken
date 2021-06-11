@@ -1,7 +1,7 @@
 // WS: https://docs.kraken.com/websockets/#message-openOrders
 // REST API: https://www.kraken.com/features/api#get-open-orders
 
-type OrderDescription = {
+type IOrderDescription = {
     pair: string; // asset pair (rest USDTUSD - ws USDT/USD)
     position: string; // Optional - position ID (if applicable)
     type: 'buy' | 'sell';
@@ -13,7 +13,7 @@ type OrderDescription = {
     close: string; // conditional close order description (if conditional close set)
 }
 
-export type OrderSnapshot = {
+export type IOrderSnapshot = {
     orderid: string; // Injected to original payload
     refid?: string;	// Referral order transaction id that created this order
     userref?: number; // user reference ID
@@ -22,7 +22,7 @@ export type OrderSnapshot = {
     closetm?: number; // unix timestamp of order close time
     starttm?: number; // unix timestamp of order start time (if set)
     expiretm?: number; //unix timestamp of order end time (if set)
-    descr?: OrderDescription; // order description info
+    descr?: IOrderDescription; // order description info
     vol?: string; // volume of order (base currency unless viqc set in oflags)
     vol_exec?: string; // total volume executed so far (base currency unless viqc set in oflags)
     cost?: string; // total cost (quote currency unless unless viqc set in oflags)

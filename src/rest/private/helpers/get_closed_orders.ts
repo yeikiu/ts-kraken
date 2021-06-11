@@ -1,6 +1,6 @@
 import { timer } from 'rxjs'
 import { take } from 'rxjs/operators'
-import { OrderSnapshot } from '../../../types/order_snapshot'
+import { IOrderSnapshot } from '../../../types/order_snapshot'
 import { privateRESTRequest } from '../private_rest_request'
 
 type GetClosedOrdersParams = {
@@ -15,18 +15,18 @@ type GetClosedOrdersParams = {
 // 
 // https://docs.kraken.com/rest/#operation/getClosedOrders
 //
-export const getClosedOrders = async (params?: GetClosedOrdersParams): Promise<OrderSnapshot[]> => {
-    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: { ...params ? params : {} }}) || {}
+export const getClosedOrders = async (params?: GetClosedOrdersParams): Promise<IOrderSnapshot[]> => {
+    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: { ...params ? params : {} }})
     const closedOrdersIds = Object.keys(closed)
     return closedOrdersIds.map(orderid => ({
         orderid,
         avg_price: closed[orderid].price, // injected
         ...closed[orderid]
-    }) as OrderSnapshot)
+    }) as IOrderSnapshot)
 }
 
 // Bonus method! 
-export const findClosedOrder = async (orderFilter: (orderFilter: Partial<OrderSnapshot>) => boolean, params: GetClosedOrdersParams = {}): Promise<OrderSnapshot> => {
+export const findClosedOrder = async (orderFilter: (orderFilter: Partial<IOrderSnapshot>) => boolean, params: GetClosedOrdersParams = {}): Promise<IOrderSnapshot> => {
     const closedOrders = await getClosedOrders(params)
     const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter)
     if (lastSuccessfullyClosedOrder) {

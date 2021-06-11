@@ -1,11 +1,11 @@
-import { TResponse } from '../..'
+import { ApiResponse } from '../../api_response'
 
 export namespace Assets {
     export type Params = {
         asset: string;
         aclass: string;
     }
-    export type Response = TResponse<Result>
+    export type Response = ApiResponse<Result>
     export type Result = {
         [k: string]: {
             aclass: string;

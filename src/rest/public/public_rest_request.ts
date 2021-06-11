@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios'
-import { PublicREST, Assets, SystemStatus, Ticker, Time } from '../../types/rest'
+import { Time, Ticker, Assets, PublicREST, SystemStatus } from '../../types/rest/public'
 import { krakenAxiosConfig } from '../axios_config'
 
 const publicRESTClient: AxiosInstance = axios.create(krakenAxiosConfig)

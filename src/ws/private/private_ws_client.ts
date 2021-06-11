@@ -3,8 +3,8 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
 import { privateRESTRequest } from '../../rest/private/private_rest_request'
-import { PrivateWS } from '../../types/ws'
-import { PrivateREST } from '../../types/rest'
+import { PrivateWS } from '../../types/ws/private'
+import { PrivateREST } from '../../types/rest/private'
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()
@@ -33,7 +33,7 @@ export const gethWsAuthToken = async (injectedApiKeys?: PrivateREST.RuntimeApiKe
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export const privateSubscriptionHandler = async ({ channelName, ratecounter, snapshot }: PrivateWS.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys) => {
+export async function privateSubscriptionHandler({ channelName, ratecounter = null, snapshot = null }: PrivateWS.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys) {
     const token = await gethWsAuthToken(injectedApiKeys)
     return privateWSClient.multiplex(() => ({
         event: 'subscribe',

@@ -2,7 +2,7 @@ import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
-import { PublicWS } from '../../types/ws'
+import { PublicWS } from '../../types/ws/public'
 
 export const onPublicWSOpened = new Subject()
 export const onPublicWSClosed = new Subject()

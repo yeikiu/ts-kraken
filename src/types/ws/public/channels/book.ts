@@ -1,4 +1,4 @@
-import { PublicWS } from '../..'
+import { PublicWS } from '../../public'
 
 export namespace Book {
     export type ValidDepth = 10 | '10' | 25 | '25' | 100 | '100' | 500 | '500' | 1000 | '1000'

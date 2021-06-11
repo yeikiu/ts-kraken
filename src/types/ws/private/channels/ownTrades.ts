@@ -1,4 +1,4 @@
-import { PrivateWS } from '../..'
+import { PrivateWS } from '../../private'
 
 export namespace OwnTrades {
     export type Subscription = PrivateWS.BaseSubscription & {

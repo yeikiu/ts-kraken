@@ -11,7 +11,7 @@
     o = today's opening price
 */
 
-import { Ticker } from './rest';
+import { Ticker } from './../types/rest/public';
 
 export type PriceTicker = {
     utcTimestamp: number;

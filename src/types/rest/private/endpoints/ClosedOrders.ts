@@ -1,16 +1,20 @@
 import { ApiResponse } from '../../api_response'
 import { IOrderSnapshot } from '../../../order_snapshot'
 
-export namespace OpenOrders {
+export namespace ClosedOrders {
     export type Params = {
         trades?: boolean;
         userref?: number;
+        start?: number;
+        end?: number;
+        ofs?: number;
+        closetime?: 'open' | 'close' | 'both';
     }
-    
+
     export type Response = ApiResponse<Result>
 
     export type Result = {
-        open: {
+        closed: {
             [k: string]:
                 Omit<IOrderSnapshot, 'orderid'> &
                 Omit<IOrderSnapshot, 'avg_price'> &

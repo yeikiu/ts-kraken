@@ -1,4 +1,4 @@
-import { PublicWS } from '../..'
+import { PublicWS } from '../../public'
 
 export namespace Ticker {
     export type Subscription = PublicWS.BaseSubscription

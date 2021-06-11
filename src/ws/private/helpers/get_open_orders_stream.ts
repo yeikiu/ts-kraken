@@ -1,7 +1,7 @@
 import { privateSubscriptionHandler } from '../private_ws_client'
 import { ReplaySubject, Subject } from 'rxjs'
-import { OrderSnapshot } from '../../../types/order_snapshot'
-import { PrivateREST } from '../../../types/rest'
+import { IOrderSnapshot } from '../../../types/order_snapshot'
+import { PrivateREST } from '../../../types/rest/private'
 
 type GetOpenOrdersStreamParams = {
     injectedApiKeys?: PrivateREST.RuntimeApiKeys;
@@ -9,10 +9,10 @@ type GetOpenOrdersStreamParams = {
 }
 
 export type OpenOrdersStream = {
-    openOrders$: ReplaySubject<OrderSnapshot[]>;
-    currentOpenOrdersMap: Map<string, OrderSnapshot>;
-    openOrderIn$: Subject<OrderSnapshot>;
-    closedOrderOut$: Subject<OrderSnapshot>;
+    openOrders$: ReplaySubject<IOrderSnapshot[]>;
+    currentOpenOrdersMap: Map<string, IOrderSnapshot>;
+    openOrderIn$: Subject<IOrderSnapshot>;
+    closedOrderOut$: Subject<IOrderSnapshot>;
     closedOrdersIds: Set<string>;
     openOrdersUnsubscribe: () => void;
 }
@@ -21,10 +21,10 @@ export type OpenOrdersStream = {
 // https://docs.kraken.com/websockets/#message-openOrders
 // 
 export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenOrdersStreamParams): Promise<OpenOrdersStream> => {
-    const openOrders$ = new ReplaySubject<OrderSnapshot[]>(1);
-    const currentOpenOrdersMap = new Map<string, OrderSnapshot>()
-    const openOrderIn$ = new Subject<OrderSnapshot>();
-    const closedOrderOut$ = new Subject<OrderSnapshot>();
+    const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
+    const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
+    const openOrderIn$ = new Subject<IOrderSnapshot>();
+    const closedOrderOut$ = new Subject<IOrderSnapshot>();
 
     const closedOrdersIds = new Set<string>();
     const openOrdersWS = await privateSubscriptionHandler({
@@ -40,7 +40,7 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
                 return
             }
 
-            const orderSnapshot: OrderSnapshot = {
+            const orderSnapshot: IOrderSnapshot = {
                 orderid, // injected
                 price: krakenOrder[orderid].avg_price, // injected
                 ...currentOpenOrdersMap.get(orderid),

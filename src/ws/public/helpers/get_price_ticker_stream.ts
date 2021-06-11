@@ -1,4 +1,4 @@
-import { Ticker } from '../../../types/rest'
+import { Ticker } from '../../../types/rest/public'
 import { publicSubscriptionHandler } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
