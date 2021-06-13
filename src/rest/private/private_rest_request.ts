@@ -5,6 +5,7 @@ import { stringify } from 'qs'
 import { Balance, ClosedOrders, GetWebSocketsToken, OpenOrders, PrivateREST } from '../../types/rest/private'
 import { RemoveExport } from '../../types/rest/private/endpoints/RemoveExport'
 import { RetrieveExport } from '../../types/rest/private/endpoints/RetrieveExport'
+import { AddExport } from '../../types/rest/private/endpoints/AddExport'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiSecret = process.env.KRAKEN_API_SECRET || ''): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
@@ -36,11 +37,11 @@ const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY || '', apiS
 }
 
 const defaultClient = createPrivateRESTClient()
+export async function privateRESTRequest(params: { url: 'AddExport' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<AddExport.Result>
 export async function privateRESTRequest(params: { url: 'Balance' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Balance.Result>
 export async function privateRESTRequest(params: { url: 'ClosedOrders', data?: ClosedOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<ClosedOrders.Result>
 export async function privateRESTRequest(params: { url: 'OpenOrders', data?: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenOrders.Result>
 export async function privateRESTRequest(params: { url: 'GetWebSocketsToken' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<GetWebSocketsToken.Result>
-
 export async function privateRESTRequest(params: { url: 'RetrieveExport', data: RetrieveExport.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<RetrieveExport.Result>
 export async function privateRESTRequest(params: { url: 'RemoveExport', data: RemoveExport.DeleteParams }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<RemoveExport.DeleteResult>
 export async function privateRESTRequest(params: { url: 'RemoveExport', data: RemoveExport.CancelParams }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<RemoveExport.CancelResult>

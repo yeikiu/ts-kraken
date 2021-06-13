@@ -4,7 +4,7 @@ import { IOrderSnapshot } from '../../../types/order_snapshot'
 import { privateRESTRequest } from '../private_rest_request'
 
 type GetClosedOrdersParams = {
-    trades?: true | null;
+    trades?: boolean;
     userref?: number;
     start?: number;
     end?: number;
@@ -15,8 +15,8 @@ type GetClosedOrdersParams = {
 // 
 // https://docs.kraken.com/rest/#operation/getClosedOrders
 //
-export const getClosedOrders = async (params?: GetClosedOrdersParams): Promise<IOrderSnapshot[]> => {
-    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: { ...params ? params : {} }})
+export const getClosedOrders = async (data?: GetClosedOrdersParams): Promise<IOrderSnapshot[]> => {
+    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data })
     const closedOrdersIds = Object.keys(closed)
     return closedOrdersIds.map(orderid => ({
         orderid,
@@ -26,8 +26,8 @@ export const getClosedOrders = async (params?: GetClosedOrdersParams): Promise<I
 }
 
 // Bonus method! 
-export const findClosedOrder = async (orderFilter: (orderFilter: Partial<IOrderSnapshot>) => boolean, params: GetClosedOrdersParams = {}): Promise<IOrderSnapshot> => {
-    const closedOrders = await getClosedOrders(params)
+export const findClosedOrder = async (orderFilter: (orderFilter: Partial<IOrderSnapshot>) => boolean, data?: GetClosedOrdersParams): Promise<IOrderSnapshot> => {
+    const closedOrders = await getClosedOrders(data)
     const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter)
     if (lastSuccessfullyClosedOrder) {
         return lastSuccessfullyClosedOrder
@@ -35,9 +35,9 @@ export const findClosedOrder = async (orderFilter: (orderFilter: Partial<IOrderS
     
     // Delay exec. 1.5 seconds to avoid rate limits
     await timer(1500).pipe(take(1)).toPromise()
-    const { ofs: lastOffset = 0 } = params
+    const { ofs: lastOffset = 0 } = data
     return findClosedOrder(
         orderFilter,
-        { ...params, ofs: closedOrders.length + lastOffset }
+        { ...data, ofs: closedOrders.length + lastOffset }
     )
 }
