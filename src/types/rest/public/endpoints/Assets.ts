@@ -1,5 +1,7 @@
 import { RESTResponse } from '../../api_response'
 
+/* https://docs.kraken.com/rest/#operation/getAssetInfo */
+
 export namespace Assets {
     export type Params = {
         asset: string;
@@ -7,7 +9,7 @@ export namespace Assets {
     }
     export type Response = RESTResponse<Result>
     export type Result = {
-        [k: string]: {
+        [asset: string]: {
             aclass: string;
             altname: string;
             decimals: number;

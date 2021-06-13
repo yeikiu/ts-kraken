@@ -2,14 +2,14 @@ import { IOrderSnapshot } from "../order_snapshot"
 
 export type RESTResponse<T> = {
     error: string[];
-    result: T
+    result: T;
 }
 
 export type RESTOrdersSnapshot = {
     [txid: string]:
         Omit<IOrderSnapshot, 'orderid'> &
         Omit<IOrderSnapshot, 'avg_price'> &
-        Omit<IOrderSnapshot, 'cancel_reason'>
+        Omit<IOrderSnapshot, 'cancel_reason'>;
 }
 
 export type RESTTradesInfo = {[ordertxid: string]: {
@@ -32,3 +32,24 @@ export type RESTTradesInfo = {[ordertxid: string]: {
     net?: string;
     trades?: string[];
 }}
+
+export type RESTLedgerEntry = {[ledger_id: string]: {
+    refid: string;
+    time: number;
+    type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
+    subtype?: string;
+    aclass: string;
+    asset: string;
+    amount: string;
+    fee: string;
+    balance: string;
+}}
+
+export type RESTFeeTierInfo = {
+    fee: string;
+    minfee: string;
+    maxfee: string;
+    nextfee: string;
+    nextvolume: string;
+    tiervolume: string;
+}

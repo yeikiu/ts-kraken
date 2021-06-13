@@ -3,8 +3,9 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
 import { privateRESTRequest } from '../../rest/private/private_rest_request'
-import { PrivateWS } from '../../types/ws/private'
+import { OpenOrders, OwnTrades, PrivateWS } from '../../types/ws/private'
 import { PrivateREST } from '../../types/rest/private'
+import { Observable } from 'rxjs'
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()
@@ -33,7 +34,9 @@ export const gethWsAuthToken = async (injectedApiKeys?: PrivateREST.RuntimeApiKe
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export async function privateSubscriptionHandler({ channelName, ratecounter = null, snapshot = null }: PrivateWS.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys) {
+export function privateSubscriptionHandler(params: OwnTrades.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Observable<OwnTrades.Payload>>
+export function privateSubscriptionHandler(params: OpenOrders.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Observable<OpenOrders.Payload>>
+export async function privateSubscriptionHandler({ channelName, ratecounter, snapshot }: PrivateWS.Subscription, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Observable<PrivateWS.Payload>> {
     const token = await gethWsAuthToken(injectedApiKeys)
     
     return privateWSClient.multiplex(() => ({

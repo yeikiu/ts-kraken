@@ -32,8 +32,8 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
     })
     
     const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {
-        ordersSnapshot.forEach(krakenOrder => {
-            const [orderid] = Object.keys(krakenOrder)
+        const snapshotOrdersIds = Object.keys(ordersSnapshot)
+        snapshotOrdersIds.forEach(orderid => {
 
             if (closedOrdersIds.has(orderid)) { 
                 currentOpenOrdersMap.delete(orderid)
@@ -42,9 +42,9 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
 
             const orderSnapshot: IOrderSnapshot = {
                 orderid, // injected
-                price: krakenOrder[orderid].avg_price, // injected
+                price: ordersSnapshot[orderid].avg_price, // injected
                 ...currentOpenOrdersMap.get(orderid),
-                ...krakenOrder[orderid],
+                ...ordersSnapshot[orderid],
             }
 
             if (!currentOpenOrdersMap.has(orderid)) {

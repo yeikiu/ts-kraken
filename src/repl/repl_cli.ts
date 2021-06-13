@@ -178,12 +178,16 @@ myRepl.defineCommand('privSub', {
 
     const [fullMatch, channelName, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? []
     const params = parse(rawParams)
-    const { snapshot, ratecounter } = params
+    const { snapshot, ratecounter } = params as PrivateWS.Subscription
     print({ channelName, params, jqFilter })
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PRIVATE ${channelName} stream...`)
-    const subscription = await privateSubscriptionHandler({ channelName: channelName as PrivateWS.Channel, snapshot, ratecounter }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
+    const subscription = await privateSubscriptionHandler({ 
+      channelName: channelName as PrivateWS.Channel,
+      ...snapshot ? { snapshot } : {},
+      ...ratecounter ? { ratecounter } : {}
+    }, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
     const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
     wsSubscriptions.set(channelName, replSubscription)
   }

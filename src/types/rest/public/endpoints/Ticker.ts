@@ -8,7 +8,7 @@ export namespace Ticker {
     export type Response = RESTResponse<Result>
     
     export type Result = {
-        [k: string]: {
+        [pair: string]: {
             a: string[];
             b: string[];
             c: string[];

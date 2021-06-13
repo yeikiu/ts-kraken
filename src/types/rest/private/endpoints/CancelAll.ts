@@ -1,11 +1,11 @@
 import { RESTResponse } from '../../api_response'
 
-/* https://docs.kraken.com/rest/#operation/getAccountBalance */
+/* https://docs.kraken.com/rest/#operation/cancelAllOrders */
 
-export namespace Balance {
+export namespace CancelAll {
     export type Response = RESTResponse<Result>
 
     export type Result = {
-        [asset: string]: string;
+        count: number;
     }
 }
