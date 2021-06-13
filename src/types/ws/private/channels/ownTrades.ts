@@ -1,7 +1,8 @@
+import { PrivateWS } from "..";
 import { IOrderSide, IOrderType } from "../../../order_snapshot";
 
 export namespace OwnTrades {
-    export type Subscription = {
+    export type Subscription = PrivateWS.BaseSubscription & {
         channelName: 'ownTrades';
         snapshot?: boolean;
     }

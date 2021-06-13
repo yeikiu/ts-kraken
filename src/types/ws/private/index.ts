@@ -9,6 +9,10 @@ export namespace PrivateWS {
         'ownTrades' | 'openOrders' | 'addOrder' |
         'cancelOrder' | 'cancelAll' | 'cancelAllOrdersAfter'
 
+    export type BaseSubscription = {
+        channelName: Channel;
+    }
+    
     export type Subscription = OwnTrades.Subscription | OpenOrders.Subscription;
 
     export type KeysOrToken = { injectedApiKeys?: PrivateREST.RuntimeApiKeys; wsToken?: string; };

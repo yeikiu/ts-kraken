@@ -1,7 +1,8 @@
+import { PrivateWS } from '..';
 import { IOrderSnapshot } from '../../../order_snapshot'
 
 export namespace OpenOrders {
-    export type Subscription = {
+    export type Subscription = PrivateWS.BaseSubscription & {
         channelName: 'openOrders';
         ratecounter?: boolean;
     }

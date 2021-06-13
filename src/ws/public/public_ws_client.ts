@@ -2,7 +2,8 @@ import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
-import { PublicWS } from '../../types/ws/public'
+import { OHLC, PublicWS, Ticker } from '../../types/ws/public'
+import { Observable } from 'rxjs'
 
 export const onPublicWSOpened = new Subject()
 export const onPublicWSClosed = new Subject()
@@ -17,19 +18,23 @@ export const publicWSClient = webSocket<unknown>({
 
 export const PublicWSHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export const publicSubscriptionHandler = ({ channelName, pair, interval, depth }: PublicWS.Subscription) => publicWSClient.multiplex(() => ({
-    event: 'subscribe',
-    ...pair ? { pair } : {},
-    subscription: {
-        name: channelName,
-        ...interval ? { interval: Number(interval) } : {},
-        ...depth ? { depth: Number(depth) } : {},
-    },
+export function publicSubscriptionHandler(params: OHLC.Subscription): Observable<OHLC.Payload>
+export function publicSubscriptionHandler(params: Ticker.Subscription): Observable<Ticker.Payload>
+export function publicSubscriptionHandler(params: PublicWS.Subscription): Observable<PublicWS.Payload> {
+    return publicWSClient.multiplex(() => ({
+        event: 'subscribe',
+        ...params['pair'] ? { pair: params['pair'] } : {},
+        subscription: {
+            name: params.channelName,
+            ...params['interval'] ? { interval: Number(params['interval']) } : {},
+            ...params['depth'] ? { depth: Number(params['depth']) } : {},
+        },
 
-}), () => ({
-    event: 'unsubscribe',
-    ...pair ? { pair } : {},
-    subscription: {
-        name: channelName,
-    },
-}), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(channelName)))
+    }), () => ({
+        event: 'unsubscribe',
+        ...params['pair'] ? { pair: params['pair'] } : {},
+        subscription: {
+            name: params.channelName,
+        },
+    }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(params.channelName)))
+}

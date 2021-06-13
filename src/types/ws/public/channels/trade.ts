@@ -1,11 +1,9 @@
 import { PublicWS } from '..'
 
-export namespace Book {
-    export type ValidDepth = 10 | 25 | 100 | 500 | 1000;
-
+export namespace Trade {
+    
     export type Subscription = PublicWS.BaseSubscription & {
-        channelName: 'book';
-        depth?: ValidDepth
+        channelName: 'trade';
     }
 
     export type Payload = Array<unknown>

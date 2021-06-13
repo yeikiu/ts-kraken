@@ -157,7 +157,7 @@ myRepl.defineCommand('pubSub', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PUBLIC ${channelName} stream...`)
-    const subscription = publicSubscriptionHandler({ channelName: channelName as PublicWS.Channel, pair, interval, depth })
+    const subscription = publicSubscriptionHandler({ channelName, pair, interval, depth } as any)
     const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
     wsSubscriptions.set(channelName, replSubscription)
   }
@@ -184,10 +184,10 @@ myRepl.defineCommand('privSub', {
 
     print(`Subscribing to PRIVATE ${channelName} stream...`)
     const subscription = await privateSubscriptionHandler({ 
-      channelName: channelName as any,
+      channelName,
       ...snapshot ? { snapshot } : {},
       ...ratecounter ? { ratecounter } : {}
-    }, (KRAKEN_API_KEY && KRAKEN_API_SECRET) ? { injectedApiKeys: { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET } } : {})
+    } as any, (KRAKEN_API_KEY && KRAKEN_API_SECRET) ? { injectedApiKeys: { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET } } : {})
     const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
     wsSubscriptions.set(channelName, replSubscription)
   }
