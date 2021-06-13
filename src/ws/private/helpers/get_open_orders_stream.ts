@@ -1,12 +1,7 @@
 import { privateSubscriptionHandler } from '../private_ws_client'
 import { ReplaySubject, Subject } from 'rxjs'
 import { IOrderSnapshot } from '../../../types/order_snapshot'
-import { PrivateREST } from '../../../types/rest/private'
-
-type GetOpenOrdersStreamParams = {
-    injectedApiKeys?: PrivateREST.RuntimeApiKeys;
-    wsToken?: string;
-}
+import { PrivateWS } from '../../../types/ws/private'
 
 export type OpenOrdersStream = {
     openOrders$: ReplaySubject<IOrderSnapshot[]>;
@@ -20,7 +15,7 @@ export type OpenOrdersStream = {
 // 
 // https://docs.kraken.com/websockets/#message-openOrders
 // 
-export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenOrdersStreamParams): Promise<OpenOrdersStream> => {
+export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: PrivateWS.KeysOrToken = {}): Promise<OpenOrdersStream> => {
     const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
     const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
     const openOrderIn$ = new Subject<IOrderSnapshot>();
@@ -28,36 +23,36 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: GetOpenO
 
     const closedOrdersIds = new Set<string>();
     const openOrdersWS = await privateSubscriptionHandler({
-        channelName: 'openOrders'
-    })
+        channelName: 'openOrders',
+    }, { injectedApiKeys, wsToken })
     
-    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {
-        const snapshotOrdersIds = Object.keys(ordersSnapshot)
-        snapshotOrdersIds.forEach(orderid => {
-
+    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot, cn]) => {
+        ordersSnapshot.forEach(orderSnapshot => {
+            const [orderid] = Object.keys(orderSnapshot)
             if (closedOrdersIds.has(orderid)) { 
                 currentOpenOrdersMap.delete(orderid)
                 return
             }
 
-            const orderSnapshot: IOrderSnapshot = {
+            const mergedOrderSnapshot: IOrderSnapshot = {
                 orderid, // injected
-                price: ordersSnapshot[orderid].avg_price, // injected
+                price: orderSnapshot[orderid].avg_price, // injected
+                reason: orderSnapshot[orderid].cancel_reason, // injected
                 ...currentOpenOrdersMap.get(orderid),
-                ...ordersSnapshot[orderid],
+                ...orderSnapshot[orderid],
             }
 
             if (!currentOpenOrdersMap.has(orderid)) {
-                currentOpenOrdersMap.set(orderid, orderSnapshot)
-                openOrderIn$.next(orderSnapshot)
+                currentOpenOrdersMap.set(orderid, mergedOrderSnapshot)
+                openOrderIn$.next(mergedOrderSnapshot)
             
-            } else if (['closed', 'expired', 'canceled'].includes(orderSnapshot.status)) {
+            } else if (['closed', 'expired', 'canceled'].includes(mergedOrderSnapshot.status)) {
                 closedOrdersIds.add(orderid)
                 currentOpenOrdersMap.delete(orderid)
-                closedOrderOut$.next(orderSnapshot)
+                closedOrderOut$.next(mergedOrderSnapshot)
             
             } else {
-                currentOpenOrdersMap.set(orderid, orderSnapshot)
+                currentOpenOrdersMap.set(orderid, mergedOrderSnapshot)
             }
         })
 
