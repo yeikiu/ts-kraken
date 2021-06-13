@@ -5,13 +5,17 @@ import { Balance } from './endpoints/Balance'
 import { RetrieveExport } from './endpoints/RetrieveExport'
 import { RemoveExport } from './endpoints/RemoveExport'
 import { AddExport } from './endpoints/AddExport'
+import { AddOrder } from './endpoints/AddOrder'
 
-export { AddExport, Balance, OpenOrders, ClosedOrders, GetWebSocketsToken }
+export { AddExport, AddOrder, Balance, OpenOrders, ClosedOrders, GetWebSocketsToken }
 export namespace PrivateREST {    
     export type Endpoint =
-        'AddExport' | 'Balance' | 'TradeBalance' | 'OpenOrders' | 'ClosedOrders' |
+        'AddExport' | 'AddOrder' |
+
+
+        'Balance' | 'TradeBalance' | 'OpenOrders' | 'ClosedOrders' |
         'QueryOrders' | 'TradesHistory' | 'QueryTrades' | 'OpenPositions' |
-        'Ledgers' | 'QueryLedgers' | 'TradeVolume' | 'AddOrder' |
+        'Ledgers' | 'QueryLedgers' | 'TradeVolume' |
         'CancelOrder' | 'DepositMethods' | 'DepositAddresses' | 'DepositStatus' |
         'WithdrawInfo' | 'Withdraw' | 'WithdrawStatus' | 'WithdrawCancel' |
         'GetWebSocketsToken' | 'ExportStatus' | 'RetrieveExport' |
@@ -22,9 +26,20 @@ export namespace PrivateREST {
         apiSecret: string;
     }
 
-    export type Params = AddExport.Params | RemoveExport.Params | RetrieveExport.Params | OpenOrders.Params | ClosedOrders.Params
-    export type Response = AddExport.Response | RemoveExport.Response | RetrieveExport.Response | Balance.Response | OpenOrders.Response | ClosedOrders.Response | GetWebSocketsToken.Response
-    export type Result = AddExport.Result | RemoveExport.Result | RetrieveExport.Result | Balance.Result | OpenOrders.Result | ClosedOrders.Result | GetWebSocketsToken.Result
+    export type Params = AddExport.Params | AddOrder.Params | 
+    
+    
+        RemoveExport.Params | RetrieveExport.Params | OpenOrders.Params | ClosedOrders.Params
+    
+    export type Response = AddExport.Response | AddOrder.Response |
+    
+
+        RemoveExport.Response | RetrieveExport.Response | Balance.Response | OpenOrders.Response | ClosedOrders.Response | GetWebSocketsToken.Response
+    
+    export type Result = AddExport.Result | AddOrder.Result |
+    
+
+        RemoveExport.Result | RetrieveExport.Result | Balance.Result | OpenOrders.Result | ClosedOrders.Result | GetWebSocketsToken.Result
 
     export interface Request {
         url: Endpoint;

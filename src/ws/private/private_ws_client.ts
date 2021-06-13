@@ -1,11 +1,15 @@
 import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
-import { filter } from 'rxjs/operators'
+import { filter, first } from 'rxjs/operators'
 import { privateRESTRequest } from '../../rest/private/private_rest_request'
 import { OpenOrders, OwnTrades, PrivateWS } from '../../types/ws/private'
 import { PrivateREST } from '../../types/rest/private'
 import { Observable } from 'rxjs'
+import { AddOrder } from '../../types/ws/private/send_events/addOrder'
+import { CancelOrder } from '../../types/ws/private/send_events/cancelOrder'
+import { CancelAll } from '../../types/ws/private/send_events/cancelAll'
+import { CancelAllOrdersAfter } from '../../types/ws/private/send_events/cancelAllOrdersAfter'
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()
@@ -34,8 +38,8 @@ export const gethWsAuthToken = async (injectedApiKeys?: PrivateREST.RuntimeApiKe
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export function privateSubscriptionHandler(params: OwnTrades.Subscription, { injectedApiKeys, wsToken }?: PrivateWS.KeysOrToken): Promise<Observable<OwnTrades.Payload>>
-export function privateSubscriptionHandler(params: OpenOrders.Subscription, { injectedApiKeys, wsToken }?: PrivateWS.KeysOrToken): Promise<Observable<OpenOrders.Payload>>
+export function privateSubscriptionHandler(params: OwnTrades.Subscription, kOt?: PrivateWS.KeysOrToken): Promise<Observable<OwnTrades.Payload>>
+export function privateSubscriptionHandler(params: OpenOrders.Subscription, kOt?: PrivateWS.KeysOrToken): Promise<Observable<OpenOrders.Payload>>
 export async function privateSubscriptionHandler(params: PrivateWS.Subscription, { injectedApiKeys, wsToken }: PrivateWS.KeysOrToken = {}): Promise<Observable<PrivateWS.Payload>> {
     const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
     
@@ -55,4 +59,28 @@ export async function privateSubscriptionHandler(params: PrivateWS.Subscription,
             name: params.channelName,
         },
     }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(params.channelName)))
+}
+
+export async function sendPrivateEvent(payload: AddOrder.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<AddOrder.EventResponse>
+export async function sendPrivateEvent(payload: CancelOrder.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<CancelOrder.EventResponse>
+export async function sendPrivateEvent(payload: CancelAll.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<CancelAll.EventResponse>
+export async function sendPrivateEvent(payload: CancelAllOrdersAfter.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<CancelAllOrdersAfter.EventResponse>
+export async function sendPrivateEvent(payload: PrivateWS.SendEvent, { injectedApiKeys, wsToken }: PrivateWS.KeysOrToken = {}): Promise<PrivateWS.EventResponse> {
+    const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
+    const { reqid: sendReqId, event: sendEvent } = payload
+    console.log({ token, payload })
+    const [rawResponse] = await Promise.all([
+        privateWSClient.pipe(filter(sendReqId ? ({ reqid }) => reqid === sendReqId : ({ event }) => event === `${sendEvent}Status`), first()).toPromise(),
+        privateWSClient.next({
+            ...payload,
+            token
+        })
+    ])
+
+    const eventResponse = rawResponse as PrivateWS.EventResponse
+    console.log({ eventResponse })
+    if (eventResponse.status === 'error') {
+        throw new Error(JSON.stringify(eventResponse)) 
+    }
+    return eventResponse
 }

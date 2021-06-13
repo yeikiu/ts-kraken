@@ -7,7 +7,6 @@ import { getTickerStream } from './ws/public/helpers/get_ticker_stream'
 import { onPublicWSClosed, publicWSClient, PublicWSHeartbeat$ } from './ws/public/public_ws_client'
 import { IOrderSnapshot } from './types/order_snapshot'
 import { IPriceTicker } from './types/price_ticker'
-import { KrakenTradesHistoryItem } from './types/trade_history_item'
 
 export {
     // REST Clients
@@ -37,7 +36,6 @@ export {
     // Types
     // PublicEndpoint,
     // PrivateEndpoint,
-    KrakenTradesHistoryItem,
     IPriceTicker,
     IOrderSnapshot,
     OpenOrdersStream,
