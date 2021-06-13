@@ -9,7 +9,9 @@ export namespace OHLC {
         interval?: ValidOHLCInterval
         since?: number; // Return committed OHLC data since given ID
     }
+    
     export type Response = RESTResponse<Result>
+
     export type Result = {
         [pair: string]: [number, string, string, string, string, string, string, number][];
         

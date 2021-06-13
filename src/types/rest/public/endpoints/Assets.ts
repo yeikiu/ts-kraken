@@ -1,3 +1,4 @@
+import { PublicREST } from '..'
 import { RESTResponse } from '../../api_response'
 
 /* https://docs.kraken.com/rest/#operation/getAssetInfo */
@@ -7,7 +8,9 @@ export namespace Assets {
         asset: string;
         aclass: string;
     }
+    
     export type Response = RESTResponse<Result>
+
     export type Result = {
         [asset: string]: {
             aclass: string;

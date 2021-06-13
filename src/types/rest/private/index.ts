@@ -28,6 +28,6 @@ export namespace PrivateREST {
     export interface Request {
         url: Endpoint;
         method?: 'POST' | 'post';
-        data?: any;
+        data?: Params;
     }
 }
