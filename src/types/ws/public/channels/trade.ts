@@ -6,5 +6,10 @@ export namespace Trade {
         channelName: 'trade';
     }
 
-    export type Payload = Array<unknown>
+    export type Payload = [
+        number,
+        [ string, string, string, 'b'|'s', 'm'|'l', string ][],
+        string,
+        string
+      ]
 }
