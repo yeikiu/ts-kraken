@@ -7,5 +7,20 @@ export namespace OHLC {
         interval?: ValidOHLCInterval
     }
 
-    export type Payload = Array<unknown>
+    export type Payload = [
+        number,
+        [
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            string,
+            number
+        ],
+        string,
+        string
+    ]
 }
