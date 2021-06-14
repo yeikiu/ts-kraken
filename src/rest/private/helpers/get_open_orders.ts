@@ -12,14 +12,14 @@ type GetOpenOrdersParams = {
  *
  * Helper method for: {@link https://docs.kraken.com/rest/#operation/getOpenOrders | getOpenOrders}
  *
- * @param data - GetOpenOrdersParams
+ * @param params - GetOpenOrdersParams
  * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
- * @returns Array<IOrderSnapshot >
+ * @returns Array<IOrderSnapshot>
  *
  * @beta
  */
-export const getOpenOrders = async (data?: GetOpenOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
-    const { open } = await privateRESTRequest({ url: 'OpenOrders', data }, injectedApiKeys)
+export const getOpenOrders = async (params?: GetOpenOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
+    const { open } = await privateRESTRequest({ url: 'OpenOrders', data: params }, injectedApiKeys)
     const openOrdersIds = Object.keys(open)
     return openOrdersIds.map(orderid => ({
         orderid, // injected for improved response usability

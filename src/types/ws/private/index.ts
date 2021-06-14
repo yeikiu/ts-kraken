@@ -18,7 +18,7 @@ export namespace PrivateWS {
     
     export type Subscription = OwnTrades.Subscription | OpenOrders.Subscription;
 
-    export type KeysOrToken = { injectedApiKeys?: PrivateREST.RuntimeApiKeys; wsToken?: string; };
+    export type TokenOrKeys = { injectedApiKeys?: PrivateREST.RuntimeApiKeys; wsToken?: string; };
 
     export type Payload = OwnTrades.Payload | OpenOrders.Payload;
 

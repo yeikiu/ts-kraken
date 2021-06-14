@@ -1,5 +1,5 @@
-import { ValidOHLCInterval } from '../../..'
-import { RESTResponse } from '../../api_response'
+import { ValidOHLCInterval } from '../../../valid_ohlc_interval'
+import { RESTResponse } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getOHLCData */
 

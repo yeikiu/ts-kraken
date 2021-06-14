@@ -1,4 +1,4 @@
-import { IOrderSnapshot } from "../order_snapshot"
+import { IOrderSide, IOrderSnapshot, IOrderType } from '../order_snapshot'
 
 export type RESTResponse<T> = {
     error: string[];
@@ -9,14 +9,15 @@ export type RESTOrdersSnapshot = {
     [txid: string]:
         Omit<IOrderSnapshot, 'orderid'> &
         Omit<IOrderSnapshot, 'avg_price'> &
-        Omit<IOrderSnapshot, 'cancel_reason'>;
+        Omit<IOrderSnapshot, 'cancel_reason'> &
+        Omit<IOrderSnapshot, 'ratecount'>;
 }
 
 export type RESTTradesInfo = {[ordertxid: string]: {
     pair: string;
     time: number;
-    type: 'buy' | 'sell';
-    ordertype: 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
+    type: IOrderSide;
+    ordertype: IOrderType;
     price: string; // primary price
     cost: string; // total cost (quote currency unless unless viqc set in oflags)
     fee: string; // total fee (quote currency)
@@ -24,20 +25,20 @@ export type RESTTradesInfo = {[ordertxid: string]: {
     margin: string;
     misc: string;
     posstatus: 'open' | 'closed';
-    cprice?: string;
-    ccost?: string;
-    cfee?: string; // total fee (quote currency)
-    cvol?: string; // volume of order (base currency unless viqc set in oflags)      
-    cmargin?: string;
-    net?: string;
-    trades?: string[];
+    cprice: string;
+    ccost: string;
+    cfee: string; // total fee (quote currency)
+    cvol: string; // volume of order (base currency unless viqc set in oflags)      
+    cmargin: string;
+    net: string;
+    trades: string[];
 }}
 
 export type RESTLedgerEntry = {[ledger_id: string]: {
     refid: string;
     time: number;
     type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
-    subtype?: string;
+    subtype: string;
     aclass: string;
     asset: string;
     amount: string;

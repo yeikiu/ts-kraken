@@ -1,4 +1,4 @@
-import { RESTResponse } from '../../api_response'
+import { RESTResponse } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getStatusRecentWithdrawals */
 
@@ -18,9 +18,9 @@ export namespace WithdrawStatus {
         txid: string;
         info: string;
         amount: string;
-        fee?: string;
+        fee: string;
         time: number;
         status: 'INITIAL' | 'PENDING' | 'SETTLED' | 'SUCCESS' | 'PARTIAL' | 'FAILURE';
-        'status-prop'?: 'return' | 'onhold';
+        'status-prop': 'return' | 'onhold';
     }
 }

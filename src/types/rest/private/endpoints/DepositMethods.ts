@@ -1,4 +1,4 @@
-import { RESTResponse } from '../../api_response'
+import { RESTResponse } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getDepositMethods */
 
@@ -13,7 +13,7 @@ export namespace DepositMethods {
         method: string;
         limit: string | false;
         fee: string;
-        'address-setup-fee'?: string;
+        'address-setup-fee': string;
         "gen-address": boolean;
     }[]
 }

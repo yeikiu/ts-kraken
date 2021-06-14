@@ -1,4 +1,4 @@
-import { RESTResponse, RESTLedgerEntry } from '../../api_response'
+import { RESTResponse, RESTLedgerEntry } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getLedgers */
 

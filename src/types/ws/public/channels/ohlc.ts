@@ -1,4 +1,4 @@
-import { ValidOHLCInterval } from "../../.."
+import { ValidOHLCInterval } from "../../../valid_ohlc_interval"
 import { PublicWS } from "../../public"
 
 export namespace OHLC {

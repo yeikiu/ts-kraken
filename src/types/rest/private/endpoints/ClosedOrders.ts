@@ -1,4 +1,4 @@
-import { RESTResponse, RESTOrdersSnapshot } from '../../api_response'
+import { RESTResponse, RESTOrdersSnapshot } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getClosedOrders */
 

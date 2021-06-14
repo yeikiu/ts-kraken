@@ -1,6 +1,16 @@
 import { IPriceTicker } from '../../..'
 import { publicRESTRequest } from '../public_rest_request'
 
+/**
+ * Returns a nice pair ticker 
+ *
+ * Helper method for: {@link https://docs.kraken.com/rest/#operation/getTickerInformation | getTickerInformation}
+ *
+ * @param pair - string
+ * @returns IPriceTicer
+ *
+ * @beta
+ */
 export const getTicker = async (pair: string): Promise<IPriceTicker> => {
     const result = await publicRESTRequest({ url: 'Ticker', params: { pair }})
     

@@ -1,4 +1,4 @@
-import { RESTResponse } from '../../api_response'
+import { RESTResponse } from '../../rest_response'
 
 export namespace SystemStatus {
     export type Response = RESTResponse<Result>

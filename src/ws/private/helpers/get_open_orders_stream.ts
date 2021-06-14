@@ -15,7 +15,7 @@ export type OpenOrdersStream = {
 // 
 // https://docs.kraken.com/websockets/#message-openOrders
 // 
-export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: PrivateWS.KeysOrToken = {}): Promise<OpenOrdersStream> => {
+export const getOpenOrdersStream = async ({ wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<OpenOrdersStream> => {
     const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
     const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
     const openOrderIn$ = new Subject<IOrderSnapshot>();
@@ -24,7 +24,7 @@ export const getOpenOrdersStream = async ({ injectedApiKeys, wsToken }: PrivateW
     const closedOrdersIds = new Set<string>();
     const openOrdersWS = await privateSubscriptionHandler({
         channelName: 'openOrders',
-    }, { injectedApiKeys, wsToken })
+    }, { wsToken, injectedApiKeys })
     
     const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot, cn]) => {
         ordersSnapshot.forEach(orderSnapshot => {

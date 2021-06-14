@@ -8,5 +8,6 @@ export namespace OpenOrders {
     }
     export type Payload = [{ [k: string]:
     Omit<IOrderSnapshot, 'orderid'> &
-    Omit<IOrderSnapshot, 'price'> }[], 'openOrders'];
+    Omit<IOrderSnapshot, 'price'> &
+    Omit<IOrderSnapshot, 'reason'> }[], 'openOrders'];
 }

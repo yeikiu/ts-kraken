@@ -1,4 +1,5 @@
-import { RESTResponse } from '../../api_response'
+import { IOrderSide, IOrderType } from '../../../order_snapshot'
+import { RESTResponse } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getOpenPositions */
 
@@ -16,8 +17,8 @@ export namespace OpenPositions {
         posstatus: 'open';
         pair: string;
         time: number;
-        type: 'buy' | 'sell';
-        ordertype: 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
+        type: IOrderSide;
+        ordertype: IOrderType;
         cost: string;
         fee: string; 
         vol: string;

@@ -1,4 +1,4 @@
-import { RESTFeeTierInfo, RESTResponse } from '../../api_response'
+import { RESTFeeTierInfo, RESTResponse } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getTradeVolume */
 

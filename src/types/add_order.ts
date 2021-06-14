@@ -1,12 +1,13 @@
 // WS: https://docs.kraken.com/websockets/#message-addOrder
 // REST API: https://docs.kraken.com/rest/#operation/addOrder
 
+import { IOrderType } from "./order_snapshot";
+
 type IAddOrderSide = 'buy' | 'sell';
-type IAddOrderType = 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
 type IAddOrderCloseType = 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit';
 
 export type IAddOrder = {
-    ordertype: IAddOrderType;
+    ordertype: IOrderType;
     type: IAddOrderSide;
     volume: string;
     pair: string; // Asset pair id or altname

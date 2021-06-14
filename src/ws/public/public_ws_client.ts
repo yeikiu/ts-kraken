@@ -2,7 +2,7 @@ import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
-import { OHLC, PublicWS, Ticker } from '../../types/ws/public'
+import { Book, OHLC, PublicWS, Spread, Ticker, Trade } from '../../types/ws/public'
 import { Observable } from 'rxjs'
 
 export const onPublicWSOpened = new Subject()
@@ -18,8 +18,12 @@ export const publicWSClient = webSocket<unknown>({
 
 export const PublicWSHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
+export function publicSubscriptionHandler(params: Book.Subscription): Observable<Book.Payload>
 export function publicSubscriptionHandler(params: OHLC.Subscription): Observable<OHLC.Payload>
+export function publicSubscriptionHandler(params: Spread.Subscription): Observable<Spread.Payload>
 export function publicSubscriptionHandler(params: Ticker.Subscription): Observable<Ticker.Payload>
+export function publicSubscriptionHandler(params: Trade.Subscription): Observable<Trade.Payload>
+
 export function publicSubscriptionHandler(params: PublicWS.Subscription): Observable<PublicWS.Payload> {
     return publicWSClient.multiplex(() => ({
         event: 'subscribe',

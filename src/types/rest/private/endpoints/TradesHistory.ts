@@ -1,4 +1,4 @@
-import { RESTResponse, RESTTradesInfo } from '../../api_response'
+import { RESTResponse, RESTTradesInfo } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getTradeHistory */
 

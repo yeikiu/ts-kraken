@@ -23,14 +23,14 @@ type FindClosedOrderParam = {
  *
  * Helper method for: {@link https://docs.kraken.com/rest/#operation/getClosedOrders | getClosedOrders}
  *
- * @param data - GetClosedOrdersParams
+ * @param params - GetClosedOrdersParams
  * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
  * @returns Array<IOrderSnapshot>
  * 
  * @beta
  */
-export const getClosedOrders = async (data?: GetClosedOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
-    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data }, injectedApiKeys)
+export const getClosedOrders = async (params?: GetClosedOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
+    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys)
     const closedOrdersIds = Object.keys(closed)
     return closedOrdersIds.map(orderid => ({
         ...closed[orderid],

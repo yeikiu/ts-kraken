@@ -1,4 +1,4 @@
-import { RESTResponse } from '../../api_response'
+import { RESTResponse } from '../../rest_response'
 
 /* https://docs.kraken.com/rest/#operation/getAccountBalance */
 

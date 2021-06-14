@@ -38,9 +38,9 @@ export const gethWsAuthToken = async (injectedApiKeys?: PrivateREST.RuntimeApiKe
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export function privateSubscriptionHandler(params: OwnTrades.Subscription, kOt?: PrivateWS.KeysOrToken): Promise<Observable<OwnTrades.Payload>>
-export function privateSubscriptionHandler(params: OpenOrders.Subscription, kOt?: PrivateWS.KeysOrToken): Promise<Observable<OpenOrders.Payload>>
-export async function privateSubscriptionHandler(params: PrivateWS.Subscription, { injectedApiKeys, wsToken }: PrivateWS.KeysOrToken = {}): Promise<Observable<PrivateWS.Payload>> {
+export function privateSubscriptionHandler(params: OwnTrades.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<OwnTrades.Payload>>
+export function privateSubscriptionHandler(params: OpenOrders.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<OpenOrders.Payload>>
+export async function privateSubscriptionHandler(params: PrivateWS.Subscription, { wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<Observable<PrivateWS.Payload>> {
     const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
     
     return privateWSClient.multiplex(() => ({
@@ -61,14 +61,25 @@ export async function privateSubscriptionHandler(params: PrivateWS.Subscription,
     }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(params.channelName)))
 }
 
-export async function sendPrivateEvent(payload: AddOrder.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<AddOrder.EventResponse>
-export async function sendPrivateEvent(payload: CancelOrder.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<CancelOrder.EventResponse>
-export async function sendPrivateEvent(payload: CancelAll.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<CancelAll.EventResponse>
-export async function sendPrivateEvent(payload: CancelAllOrdersAfter.SendEvent, kOt?: PrivateWS.KeysOrToken): Promise<CancelAllOrdersAfter.EventResponse>
-export async function sendPrivateEvent(payload: PrivateWS.SendEvent, { injectedApiKeys, wsToken }: PrivateWS.KeysOrToken = {}): Promise<PrivateWS.EventResponse> {
+export async function sendPrivateEvent(payload: AddOrder.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<AddOrder.EventResponse>
+export async function sendPrivateEvent(payload: CancelOrder.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<CancelOrder.EventResponse>
+export async function sendPrivateEvent(payload: CancelAll.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<CancelAll.EventResponse>
+export async function sendPrivateEvent(payload: CancelAllOrdersAfter.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<CancelAllOrdersAfter.EventResponse>
+
+/**
+ * Send a PrivateWS event as a Promise
+ *
+ * @param payload - PrivateWS.SendEvent
+ * @param tokenOrKeys - <OPTIONAL> { wsToken, injectedApiKeys }
+ *      - If not passed process.env keys will be used to generate a token.
+ *      - If wsToken is passed it'll be used directly.
+ *      - Finally, if injectedApiKeys are passed, a new token will be generated on-the-fly.
+ * @returns Promise<PrivateWS.EventResponse>
+ */
+export async function sendPrivateEvent(payload: PrivateWS.SendEvent, { wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<PrivateWS.EventResponse> {
     const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
     const { reqid: sendReqId, event: sendEvent } = payload
-    console.log({ token, payload })
+    
     const [rawResponse] = await Promise.all([
         privateWSClient.pipe(
             filter(sendReqId ? ({ reqid }) => reqid === sendReqId : ({ event }) => event === `${sendEvent}Status`),
@@ -82,7 +93,7 @@ export async function sendPrivateEvent(payload: PrivateWS.SendEvent, { injectedA
     ])
 
     const eventResponse = rawResponse as PrivateWS.EventResponse
-    console.log({ eventResponse })
+    
     if (eventResponse.status === 'error') {
         throw new Error(JSON.stringify(eventResponse)) 
     }
