@@ -1,42 +1,35 @@
-import { findClosedOrder, getClosedOrders } from './rest/private/helpers/get_closed_orders'
-import { privateRESTRequest } from './rest/private/private_rest_request'
-import { getTicker } from './rest/public/helpers/get_ticker'
-import { getOpenOrdersStream, OpenOrdersStream } from './ws/private/helpers/get_open_orders_stream'
-import { gethWsAuthToken, onPrivateWSClosed, privateWSClient, WSPrivateHeartbeat$ } from './ws/private/private_ws_client'
-import { getTickerStream } from './ws/public/helpers/get_ticker_stream'
-import { onPublicWSClosed, publicWSClient, PublicWSHeartbeat$ } from './ws/public/public_ws_client'
-import { IOrderSnapshot } from './types/order_snapshot'
-import { IPriceTicker } from './types/price_ticker'
+import { getClosedOrders, findClosedOrder } from './rest/private/helpers/get_closed_orders';
+import { getOpenOrders } from './rest/private/helpers/get_open_orders';
+import { getPairBalances } from './rest/private/helpers/get_pair_balances';
+import { privateRESTRequest } from './rest/private/private_rest_request';
+import { getTicker } from './rest/public/helpers/get_ticker';
+import { publicRESTRequest } from './rest/public/public_rest_request';
+import { getOpenOrdersStream } from './ws/private/helpers/get_open_orders_stream';
+import { getPrivateSubscription, onPrivateWSClosed, WSPrivateHeartbeat$ } from './ws/private/private_ws_client';
+import { getTickerStream } from './ws/public/helpers/get_ticker_stream';
+import { getPublicSubscription, onPublicWSClosed, PublicWSHeartbeat$ } from './ws/public/public_ws_client';
 
 export {
-    // REST Clients
-    // publicREST.Request,
-    privateRESTRequest,
-
-    // REST Methods
-    getTicker,
-    getClosedOrders,
-    findClosedOrder,
-    // getOpenOrders,
-    // getPairBalances,
-
-    // Public-WS
-    publicWSClient,
+    /* PUBLIC WS */
+    getPublicSubscription,
     onPublicWSClosed,
     PublicWSHeartbeat$,
     getTickerStream,
 
-    // Private-WS
-    gethWsAuthToken,
-    privateWSClient,
+    /* PRIVATE WS */
+    getPrivateSubscription,
     onPrivateWSClosed,
     WSPrivateHeartbeat$,
-    getOpenOrdersStream,  
+    getOpenOrdersStream,
+    
+    /* PUBLIC REST */
+    publicRESTRequest,
+    getTicker,
 
-    // Types
-    // PublicEndpoint,
-    // PrivateEndpoint,
-    IPriceTicker,
-    IOrderSnapshot,
-    OpenOrdersStream,
+    /* PRIVATE REST */
+    privateRESTRequest,
+    getPairBalances,
+    getOpenOrders,
+    getClosedOrders,
+    findClosedOrder,
 }

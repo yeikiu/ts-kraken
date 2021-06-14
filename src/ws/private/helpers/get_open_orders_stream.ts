@@ -1,4 +1,4 @@
-import { privateSubscriptionHandler } from '../private_ws_client'
+import { getPrivateSubscription } from '../private_ws_client'
 import { ReplaySubject, Subject } from 'rxjs'
 import { IOrderSnapshot } from '../../../types/order_snapshot'
 import { PrivateWS } from '../../../types/ws/private'
@@ -12,9 +12,19 @@ export type OpenOrdersStream = {
     openOrdersUnsubscribe: () => void;
 }
 
-// 
-// https://docs.kraken.com/websockets/#message-openOrders
-// 
+/**
+ * Returns a set of useful Observables/Objects around the openOrders PRIVATE-WS channel
+ *
+ * Helper method for: {@link https://docs.kraken.com/websockets/#message-openOrders | message-openOrders}
+ *
+ * @param tokenOrKeys - <OPTIONAL> { wsToken, injectedApiKeys }
+ *      - If not passed, process.env keys will be used to generate a token.
+ *      - If a wsToken is passed it'll be used directly (optimal performance).
+ *      - Finally, if injectedApiKeys are passed, a new token will be generated on-the-fly.
+ * @returns Promise<OpenOrdersStream>
+ *
+ * @beta
+ */
 export const getOpenOrdersStream = async ({ wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<OpenOrdersStream> => {
     const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
     const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
@@ -22,7 +32,7 @@ export const getOpenOrdersStream = async ({ wsToken, injectedApiKeys }: PrivateW
     const closedOrderOut$ = new Subject<IOrderSnapshot>();
 
     const closedOrdersIds = new Set<string>();
-    const openOrdersWS = await privateSubscriptionHandler({
+    const openOrdersWS = await getPrivateSubscription({
         channelName: 'openOrders',
     }, { wsToken, injectedApiKeys })
     

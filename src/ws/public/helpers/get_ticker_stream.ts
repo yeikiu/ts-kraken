@@ -1,31 +1,38 @@
 import { Ticker } from '../../../types/rest/public'
-import { publicSubscriptionHandler } from '../public_ws_client'
+import { getPublicSubscription } from '../public_ws_client'
 import { filter, map } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
-import { IPriceTicker } from '../../..'
+import { IPriceTicker } from '../../../types/price_ticker'
 
 type GetPriceTickerParams = {
     baseAsset: string;
     quoteAsset: string;
 }
 
-export type PriceTickerStream = {
+export type TickerStream = {
     priceTicker$: ReplaySubject<IPriceTicker>;
     lastPrice$: ReplaySubject<string>;
     getLastPrice: () => string;
     priceTickerUnsubscribe: () => void;
 }
 
-//
-// https://docs.kraken.com/websockets/#message-ticker
-//
-export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): PriceTickerStream => {
+/**
+ * Returns a set of useful Observables/Objects around the ticker PUBLIC-WS channel
+ *
+ * Helper method for: {@link https://docs.kraken.com/websockets/#message-ticker | message-ticker}
+ *
+ * @param { baseAsset, quoteAsset } - GetPriceTickerParams
+ * @returns TickerStream
+ *
+ * @beta
+ */
+export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): TickerStream => {
     const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
     const priceTicker$ = new ReplaySubject<IPriceTicker>(1)
     const lastPrice$ = new ReplaySubject<string>(1)
     let lastPrice: string = null
 
-    const priceTickerWS = publicSubscriptionHandler({
+    const priceTickerWS = getPublicSubscription({
         channelName: 'ticker',
         pair: [pair],
     })

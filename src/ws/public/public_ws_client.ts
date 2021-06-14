@@ -18,13 +18,19 @@ export const publicWSClient = webSocket<unknown>({
 
 export const PublicWSHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export function publicSubscriptionHandler(params: Book.Subscription): Observable<Book.Payload>
-export function publicSubscriptionHandler(params: OHLC.Subscription): Observable<OHLC.Payload>
-export function publicSubscriptionHandler(params: Spread.Subscription): Observable<Spread.Payload>
-export function publicSubscriptionHandler(params: Ticker.Subscription): Observable<Ticker.Payload>
-export function publicSubscriptionHandler(params: Trade.Subscription): Observable<Trade.Payload>
+export function getPublicSubscription(params: Book.Subscription): Observable<Book.Payload>
+export function getPublicSubscription(params: OHLC.Subscription): Observable<OHLC.Payload>
+export function getPublicSubscription(params: Spread.Subscription): Observable<Spread.Payload>
+export function getPublicSubscription(params: Ticker.Subscription): Observable<Ticker.Payload>
+export function getPublicSubscription(params: Trade.Subscription): Observable<Trade.Payload>
 
-export function publicSubscriptionHandler(params: PublicWS.Subscription): Observable<PublicWS.Payload> {
+/**
+ * Returns a rxjs-Observable connected to passed PUBLIC-WS channelName. You can (un)subscribe from this Observable just like with any rxjs's.
+ *
+ * @param params - PublicWS.Subscription - { channelName; pair; ... }
+ * @returns Observable<PublicWS.Payload>
+ */
+export function getPublicSubscription(params: PublicWS.Subscription): Observable<PublicWS.Payload> {
     return publicWSClient.multiplex(() => ({
         event: 'subscribe',
         ...params['pair'] ? { pair: params['pair'] } : {},

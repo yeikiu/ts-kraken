@@ -38,9 +38,20 @@ export const gethWsAuthToken = async (injectedApiKeys?: PrivateREST.RuntimeApiKe
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export function privateSubscriptionHandler(params: OwnTrades.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<OwnTrades.Payload>>
-export function privateSubscriptionHandler(params: OpenOrders.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<OpenOrders.Payload>>
-export async function privateSubscriptionHandler(params: PrivateWS.Subscription, { wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<Observable<PrivateWS.Payload>> {
+export function getPrivateSubscription(params: OwnTrades.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<OwnTrades.Payload>>
+export function getPrivateSubscription(params: OpenOrders.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<OpenOrders.Payload>>
+
+/**
+ * Returns a rxjs-Observable connected to passed PRIVATE-WS channelName. You can (un)subscribe from this Observable just like with any rxjs's.
+ *
+ * @param params - PrivateWS.Subscription
+ * @param tokenOrKeys - <OPTIONAL> { wsToken, injectedApiKeys }
+ *      - If not passed, process.env keys will be used to generate a token.
+ *      - If a wsToken is passed it'll be used directly (optimal performance).
+ *      - Finally, if injectedApiKeys are passed, a new token will be generated on-the-fly.
+ * @returns Observable<PrivateWS.Payload>
+ */
+export async function getPrivateSubscription(params: PrivateWS.Subscription, { wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<Observable<PrivateWS.Payload>> {
     const token = wsToken ?? await gethWsAuthToken(injectedApiKeys)
     
     return privateWSClient.multiplex(() => ({
@@ -67,12 +78,12 @@ export async function sendPrivateEvent(payload: CancelAll.SendEvent, tokenOrKeys
 export async function sendPrivateEvent(payload: CancelAllOrdersAfter.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<CancelAllOrdersAfter.EventResponse>
 
 /**
- * Send a PrivateWS event as a Promise
+ * Sends a PRIVATE-WS event as a Promise
  *
  * @param payload - PrivateWS.SendEvent
  * @param tokenOrKeys - <OPTIONAL> { wsToken, injectedApiKeys }
- *      - If not passed process.env keys will be used to generate a token.
- *      - If wsToken is passed it'll be used directly.
+ *      - If not passed, process.env keys will be used to generate a token.
+ *      - If a wsToken is passed it'll be used directly (optimal performance).
  *      - Finally, if injectedApiKeys are passed, a new token will be generated on-the-fly.
  * @returns Promise<PrivateWS.EventResponse>
  */

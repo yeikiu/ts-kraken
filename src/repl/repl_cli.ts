@@ -5,9 +5,9 @@ import repl from 'repl'
 import { publicRESTRequest } from '../rest/public/public_rest_request';
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
 import { privateRESTRequest } from '../rest/private/private_rest_request';
-import { publicSubscriptionHandler } from '../ws/public/public_ws_client';
+import { getPublicSubscription } from '../ws/public/public_ws_client';
 import { Observable, Subscription } from 'rxjs';
-import { privateSubscriptionHandler } from '../ws/private/private_ws_client';
+import { getPrivateSubscription } from '../ws/private/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
 
@@ -155,7 +155,7 @@ myRepl.defineCommand('pubSub', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PUBLIC ${channelName} stream...`)
-    const subscription = publicSubscriptionHandler({ channelName, pair, interval, depth } as any)
+    const subscription = getPublicSubscription({ channelName, pair, interval, depth } as any)
     const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
     wsSubscriptions.set(channelName, replSubscription)
   }
@@ -181,7 +181,7 @@ myRepl.defineCommand('privSub', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PRIVATE ${channelName} stream...`)
-    const subscription = await privateSubscriptionHandler({ 
+    const subscription = await getPrivateSubscription({ 
       channelName,
       ...snapshot ? { snapshot } : {},
       ...ratecounter ? { ratecounter } : {}

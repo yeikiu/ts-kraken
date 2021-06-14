@@ -1,4 +1,4 @@
-import { IPriceTicker } from '../../..'
+import { IPriceTicker } from '../../../types/price_ticker'
 import { publicRESTRequest } from '../public_rest_request'
 
 /**
@@ -7,7 +7,7 @@ import { publicRESTRequest } from '../public_rest_request'
  * Helper method for: {@link https://docs.kraken.com/rest/#operation/getTickerInformation | getTickerInformation}
  *
  * @param pair - string
- * @returns IPriceTicer
+ * @returns IPriceTicker
  *
  * @beta
  */

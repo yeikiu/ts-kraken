@@ -76,7 +76,7 @@ export async function privateRESTRequest(params: { url: 'WithdrawInfo', data: Wi
 export async function privateRESTRequest(params: { url: 'WithdrawStatus', data: WithdrawStatus.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<WithdrawStatus.Result>
 
 /**
- * PRIVATE request against REST API
+ * Request against PRIVATE-REST API
  *
  * @param params - { url: PrivateREST.Endpoint; data: PrivateREST.Request; }
  * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...

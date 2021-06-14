@@ -18,7 +18,7 @@ export async function publicRESTRequest(req: { url: 'Time' }): Promise<Time.Resu
 export async function publicRESTRequest(req: { url: 'Trades', params: Trades.Params }): Promise<Trades.Result>
 
 /**
- * PUBLIC request against REST API
+ * Request against PUBLIC-REST API
  *
  * @param params - { url: PublicREST.Endpoint; params: PublicREST.Request; }
  * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...

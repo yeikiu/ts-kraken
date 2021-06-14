@@ -4,7 +4,7 @@
 	"main": "dist/index.js",
 	"license": "CC0-1.0",
 	"bin": {
-		"kraken-repl": "dist/ts-kraken-repl/repl_cli.js"
+		"kraken-repl": "dist/repl/repl_cli.js"
 	},
 	"devDependencies": {
 		"@types/node": "11.11.0",
@@ -31,7 +31,7 @@
 	},
 	"scripts": {
 		"preinstall": "npx npm-force-resolutions",
-		"build": "rimraf dist && tsc -p .",
+		"build": "npm run lint && rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
 		"kraken-repl": "ts-node src/ts-kraken-repl/repl_cli.ts"
