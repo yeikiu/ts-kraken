@@ -15,7 +15,7 @@
   <a href="#upcoming-features">Upcoming</a>
 </p>
 
-<br /><br />
+<br />
 
 ---
 
@@ -30,7 +30,7 @@
 
 ![ts_kraken_demo](.github/ts_kraken_demo.gif)
 
-<br /><br />
+<br />
 
 ---
 
@@ -46,7 +46,7 @@
 npx ts-kraken
 ````
 
-<br /><br />
+<br />
 
 ---
 
@@ -76,7 +76,7 @@ KRAKEN_API_SECRET=yourApiSecret
 
 Check out the REPL's [demo doc](/TODO) for some cool advanced request examples 👀
 
-<br /><br />
+<br />
 
 ---
 
@@ -93,7 +93,7 @@ cd dependant/project/path && npm i ts-kraken
 
 <img src=".github/TODO.png" width="640px" alt="ts_kraken_ide" />
 
-<br /><br />
+<br />
 
 ---
 
