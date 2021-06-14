@@ -20,9 +20,11 @@
   <a href="#license">License</a>
 </p>
 
-<br />
+<br /><br />
+
 ---
-<br />
+
+<br /><br />
 
 
 ## About
@@ -33,9 +35,11 @@
 
 ![ts_kraken_demo](.github/ts_kraken_demo.gif)
 
-<br />
+<br /><br />
+
 ---
-<br />
+
+<br /><br />
 
 
 ## TLDR; Get started
@@ -47,9 +51,11 @@
 npx ts-kraken
 ````
 
-<br />
+<br /><br />
+
 ---
-<br />
+
+<br /><br />
 
 ## Installation
 ### Setup in a standalone directory and have fun with the REPL:
@@ -75,9 +81,11 @@ KRAKEN_API_SECRET=yourApiSecret
 
 Check out the REPL's [demo doc](/TODO) for some cool advanced request examples 👀
 
-<br />
+<br /><br />
+
 ---
-<br />
+
+<br /><br />
 
 
 ### Setup as a library in your TypeScript/JS project:
@@ -90,9 +98,11 @@ cd dependant/project/path && npm i ts-kraken
 
 <img src=".github/TODO.png" width="640px" alt="ts_kraken_ide" />
 
-<br />
+<br /><br />
+
 ---
-<br />
+
+<br /><br />
 
 
 ## Resources
@@ -101,9 +111,11 @@ cd dependant/project/path && npm i ts-kraken
 * [Kraken WebSockets API docs](https://docs.kraken.com/websockets/)
 * [jq Manual](https://stedolan.github.io/jq/manual)
 
-<br />
+<br /><br /><br />
+
 ---
-<br />
+
+<br /><br />
 
 
 ## Upcoming features
