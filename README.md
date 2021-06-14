@@ -5,6 +5,8 @@
   <img src=".github/ts_kraken_logo.png" width="640px" alt="ts-ts_kraken_logo" />
 </h1>
 
+<br /><br />
+
 <h4 align="center">A versatile unofficial <i>ts-lib & node-repl-cli</i> to operate against the <a href="https://kraken.com">Kraken Crypto Exchange</a></h4>
 <br />
 <p align="center">
@@ -19,7 +21,7 @@
 
 ---
 
-<br /><br />
+<br />
 
 
 ## About
@@ -34,7 +36,7 @@
 
 ---
 
-<br /><br />
+<br />
 
 
 ## TLDR; Get started
@@ -50,7 +52,7 @@ npx ts-kraken
 
 ---
 
-<br /><br />
+<br />
 
 ## Installation
 ### Setup in a standalone directory and have fun with the REPL:
@@ -80,7 +82,7 @@ Check out the REPL's [demo doc](/TODO) for some cool advanced request examples ð
 
 ---
 
-<br /><br />
+<br />
 
 
 ### Setup as a library in your TypeScript/JS project:
@@ -97,7 +99,7 @@ cd dependant/project/path && npm i ts-kraken
 
 ---
 
-<br /><br />
+<br />
 
 
 ## Resources
@@ -110,7 +112,7 @@ cd dependant/project/path && npm i ts-kraken
 
 ---
 
-<br /><br />
+<br />
 
 
 ## Upcoming features
