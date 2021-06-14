@@ -108,7 +108,7 @@ cd dependant/project/path && npm i ts-kraken
 * [Kraken WebSockets API docs](https://docs.kraken.com/websockets/)
 * [jq Manual](https://stedolan.github.io/jq/manual)
 
-<br /><br /><br />
+<br />
 
 ---
 
