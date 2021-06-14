@@ -10,8 +10,6 @@ import { Observable, Subscription } from 'rxjs';
 import { privateSubscriptionHandler } from '../ws/private/private_ws_client';
 import printKrakenHeader from './print_kraken_header'
 import { run } from 'node-jq'
-import { PrivateWS } from '../types/ws/private';
-import { PublicWS } from '../types/ws/public';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()

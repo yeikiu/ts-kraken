@@ -26,7 +26,11 @@
 		"rxjs": "^6.6.6",
 		"ws": "^7.4.4"
 	},
+	"resolutions": {
+		"normalize-url": "^6.0.1"
+	},
 	"scripts": {
+		"preinstall": "npx npm-force-resolutions",
 		"build": "rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
