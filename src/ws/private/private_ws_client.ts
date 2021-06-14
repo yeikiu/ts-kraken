@@ -1,7 +1,7 @@
 import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
-import { filter, first } from 'rxjs/operators'
+import { filter, first, timeout } from 'rxjs/operators'
 import { privateRESTRequest } from '../../rest/private/private_rest_request'
 import { OpenOrders, OwnTrades, PrivateWS } from '../../types/ws/private'
 import { PrivateREST } from '../../types/rest/private'
@@ -70,7 +70,11 @@ export async function sendPrivateEvent(payload: PrivateWS.SendEvent, { injectedA
     const { reqid: sendReqId, event: sendEvent } = payload
     console.log({ token, payload })
     const [rawResponse] = await Promise.all([
-        privateWSClient.pipe(filter(sendReqId ? ({ reqid }) => reqid === sendReqId : ({ event }) => event === `${sendEvent}Status`), first()).toPromise(),
+        privateWSClient.pipe(
+            filter(sendReqId ? ({ reqid }) => reqid === sendReqId : ({ event }) => event === `${sendEvent}Status`),
+            first(),
+            timeout(10000) // Assume something went wrong if we didn't get a WS response within 10 seconds...
+        ).toPromise(),
         privateWSClient.next({
             ...payload,
             token
