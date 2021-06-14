@@ -30,6 +30,29 @@
 
 ![ts_kraken_demo](.github/ts_kraken_demo.gif)
 
-## Installation
+## TLDR; Get started
 
+## Launch the REPL directly on your terminal with `npx`:
 
+> Quickest way to test it out! 🚀
+
+````
+npx ts-kraken
+````
+
+## Setup in a standalone directory and have fun with the REPL:
+
+> Recommended if planning to use regularly.
+
+````
+git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
+````
+
+You can create a `.env` filelike the following under project's root directory to reuse the keys:
+
+````
+KRAKEN_API_KEY=yourApiKey
+KRAKEN_API_SECRET=yourApiSecret
+````
+
+Check out the REPL's demo doc for some cool advanced request examples 👀
