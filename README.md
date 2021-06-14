@@ -23,24 +23,13 @@
 ---
 
 ## About
-
-<table>
-<tr>
-<td>
   
 > **ts-kraken** is a **highly-typed** _Typescript Library_ to operate against the **[Kraken](https://kraken.com) Crypto Exchange** [REST](https://docs.kraken.com/rest/) and [WebSocket](https://docs.kraken.com/websockets/) APIs
 
 > **ts-kraken** is also an **interactive** _node REPL-cli_ to operate via command-shell
 
 ![ts_kraken_demo](.github/ts_kraken_demo.gif)
-<p align="right">
-<sub>(Preview)</sub>
-</p>
-
-</td>
-</tr>
-</table>
 
 ## Installation
 
-# ts-kraken
+
