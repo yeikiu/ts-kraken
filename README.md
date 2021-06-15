@@ -64,24 +64,31 @@ npx ts-kraken
 <br />
 
 * **.get** PublicEndpoint _params? jqFilter? -table?_
+
 _>>_ ````.get Ticker pair=XBTUSD .XXBTZUSD|.c[0]|{BTC_PRICE:.}````
+
 _>>_ ````.get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table````
 <br />
 
 * **.post** PrivateEndpoint _params? jqFilter? -table?_
+
 _>>_ ````.post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table````
 <br />
 
 * **.pubsub** PublicChannel _params? jqFilter? -table?_
+
 _>>_ ````.pubSub ticker pair[]=XBT/USD .[1].c[0]````
+
 _>>_ ````.pubsub ticker pair[]=XBT/USD&pair[]=ETH/USD . as $base|{pair:.[3],price:$base[1].c[0]}````
 <br />
 
 * **.privsub** PrivateChannel _params? jqFilter? -table?_
+
 _>>_ ````.privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])````
 <br />
 
 * **.unsub** ChannelName
+
 _>>_ ````.unsub ohlc````
 <br />
 
