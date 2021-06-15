@@ -51,7 +51,10 @@ npx ts-kraken
 <br />
 
 ### REPL commands
+
 <table><td>
+<br />
+
 * **.help**
 <br />
 
@@ -82,8 +85,11 @@ npx ts-kraken
 * **.unsub** ChannelName
   - _>>_ ````.unsub ohlc````
 <br />
-</td></table>
+
 * **.unsuball**
+<br />
+
+</td></table>
 
 <br />
 
