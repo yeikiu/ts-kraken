@@ -52,37 +52,20 @@ npx ts-kraken
 
 ### REPL commands
 
-<table>
-  <thead>
-  <hr><td>Command</td><td>Arguments</td><td>Usage demo</td></hr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>.help</strong></td><td> - </td><td><pre>.help</pre></td>
-    </tr>
-    <tr>
-      <td><strong>.setkeys</strong></td><td> - </td><td><pre>.setkeys</pre></td>
-      </tr>
-    <tr>
-      <td><strong>.showkeys</strong></td><td> - </td><td><pre>.showkeys</pre></td>
-    </tr>
-    <tr>
-      <td><strong>.get</strong></td><td>PublicEndpoint <i>params? jqFilter?</i></td><td><pre>.get Time .rfc1123</pre></td>
-    </tr>
-    <tr>
-      <td><strong>.post</strong></td><td>PrivateEndpoint <i>params? jqFilter?</i></td><td><pre>.post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table</pre></td>
-    </tr>
-    <tr>
-      <td><strong>.pubsub</strong></td><td>PublicChannel <i>params? jqFilter?</i></td><td><pre>.pubsub ticker pair[]=XBT/USD&pair[]=ETH/USD . as $base|{pair:.[3],price:$base[1].c[0]}</pre></td>
-    </tr>
-    <tr>
-      <td><strong>.privsub</strong></td><td>PrivateChannel <i>params? jqFilter?</i></td><td><pre>.privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])</pre></td>
-    </tr>
-    <tr>
-      <td><strong>.unsuball</strong></td><td> - </td><td><pre>.unsuball</pre></td>
-    </tr>
-  </tbody>
-</table>
+* **.help**
+* **.setkeys**
+* **.showkeys**
+* **.get** PublicEndpoint _params? jqFilter?_
+  - _>>_ ````.get Time .rfc1123````
+* **.post** PrivateEndpoint _params? jqFilter?_
+  - _>>_ ````.post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table````
+* **.pubsub** PublicChannel _params? jqFilter?_
+  - _>>_ ````.pubsub ticker pair[]=XBT/USD&pair[]=ETH/USD . as $base|{pair:.[3],price:$base[1].c[0]}````
+* **.privsub** PrivateChannel _params? jqFilter?_
+  - _>>_ ````.privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])````
+* **.unsub** ChannelName
+  - _>>_ ````.unsub ohlc````
+* **.unsuball**
 
 <br />
 
