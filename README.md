@@ -53,6 +53,7 @@ npx ts-kraken
 ### REPL commands
 
 <table><td>
+<br />
 
 * **.help**
 <br />
