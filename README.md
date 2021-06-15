@@ -48,19 +48,21 @@
 npx ts-kraken
 ````
 
+<br /><br />
+
 ### REPL commands
 
-| Command       | Arguments                                 | Usage demo                                                                               |
-| ------------- | ----------------------------------------- | ---------------------------------------------------------------------------------------- |
-| **.help**     |                                           | .help                                                                                    |
-| **.setkeys**  |                                           | .setkeys                                                                                 |
-| **.showkeys** |                                           | .showkeys                                                                                |
-| **.get**      | PublicEndpoint `<params> <jqFilterExpr>`  | .get Time .rfc1123                                                                       |
-| **.post**     | PrivateEndpoint `<params> <jqFilterExpr>` | .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table                    |
-| **.pubsub**   | PublicChannel `<params> <jqFilterExpr>`   | .pubsub ticker pair[]=XBT/USD&pair[]=ETH/USD . as $base|{pair:.[3],price:$base[1].c[0]}  |
-| **.privsub**  | PrivateChannel `<params> <jqFilterExpr>`  | .privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])                              |
-| **.unsub**    | Channel                                   | .unsub ohlc                                                                              |
-| **.unsuball** |                                           | .unsuball                                                                                |
+| Command       | Arguments                              | Usage demo                                                                               |
+| ------------- | ---------------------------------------| ---------------------------------------------------------------------------------------- |
+| **.help**     |                                        | .help                                                                                    |
+| **.setkeys**  |                                        | .setkeys                                                                                 |
+| **.showkeys** |                                        | .showkeys                                                                                |
+| **.get**      | PublicEndpoint `<params> <|jqFilter>`  | .get Time .rfc1123                                                                       |
+| **.post**     | PrivateEndpoint `<params> <|jqFilter>` | .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table                    |
+| **.pubsub**   | PublicChannel `<params> <|jqFilter>`   | .pubsub ticker pair[]=XBT/USD&pair[]=ETH/USD . as $base|{pair:.[3],price:$base[1].c[0]}  |
+| **.privsub**  | PrivateChannel `<params> <|jqFilter>`  | .privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])                              |
+| **.unsub**    | Channel                                | .unsub ohlc                                                                              |
+| **.unsuball** |                                        | .unsuball                                                                                |
 
 <br />
 
