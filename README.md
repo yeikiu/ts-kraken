@@ -48,7 +48,7 @@
 npx ts-kraken
 ````
 
-<br /><br />
+<br />
 
 ### REPL commands
 
