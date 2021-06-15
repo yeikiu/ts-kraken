@@ -8,7 +8,7 @@ import { privateRESTRequest } from '../rest/private/private_rest_request';
 import { getPublicSubscription } from '../ws/public/public_ws_client';
 import { Observable, Subscription } from 'rxjs';
 import { getPrivateSubscription } from '../ws/private/private_ws_client';
-import printKrakenHeader from './print_kraken_header'
+import krakenHeader from './kraken_header'
 import { run } from 'node-jq'
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
@@ -42,7 +42,7 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:st
     }, 5000)
   })
 
-print(printKrakenHeader())
+print(krakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
 
 // Modify core methods (bit hacky, these are readonly)

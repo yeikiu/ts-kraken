@@ -6,8 +6,13 @@ export namespace OpenOrders {
         channelName: 'openOrders';
         ratecounter?: boolean;
     }
-    export type Payload = [{ [k: string]:
-    Omit<IOrderSnapshot, 'orderid'> &
-    Omit<IOrderSnapshot, 'price'> &
-    Omit<IOrderSnapshot, 'reason'> }[], 'openOrders'];
+    export type Payload = [{
+        [k: string]:
+        Omit<IOrderSnapshot, 'orderid'> &
+        Omit<IOrderSnapshot, 'price'> &
+        Omit<IOrderSnapshot, 'reason'>
+    }[],
+        'openOrders',
+        { sequence: number }
+    ];
 }
