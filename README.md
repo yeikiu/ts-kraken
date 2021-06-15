@@ -48,6 +48,20 @@
 npx ts-kraken
 ````
 
+### REPL commands
+
+| Command   | Arguments                                           | Usage demo                                                                              |
+| --------- | --------------------------------------------------- | ----------------------------------------------------------------------------------------|
+| .help     |                                                     | .help                                                                                   |
+| .setkeys  |                                                     | .setkeys                                                                                |
+| .showkeys |                                                     | .showkeys                                                                               |
+| .get      | PublicEndpoint <params>? <jqFilterExpr>? <-table>?  | .get Time .rfc1123                                                                      |
+| .post     | PrivateEndpoint <params>? <jqFilterExpr>? <-table>? | .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table                   |
+| .pubsub   | PublicChannel <params>? <jqFilterExpr>? <-table>?   | .pubsub ticker pair[]=XBT/USD&pair[]=ETH/USD . as $base|{pair:.[3],price:$base[1].c[0]} |
+| .privsub  | PrivateChannel <params>? <jqFilterExpr>? <-table>?  | .privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])                             |
+| .unsub    | Channel                                             | .unsub ohlc                                                                             |
+| .unsuball |                                                     | .unsuball                                                                               |
+
 <br />
 
 ---
@@ -63,7 +77,7 @@ npx ts-kraken
 git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
 ````
 
-You can create a `.env` filelike the following under project's root directory to reuse the keys:
+You can create a `.env` file like the following under project's root directory to reuse the keys:
 
 ````
 touch .env

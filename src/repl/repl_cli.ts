@@ -58,7 +58,7 @@ const editedCoreMethods = coreMethods.reduce((p, c) => ({
 Object.assign(myRepl.commands, editedCoreMethods)
 
 // Custom commands
-myRepl.defineCommand('setKeys', {
+myRepl.defineCommand('setkeys', {
   help: `👉 Load API key/secret (non-persistent, use a .env file to reuse persistent keys)
 `,
 
@@ -68,7 +68,7 @@ myRepl.defineCommand('setKeys', {
   })
 })
 
-myRepl.defineCommand('showKeys', {
+myRepl.defineCommand('showkeys', {
   help: `👉 Display current API key/secret in use
 ---`,
   action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
@@ -137,11 +137,11 @@ myRepl.defineCommand('post', {
   }
 })
 
-myRepl.defineCommand('pubSub', {
-  help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubSub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
+myRepl.defineCommand('pubsub', {
+  help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
-          i.e. >> .pubSub ticker pair[]=XBT/USD .[1].c[0]
-               >> .pubSub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
+          i.e. >> .pubsub ticker pair[]=XBT/USD .[1].c[0]
+               >> .pubsub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
 ---`,
 
   action: async (cmdArgs: string) => {
@@ -161,10 +161,10 @@ myRepl.defineCommand('pubSub', {
   }
 })
 
-myRepl.defineCommand('privSub', {
-  help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privSub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
+myRepl.defineCommand('privsub', {
+  help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
 
-          i.e. >> .privSub openOrders .[0]|map(. as $order|keys[0]|$order[.])
+          i.e. >> .privsub openOrders .[0]|map(. as $order|keys[0]|$order[.])
 `,
 
   action: async (cmdArgs: string) => {
@@ -206,10 +206,10 @@ myRepl.defineCommand('unsub', {
   }
 })
 
-myRepl.defineCommand('unsubAll', {
+myRepl.defineCommand('unsuball', {
   help: `👉 Closes WebSocket stream for ALL subscriptions.
 
-          i.e. >> .unsubAll
+          i.e. >> .unsuball
 `,
 
   action: async () => {
