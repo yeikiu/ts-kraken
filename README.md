@@ -52,9 +52,6 @@ npx ts-kraken
 
 ### REPL commands
 
-<table><td>
-<br />
-
 * **.help**
 <br />
 
@@ -87,9 +84,6 @@ npx ts-kraken
 <br />
 
 * **.unsuball**
-<br />
-
-</td></table>
 
 <br />
 
@@ -106,7 +100,11 @@ npx ts-kraken
 git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
 ````
 
-You can create a `.env` file like the following under project's root directory to reuse the keys:
+````
+npm run kraken-repl
+````
+
+> You can create a `.env` file like the following under project's root directory to reuse the keys:
 
 ````
 touch .env
