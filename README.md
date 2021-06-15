@@ -52,9 +52,6 @@ npx ts-kraken
 
 ### REPL commands
 
-<table><td>
-<br />
-
 * **.help**
 <br />
 
@@ -94,9 +91,6 @@ npx ts-kraken
 <br />
 
 * **.unsuball**
-
-<br />
-</td></table>
 
 <br />
 
