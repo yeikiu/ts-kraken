@@ -3,8 +3,8 @@
 
 import { IOrderType } from "./order_snapshot";
 
-type IAddOrderSide = 'buy' | 'sell';
-type IAddOrderCloseType = 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit';
+export type IAddOrderSide = 'buy' | 'sell';
+export type IAddOrderCloseType = 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit';
 
 export type IAddOrder = {
     ordertype: IOrderType;

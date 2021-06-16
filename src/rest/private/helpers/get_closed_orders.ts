@@ -56,9 +56,10 @@ export const getClosedOrders = async (params?: GetClosedOrdersParams, injectedAp
  * 
  * @beta
  */
-export const findClosedOrder = async ({ orderFilter, maxOffset }: FindClosedOrderParam, data?: GetClosedOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot> => {
+export const findClosedOrder = async ({ orderFilter, maxOffset }: FindClosedOrderParam, data?: GetClosedOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
     if (data?.ofs > maxOffset) {
-        throw new Error(`Order not found under the first ${maxOffset} results...`)
+        console.error(`Order not found within the first ${maxOffset} results...`)
+        return null
     }
 
     const closedOrders = await getClosedOrders(data)

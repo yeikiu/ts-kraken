@@ -51,8 +51,8 @@ export namespace PrivateREST {
         'WalletTransfer' | 'Withdraw' | 'WithdrawCancel' | 'WithdrawInfo' | 'WithdrawStatus';
 
     export type RuntimeApiKeys = {
-        apiKey: string;
-        apiSecret: string;
+        apiKey?: string;
+        apiSecret?: string;
     }
 
     export type Params = AddExport.Params | AddOrder.Params | 

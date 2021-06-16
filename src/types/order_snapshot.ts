@@ -5,7 +5,7 @@ export type IOrderSide = 'buy' | 'sell';
 export type IOrderType = 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
 export type IOrderStatus = 'pending' | 'open' | 'closed' | 'expired' | 'canceled';
 
-type IOrderDescription = {
+export type IOrderDescription = {
     pair: string; // asset pair (rest USDTUSD - ws USDT/USD)
     position: string; // Optional - position ID (if applicable)
     type: IOrderSide;

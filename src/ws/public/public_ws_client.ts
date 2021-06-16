@@ -16,7 +16,7 @@ export const publicWSClient = webSocket<unknown>({
     closeObserver: onPublicWSClosed
 })
 
-export const PublicWSHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
+export const WSPublicHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
 export function getPublicSubscription(params: Book.Subscription): Observable<Book.Payload>
 export function getPublicSubscription(params: OHLC.Subscription): Observable<OHLC.Payload>
