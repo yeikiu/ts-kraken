@@ -15,7 +15,8 @@ type GetClosedOrdersParams = {
 
 type FindClosedOrderParam = {
     orderFilter: (f: Partial<IOrderSnapshot>) => boolean;
-    maxOffset: number;
+    maxOffset?: number;
+    data?: GetClosedOrdersParams
 }
 
 /**
@@ -56,7 +57,7 @@ export const getClosedOrders = async (params?: GetClosedOrdersParams, injectedAp
  * 
  * @beta
  */
-export const findClosedOrder = async ({ orderFilter, maxOffset }: FindClosedOrderParam, data?: GetClosedOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
+export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {} }: FindClosedOrderParam, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
     if (data?.ofs > maxOffset) {
         console.error(`Order not found within the first ${maxOffset} results...`)
         return null
@@ -70,12 +71,10 @@ export const findClosedOrder = async ({ orderFilter, maxOffset }: FindClosedOrde
 
     // Delay exec. 1.5 seconds to avoid rate limits
     await timer(1500).pipe(take(1)).toPromise()
-    const { ofs: lastOffset = 0 } = data
+    const { ofs: lastOffset = 0 } = data ?? {}
     return findClosedOrder({
         orderFilter,
         maxOffset,
-    },
-        { ...data, ofs: closedOrders.length + lastOffset },
-        injectedApiKeys
-    )
+        data: { ...data, ofs: closedOrders.length + lastOffset },
+    }, injectedApiKeys)
 }
