@@ -79,11 +79,12 @@ export async function privateRESTRequest(params: { url: 'WithdrawStatus', data: 
  * Request against PRIVATE-REST API
  *
  * @param params - { url: PrivateREST.Endpoint; data: PrivateREST.Request; }
- * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
+ * @param { apiKey, apiSecret } - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
  * @returns Promise<PrivateREST.Result>
  */
-export async function privateRESTRequest(params: PrivateREST.Request, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<PrivateREST.Result> {
-    const apiClient = injectedApiKeys ? createPrivateRESTClient(injectedApiKeys.apiKey, injectedApiKeys.apiSecret) : defaultClient
+export async function privateRESTRequest(params: PrivateREST.Request, tokenOrKeys?: PrivateREST.RuntimeApiKeys): Promise<PrivateREST.Result> {
+    const { apiKey, apiSecret } = tokenOrKeys
+    const apiClient = (apiKey && apiSecret) ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
     const { data: { result, error: privateRESTerror }} = await apiClient.request<PrivateREST.Response>(params) || {}
     if (privateRESTerror?.length) {
         throw new Error(privateRESTerror.join(' '))

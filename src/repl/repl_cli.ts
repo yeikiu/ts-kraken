@@ -185,7 +185,7 @@ myRepl.defineCommand('privsub', {
       channelName,
       ...snapshot ? { snapshot } : {},
       ...ratecounter ? { ratecounter } : {}
-    } as any, (KRAKEN_API_KEY && KRAKEN_API_SECRET) ? { injectedApiKeys: { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET } } : {})
+    } as any, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
     const replSubscription = replSubscriptionHandler(subscription, channelName, jqFilter, asTable)
     wsSubscriptions.set(channelName, replSubscription)
   }

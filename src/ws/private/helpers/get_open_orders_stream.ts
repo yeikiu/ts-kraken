@@ -25,7 +25,7 @@ export type OpenOrdersStream = {
  *
  * @beta
  */
-export const getOpenOrdersStream = async ({ wsToken, injectedApiKeys }: PrivateWS.TokenOrKeys = {}): Promise<OpenOrdersStream> => {
+export const getOpenOrdersStream = async (tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<OpenOrdersStream> => {
     const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
     const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
     const openOrderIn$ = new Subject<IOrderSnapshot>();
@@ -34,7 +34,7 @@ export const getOpenOrdersStream = async ({ wsToken, injectedApiKeys }: PrivateW
     const closedOrdersIds = new Set<string>();
     const openOrdersWS = await getPrivateSubscription({
         channelName: 'openOrders',
-    }, { wsToken, injectedApiKeys })
+    }, tokenOrKeys)
     
     const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot, cn]) => {
         ordersSnapshot.forEach(orderSnapshot => {
