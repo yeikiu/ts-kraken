@@ -36,7 +36,7 @@ export const getOpenOrdersStream = async (tokenOrKeys?: PrivateWS.TokenOrKeys): 
         channelName: 'openOrders',
     }, tokenOrKeys)
     
-    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot, cn]) => {
+    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {
         ordersSnapshot.forEach(orderSnapshot => {
             const [orderid] = Object.keys(orderSnapshot)
             if (closedOrdersIds.has(orderid)) { 
