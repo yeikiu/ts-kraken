@@ -199,6 +199,10 @@ myRepl.defineCommand('unsub', {
 `,
 
   action: async (subscriptionName) => {
+    if (!wsSubscriptions.get(subscriptionName)) { 
+      return print(`No subscription available for ${subscriptionName} channel`)
+    }
+
     wsSubscriptions.get(subscriptionName)?.unsubscribe()
     if (wsSubscriptions.delete(subscriptionName)) {
       print(`${subscriptionName} unsubscribed!`)
