@@ -162,6 +162,15 @@ cd dependant/project/path && npm i ts-kraken
 ````typescript
 import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream } from 'ts-kraken'
 
+const apiKeys = {
+    /* 
+        Alternatively you can define your keys under a .env file
+        or simply set them into process.env as KRAKEN_API_KEY and KRAKEN_API_SECRET
+    */
+    apiKey: 'yourApiKey',
+    apiSecret: 'yourApiSecret'
+}
+
 const testTsKraken = async () => {
 
     const allTradingPairs = await publicRESTRequest({ url: 'AssetPairs' })
@@ -171,11 +180,11 @@ const testTsKraken = async () => {
     console.log({ ethTradingPairInfo })
 
     // Fetch balance from a different account injecting keys in runtime
-    const currentBalances = await privateRESTRequest({ url: 'Balance' }, { apiKey: 'otherKey', apiSecret: 'otherSecret' })
+    const currentBalances = await privateRESTRequest({ url: 'Balance' }, apiKeys)
     console.log({ currentBalances })
 
-    // Notice we are not passing keys as params here, .env ones will be used
-    const { openOrders$ } = await getOpenOrdersStream()
+    // Notice we are not passing keys as params here, process.env ones will be used
+    const { openOrders$ } = await getOpenOrdersStream(apiKeys)
     openOrders$.subscribe(openOrdersSnapshot => {
         // Track any order update
         console.log({ openOrdersSnapshot })
