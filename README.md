@@ -155,7 +155,7 @@ Check out the REPL's [demo doc](/TODO) for some cool advanced request examples ð
 cd dependant/project/path && npm i ts-kraken
 ````
 
-<img src=".github/ts_kraken_ide.png" width="640px" alt="ts_kraken_ide" />
+<img src=".github/ts_kraken_ide.gif" width="640px" alt="ts_kraken_ide" />
 
 
 ## Demo playground snippet
