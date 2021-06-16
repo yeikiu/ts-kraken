@@ -112,6 +112,7 @@ npx ts-kraken
 
 <br />
 
+
 ## Installation
 ### Setup in a standalone directory and have fun with the REPL:
 
@@ -121,10 +122,6 @@ npx ts-kraken
 git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
 ````
 
-````
-npm run kraken-repl
-````
-
 > You can create a `.env` file like the following under project's root directory to reuse the keys:
 
 ````
@@ -132,13 +129,15 @@ touch .env
 ````
 
 ````
-# .env's file content holding your api/secret
+# .env's file content holding your API key/secret
 
 KRAKEN_API_KEY=yourApiKey
 KRAKEN_API_SECRET=yourApiSecret
 ````
 
-Check out the REPL's [demo doc](/TODO) for some cool advanced request examples 👀
+````
+npm run kraken-repl
+````
 
 <br />
 
