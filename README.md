@@ -155,7 +155,39 @@ Check out the REPL's [demo doc](/TODO) for some cool advanced request examples ð
 cd dependant/project/path && npm i ts-kraken
 ````
 
-<img src=".github/TODO.png" width="640px" alt="ts_kraken_ide" />
+<img src=".github/ts_kraken_ide.png" width="640px" alt="ts_kraken_ide" />
+
+
+## Demo playground snippet
+
+````typescript
+import { config } from 'dotenv'
+config() // Load API key/secret from .env file
+import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream } from 'ts-kraken'
+
+const testTsKraken = async () => {
+
+    const allTradingPairs = await publicRESTRequest({ url: 'AssetPairs' })
+    console.log(`Total trading pairs: ${allTradingPairs}`)
+
+    const ethTradingPairInfo = await publicRESTRequest({ url: 'AssetPairs', params: { pair: 'ETHEUR' }})
+    console.log({ ethTradingPairInfo })
+
+    // Notice we are not passing keys as params here, process.env ones will be used
+    const { openOrders$ } = await getOpenOrdersStream()
+    openOrders$.subscribe(openOrdersSnapshot => {
+        // Track any order update
+        console.log({ openOrdersSnapshot })
+    })
+
+    // Fetch balance from a different account injecting keys in runtime
+    const currentBalances = await privateRESTRequest({ url: 'Balance' }, { apiKey: 'otherKey', apiSecret: 'otherSecret' })
+    console.log({ currentBalances })
+
+}
+
+testTsKraken()
+````
 
 <br />
 
