@@ -7,8 +7,8 @@ const publicRESTClient: AxiosInstance = axios.create(krakenAxiosConfig)
 publicRESTClient.defaults.baseURL = `${publicRESTClient.defaults.baseURL}/public`
 publicRESTClient.defaults.method = 'GET'
 
-export async function publicRESTRequest(req: { url: 'AssetPairs', params: AssetPairs.Params }): Promise<AssetPairs.Result>
-export async function publicRESTRequest(req: { url: 'Assets', params: Assets.Params }): Promise<Assets.Result>
+export async function publicRESTRequest(req: { url: 'AssetPairs', params?: AssetPairs.Params }): Promise<AssetPairs.Result>
+export async function publicRESTRequest(req: { url: 'Assets', params?: Assets.Params }): Promise<Assets.Result>
 export async function publicRESTRequest(req: { url: 'Depth', params: Depth.Params }): Promise<Depth.Result>
 export async function publicRESTRequest(req: { url: 'OHLC', params: OHLC.Params }): Promise<OHLC.Result>
 export async function publicRESTRequest(req: { url: 'Spread', params: Spread.Params }): Promise<Spread.Result>
