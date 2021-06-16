@@ -79,8 +79,3 @@ export const findClosedOrder = async ({ orderFilter, maxOffset }: FindClosedOrde
         injectedApiKeys
     )
 }
-
-findClosedOrder({
-    orderFilter: (({ userref }) => userref === 3),
-    maxOffset: 1000
-}).then(three => console.log({ three }))
