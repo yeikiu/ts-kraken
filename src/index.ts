@@ -1,3 +1,5 @@
+import { config } from 'dotenv'
+config()
 import { getClosedOrders, findClosedOrder } from './rest/private/helpers/get_closed_orders';
 import { getOpenOrders } from './rest/private/helpers/get_open_orders';
 import { getPairBalances } from './rest/private/helpers/get_pair_balances';
