@@ -1,7 +1,28 @@
 {
 	"name": "ts-kraken",
 	"version": "2.0.0",
+	"description": "A versatile unofficial ts-lib & node-repl-cli to operate against the Kraken Crypto Exchange",
+	"keywords": [
+		"kraken",
+		"api",
+		"rest",
+		"ws",
+		"ts",
+		"typescript",
+		"repl",
+		"cli"
+	],
+	"author": "JQ",
+	"contributors": [],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/yeikiu/ts-kraken.git"
+	},
+	"bugs": {
+		"url": "https://github.com/yeikiu/ts-kraken/issues"
+	},
 	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
 	"license": "CC0-1.0",
 	"bin": {
 		"kraken-repl": "dist/repl/repl_cli.js"
