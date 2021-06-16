@@ -160,8 +160,6 @@ cd dependant/project/path && npm i ts-kraken
 ## Demo playground snippet
 
 ````typescript
-import { config } from 'dotenv'
-config() // Load API key/secret from .env file
 import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream } from 'ts-kraken'
 
 const testTsKraken = async () => {
@@ -172,17 +170,16 @@ const testTsKraken = async () => {
     const ethTradingPairInfo = await publicRESTRequest({ url: 'AssetPairs', params: { pair: 'ETHEUR' }})
     console.log({ ethTradingPairInfo })
 
-    // Notice we are not passing keys as params here, process.env ones will be used
+    // Fetch balance from a different account injecting keys in runtime
+    const currentBalances = await privateRESTRequest({ url: 'Balance' }, { apiKey: 'otherKey', apiSecret: 'otherSecret' })
+    console.log({ currentBalances })
+
+    // Notice we are not passing keys as params here, .env ones will be used
     const { openOrders$ } = await getOpenOrdersStream()
     openOrders$.subscribe(openOrdersSnapshot => {
         // Track any order update
         console.log({ openOrdersSnapshot })
     })
-
-    // Fetch balance from a different account injecting keys in runtime
-    const currentBalances = await privateRESTRequest({ url: 'Balance' }, { apiKey: 'otherKey', apiSecret: 'otherSecret' })
-    console.log({ currentBalances })
-
 }
 
 testTsKraken()
