@@ -83,7 +83,7 @@ export async function privateRESTRequest(params: { url: 'WithdrawStatus', data: 
  * @returns Promise<PrivateREST.Result>
  */
 export async function privateRESTRequest(params: PrivateREST.Request, tokenOrKeys?: PrivateREST.RuntimeApiKeys): Promise<PrivateREST.Result> {
-    const { apiKey, apiSecret } = tokenOrKeys
+    const { apiKey, apiSecret } = tokenOrKeys ?? {}
     const apiClient = (apiKey && apiSecret) ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
     const { data: { result, error: privateRESTerror }} = await apiClient.request<PrivateREST.Response>(params) || {}
     if (privateRESTerror?.length) {
