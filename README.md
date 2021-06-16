@@ -212,6 +212,7 @@ testTsKraken()
 
 - Option to record all requests and incoming streams to json files
 - Wrapper-REPL-Command prompting user for request params (with pre-flight validations) for each endpoint/subscription
+- Optional flag to save any repl-command output to a file
 
 <br />
 
