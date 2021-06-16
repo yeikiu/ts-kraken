@@ -36,7 +36,7 @@ export const getClosedOrders = async (params?: GetClosedOrdersParams, injectedAp
         ...closed[orderid],
         orderid, // injected for improved response usability
         avg_price: closed[orderid].price, // injected for consistency with WS openOrders payload
-        cancel_reason: open[orderid].reason, // same as above
+        cancel_reason: closed[orderid].reason, // same as above
     }) as IOrderSnapshot)
 }
 
@@ -79,3 +79,8 @@ export const findClosedOrder = async ({ orderFilter, maxOffset }: FindClosedOrde
         injectedApiKeys
     )
 }
+
+findClosedOrder({
+    orderFilter: (({ userref }) => userref === 3),
+    maxOffset: 1000
+}).then(three => console.log({ three }))
