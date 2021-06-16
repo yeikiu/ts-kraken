@@ -4,12 +4,15 @@
 
 
 - ### v2.0.0
-    - #### added:
+
+    - #### feature:
         - Types for all API endpoints and WS events
+
     - #### refactor:
         - Project internal structure/naming
 
 
 - ### v1.0.0
-    - #### feat:
+
+    - #### feature:
         - MVP version covering API, WS and a repl to interact
