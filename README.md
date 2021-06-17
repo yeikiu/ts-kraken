@@ -174,7 +174,7 @@ const apiKeys = {
 const testTsKraken = async () => {
 
     const allTradingPairs = await publicRESTRequest({ url: 'AssetPairs' })
-    console.log(`Total trading pairs: ${allTradingPairs}`)
+    console.log(`Total trading pairs: ${Object.keys(allTradingPairs).length}`)
 
     const ethTradingPairInfo = await publicRESTRequest({ url: 'AssetPairs', params: { pair: 'ETHEUR' }})
     console.log({ ethTradingPairInfo })
