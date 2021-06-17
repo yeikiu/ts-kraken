@@ -183,7 +183,7 @@ const testTsKraken = async () => {
     const currentBalances = await privateRESTRequest({ url: 'Balance' }, apiKeys)
     console.log({ currentBalances })
 
-    // Notice we are not passing `apiKeys` as 2nd param here, process.env ones will be used by default
+    // Notice we are not passing an `apiKeys` param in the next private method, process.env ones will be used by default
     const { openOrders$ } = await getOpenOrdersStream()
     openOrders$.subscribe(openOrdersSnapshot => {
         // Output all open orders any time an order status updates
