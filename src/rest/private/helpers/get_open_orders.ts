@@ -1,6 +1,6 @@
 import { privateRESTRequest } from '../../..'
 
-import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../..'
+import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../../types'
 
 /**
  * Returns a nice array of current open orders

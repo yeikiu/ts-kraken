@@ -5,7 +5,7 @@ import { filter, first, timeout } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { gethWsAuthToken } from '../..'
 
-import type { PrivateWS } from '../..'
+import type { PrivateWS } from '../../types'
 
 export const onPrivateWSOpened = new Subject()
 export const onPrivateWSClosed = new Subject()

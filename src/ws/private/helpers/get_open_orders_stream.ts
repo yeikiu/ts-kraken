@@ -1,7 +1,7 @@
 import { getPrivateSubscription } from '../private_ws_client'
 import { ReplaySubject, Subject } from 'rxjs'
 
-import type { IOrderSnapshot, PrivateWS } from '../../..'
+import type { IOrderSnapshot, PrivateWS } from '../../../types'
 
 /**
  * Returns a set of useful Observables/Objects around the openOrders PRIVATE-WS channel

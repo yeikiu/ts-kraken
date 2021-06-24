@@ -3,7 +3,7 @@ import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, apiVersion } from './../axios_config'
 import { stringify } from 'qs'
 
-import type { RuntimeApiKeys, PrivateREST } from '../..'
+import type { RuntimeApiKeys, PrivateREST } from '../../types'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)

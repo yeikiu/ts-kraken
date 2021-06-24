@@ -2,7 +2,7 @@ import { timer } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { privateRESTRequest } from '../../..'
 
-import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../..'
+import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../../types'
 
 /**
  * Returns a nice array of latest closed orders

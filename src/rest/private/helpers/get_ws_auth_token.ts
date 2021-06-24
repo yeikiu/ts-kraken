@@ -1,6 +1,6 @@
 import { privateRESTRequest } from '../../..'
 
-import type { RuntimeApiKeys } from '../../..'
+import type { RuntimeApiKeys } from '../../../types'
 
 /**
  * Returns a valid token to use in our WS subscriptions and private requests

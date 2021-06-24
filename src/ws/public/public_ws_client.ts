@@ -4,7 +4,7 @@ import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 
-import type { PublicWS } from '../..'
+import type { PublicWS } from '../../types'
 
 export const onPublicWSOpened = new Subject()
 export const onPublicWSClosed = new Subject()

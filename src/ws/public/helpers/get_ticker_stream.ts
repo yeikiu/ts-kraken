@@ -2,7 +2,7 @@ import { getPublicSubscription } from '../public_ws_client'
 import { filter, } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 
-import type { IWSPriceTicker, PublicWS } from '../../..'
+import type { IWSPriceTicker, PublicWS } from '../../../types'
 
 type GetPriceTickerParams = {
     baseAsset: string;

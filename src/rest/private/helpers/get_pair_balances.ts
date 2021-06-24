@@ -1,6 +1,6 @@
 import { privateRESTRequest } from '../../..'
 
-import type { RuntimeApiKeys } from '../../..'
+import type { RuntimeApiKeys } from '../../../types'
 
 /**
  * Returns an array of prices for two assets in the same order the are passed

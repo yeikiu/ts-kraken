@@ -1,6 +1,6 @@
 import { publicRESTRequest } from '../public_rest_request'
 
-import type { IRESTPriceTicker } from '../../../'
+import type { IRESTPriceTicker } from '../../../types'
 
 /**
  * Returns a nice pair ticker 
