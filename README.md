@@ -42,7 +42,7 @@
 ## TLDR; Get started
 ## Launch the REPL directly on your terminal with `npx`:
 
-> Quickest way to test it out! 🚀 - _Unreleased,_ coming soon!
+> Quickest way to test it out! 🚀
 
 ````
 npx ts-kraken
