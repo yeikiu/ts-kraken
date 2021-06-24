@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "3.0.0",
+	"version": "3.0.1",
 	"description": "A versatile unofficial ts-lib & node-repl-cli to operate against the Kraken Crypto Exchange",
 	"keywords": [
 		"kraken",
@@ -51,10 +51,10 @@
 		"normalize-url": "^6.0.1"
 	},
 	"scripts": {
-		"preinstall": "npx npm-force-resolutions",
 		"build": "npm run lint && rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
-		"kraken-repl": "ts-node src/repl/repl_cli.ts"
+		"kraken-repl": "ts-node src/repl/repl_cli.ts",
+		"fix:audit": "npx npm-force-resolutions && npm i && npm audit"
 	}
 }
