@@ -1,20 +1,18 @@
-import { IAddOrder } from '../../../add_order';
-import { RESTResponse } from '../../rest_response'
+import type { IAddOrder } from '../../../shared/add_order';
+import type { RESTResponse } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/addOrder */
 
-export namespace AddOrder {
-    export type Params = {
-        userref?: number;
-    } & IAddOrder;
+export type Params = {
+    userref?: number;
+} & IAddOrder;
 
-    export type Response = RESTResponse<Result>
+export type Response = RESTResponse<Result>
 
-    export type Result = {
-        txid: string[];
-        descr: {
-            order: string;
-            close: string;
-        };
-    }
+export type Result = {
+    txid: string[];
+    descr: {
+        order: string;
+        close: string;
+    };
 }

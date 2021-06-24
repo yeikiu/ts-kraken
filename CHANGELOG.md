@@ -3,6 +3,12 @@
 > All major changes will be added to this file top-to-bottom
 
 
+- ### v3.0.0
+
+    - #### refactor:
+        - Use only modules instead of namespaces
+
+
 - ### v2.0.0
 
     - #### feature:

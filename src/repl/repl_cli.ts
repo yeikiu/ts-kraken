@@ -1,15 +1,13 @@
 #!/usr/bin/env node
 import { config } from 'dotenv'
 config()
+
 import repl from 'repl'
-import { publicRESTRequest } from '../rest/public/public_rest_request';
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
-import { privateRESTRequest } from '../rest/private/private_rest_request';
-import { getPublicSubscription } from '../ws/public/public_ws_client';
-import { Observable, Subscription } from 'rxjs';
-import { getPrivateSubscription } from '../ws/private/private_ws_client';
+import { Observable, Subscription } from 'rxjs'
 import krakenHeader from './kraken_header'
 import { run } from 'node-jq'
+import { getPublicSubscription, getPrivateSubscription, publicRESTRequest, privateRESTRequest } from '..'
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()

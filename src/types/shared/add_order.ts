@@ -1,7 +1,7 @@
 // WS: https://docs.kraken.com/websockets/#message-addOrder
 // REST API: https://docs.kraken.com/rest/#operation/addOrder
 
-import { IOrderType } from "./order_snapshot";
+import type { IOrderType } from "./order_snapshot";
 
 export type IAddOrderSide = 'buy' | 'sell';
 export type IAddOrderCloseType = 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit';

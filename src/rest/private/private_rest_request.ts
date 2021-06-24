@@ -2,29 +2,19 @@ import { getMessageSignature } from './message_signature'
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, apiVersion } from './../axios_config'
 import { stringify } from 'qs'
-import { Balance, ClosedOrders, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, PrivateREST, QueryLedgers, QueryOrders, QueryTrades, TradeBalance, TradesHistory, TradeVolume, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from '../../types/rest/private'
-import { RemoveExport } from '../../types/rest/private/endpoints/RemoveExport'
-import { RetrieveExport } from '../../types/rest/private/endpoints/RetrieveExport'
-import { AddExport } from '../../types/rest/private/endpoints/AddExport'
-import { AddOrder } from '../../types/rest/private/endpoints/AddOrder'
-import { CancelAll } from '../../types/rest/private/endpoints/CancelAll'
-import { CancelAllOrdersAfter } from '../../types/rest/private/endpoints/CancelAllOrdersAfter'
-import { CancelOrder } from '../../types/rest/private/endpoints/CancelOrder'
-import { DepositAddresses } from '../../types/rest/private/endpoints/DepositAddresses'
-import { DepositStatus } from '../../types/rest/private/endpoints/DepositStatus'
-import { DepositMethods } from '../../types/rest/private/endpoints/DepositMethods'
-import { ExportStatus } from '../../types/rest/private/endpoints/ExportStatus'
+
+import type { RuntimeApiKeys, PrivateREST } from '../..'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
     privateApiClient.defaults.baseURL = `${privateApiClient.defaults.baseURL}/private`
     privateApiClient.defaults.headers['API-Key'] = apikey
     privateApiClient.defaults.method = 'POST'
-    
+
     privateApiClient.interceptors.request.use((config) => {
         const { url } = config
         const nonce = new Date().getTime() * 1000
-        
+
         const payload = {
             ...config.data,
             nonce
@@ -45,50 +35,50 @@ const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret 
 }
 
 const defaultClient = createPrivateRESTClient()
-export async function privateRESTRequest(params: { url: 'AddExport', data: AddExport.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<AddExport.Result>
-export async function privateRESTRequest(params: { url: 'AddOrder', data: AddOrder.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<AddOrder.Result>
-export async function privateRESTRequest(params: { url: 'Balance' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Balance.Result>
-export async function privateRESTRequest(params: { url: 'CancelAll' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<CancelAll.Result>
-export async function privateRESTRequest(params: { url: 'CancelAllOrdersAfter', data: CancelAllOrdersAfter.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<CancelAllOrdersAfter.Result>
-export async function privateRESTRequest(params: { url: 'CancelOrder', data: CancelOrder.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<CancelOrder.Result>
-export async function privateRESTRequest(params: { url: 'ClosedOrders', data: ClosedOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<ClosedOrders.Result>
-export async function privateRESTRequest(params: { url: 'DepositAddresses', data: DepositAddresses.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<DepositAddresses.Result>
-export async function privateRESTRequest(params: { url: 'DepositMethods', data: DepositMethods.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<DepositMethods.Result>
-export async function privateRESTRequest(params: { url: 'DepositStatus', data: DepositStatus.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<DepositStatus.Result>
-export async function privateRESTRequest(params: { url: 'ExportStatus', data: ExportStatus.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<ExportStatus.Result>
-export async function privateRESTRequest(params: { url: 'GetWebSocketsToken' }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<GetWebSocketsToken.Result>
-export async function privateRESTRequest(params: { url: 'Ledgers', data?: Ledgers.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Ledgers.Result>
-export async function privateRESTRequest(params: { url: 'OpenOrders', data?: OpenOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenOrders.Result>
-export async function privateRESTRequest(params: { url: 'OpenPositions', data?: OpenPositions.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<OpenPositions.Result>
-export async function privateRESTRequest(params: { url: 'QueryLedgers', data?: QueryLedgers.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<QueryLedgers.Result>
-export async function privateRESTRequest(params: { url: 'QueryOrders', data?: QueryOrders.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<QueryOrders.Result>
-export async function privateRESTRequest(params: { url: 'QueryTrades', data?: QueryTrades.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<QueryTrades.Result>
-export async function privateRESTRequest(params: { url: 'RemoveExport', data: RemoveExport.DeleteParams }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<RemoveExport.DeleteResult>
-export async function privateRESTRequest(params: { url: 'RemoveExport', data: RemoveExport.CancelParams }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<RemoveExport.CancelResult>
-export async function privateRESTRequest(params: { url: 'RetrieveExport', data: RetrieveExport.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<RetrieveExport.Result>
-export async function privateRESTRequest(params: { url: 'TradeBalance', data: TradeBalance.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<TradeBalance.Result>
-export async function privateRESTRequest(params: { url: 'TradesHistory', data: TradesHistory.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<TradesHistory.Result>
-export async function privateRESTRequest(params: { url: 'TradeVolume', data: TradeVolume.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<TradeVolume.Result>
-export async function privateRESTRequest(params: { url: 'WalletTransfer', data: WalletTransfer.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<WalletTransfer.Result>
-export async function privateRESTRequest(params: { url: 'Withdraw', data: Withdraw.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<Withdraw.Result>
-export async function privateRESTRequest(params: { url: 'WithdrawCancel', data: WithdrawCancel.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<WithdrawCancel.Result>
-export async function privateRESTRequest(params: { url: 'WithdrawInfo', data: WithdrawInfo.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<WithdrawInfo.Result>
-export async function privateRESTRequest(params: { url: 'WithdrawStatus', data: WithdrawStatus.Params }, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<WithdrawStatus.Result>
+export async function privateRESTRequest(params: { url: 'AddExport', data: PrivateREST.Endpoints.AddExport.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.AddExport.Result>
+export async function privateRESTRequest(params: { url: 'AddOrder', data: PrivateREST.Endpoints.AddOrder.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.AddOrder.Result>
+export async function privateRESTRequest(params: { url: 'Balance' }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.Balance.Result>
+export async function privateRESTRequest(params: { url: 'CancelAll' }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.CancelAll.Result>
+export async function privateRESTRequest(params: { url: 'CancelAllOrdersAfter', data: PrivateREST.Endpoints.CancelAllOrdersAfter.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.CancelAllOrdersAfter.Result>
+export async function privateRESTRequest(params: { url: 'CancelOrder', data: PrivateREST.Endpoints.CancelOrder.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.CancelOrder.Result>
+export async function privateRESTRequest(params: { url: 'ClosedOrders', data: PrivateREST.Endpoints.ClosedOrders.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.ClosedOrders.Result>
+export async function privateRESTRequest(params: { url: 'DepositAddresses', data: PrivateREST.Endpoints.DepositAddresses.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.DepositAddresses.Result>
+export async function privateRESTRequest(params: { url: 'DepositMethods', data: PrivateREST.Endpoints.DepositMethods.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.DepositMethods.Result>
+export async function privateRESTRequest(params: { url: 'DepositStatus', data: PrivateREST.Endpoints.DepositStatus.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.DepositStatus.Result>
+export async function privateRESTRequest(params: { url: 'ExportStatus', data: PrivateREST.Endpoints.ExportStatus.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.ExportStatus.Result>
+export async function privateRESTRequest(params: { url: 'GetWebSocketsToken' }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.GetWebSocketsToken.Result>
+export async function privateRESTRequest(params: { url: 'Ledgers', data?: PrivateREST.Endpoints.Ledgers.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.Ledgers.Result>
+export async function privateRESTRequest(params: { url: 'OpenOrders', data?: PrivateREST.Endpoints.OpenOrders.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.OpenOrders.Result>
+export async function privateRESTRequest(params: { url: 'OpenPositions', data?: PrivateREST.Endpoints.OpenPositions.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.OpenPositions.Result>
+export async function privateRESTRequest(params: { url: 'QueryLedgers', data?: PrivateREST.Endpoints.QueryLedgers.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.QueryLedgers.Result>
+export async function privateRESTRequest(params: { url: 'QueryOrders', data?: PrivateREST.Endpoints.QueryOrders.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.QueryOrders.Result>
+export async function privateRESTRequest(params: { url: 'QueryTrades', data?: PrivateREST.Endpoints.QueryTrades.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.QueryTrades.Result>
+export async function privateRESTRequest(params: { url: 'RemoveExport', data: PrivateREST.Endpoints.RemoveExport.DeleteParams }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.RemoveExport.DeleteResult>
+export async function privateRESTRequest(params: { url: 'RemoveExport', data: PrivateREST.Endpoints.RemoveExport.CancelParams }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.RemoveExport.CancelResult>
+export async function privateRESTRequest(params: { url: 'RetrieveExport', data: PrivateREST.Endpoints.RetrieveExport.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.RetrieveExport.Result>
+export async function privateRESTRequest(params: { url: 'TradeBalance', data: PrivateREST.Endpoints.TradeBalance.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.TradeBalance.Result>
+export async function privateRESTRequest(params: { url: 'TradesHistory', data: PrivateREST.Endpoints.TradesHistory.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.TradesHistory.Result>
+export async function privateRESTRequest(params: { url: 'TradeVolume', data: PrivateREST.Endpoints.TradeVolume.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.TradeVolume.Result>
+export async function privateRESTRequest(params: { url: 'WalletTransfer', data: PrivateREST.Endpoints.WalletTransfer.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.WalletTransfer.Result>
+export async function privateRESTRequest(params: { url: 'Withdraw', data: PrivateREST.Endpoints.Withdraw.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.Withdraw.Result>
+export async function privateRESTRequest(params: { url: 'WithdrawCancel', data: PrivateREST.Endpoints.WithdrawCancel.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.WithdrawCancel.Result>
+export async function privateRESTRequest(params: { url: 'WithdrawInfo', data: PrivateREST.Endpoints.WithdrawInfo.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.WithdrawInfo.Result>
+export async function privateRESTRequest(params: { url: 'WithdrawStatus', data: PrivateREST.Endpoints.WithdrawStatus.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.WithdrawStatus.Result>
 
 /**
  * Request against PRIVATE-REST API
  *
- * @param params - { url: PrivateREST.Endpoint; data: PrivateREST.Request; }
+ * @param params - { url: Endpoint; data: Request; }
  * @param { apiKey, apiSecret } - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
- * @returns Promise<PrivateREST.Result>
+ * @returns Promise<Result>
  */
-export async function privateRESTRequest(params: PrivateREST.Request, tokenOrKeys?: PrivateREST.RuntimeApiKeys): Promise<PrivateREST.Result> {
+export async function privateRESTRequest(params: PrivateREST.Request, tokenOrKeys?: RuntimeApiKeys): Promise<PrivateREST.Result> {
     const { apiKey, apiSecret } = tokenOrKeys ?? {}
     const apiClient = (apiKey && apiSecret) ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
-    const { data: { result, error: privateRESTerror }} = await apiClient.request<PrivateREST.Response>(params) || {}
+    const { data: { result, error: privateRESTerror } } = await apiClient.request<PrivateREST.Response>(params) || {}
     if (privateRESTerror?.length) {
         throw new Error(privateRESTerror.join(' '))
     }
-    
+
     return result
 }

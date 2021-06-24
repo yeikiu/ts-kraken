@@ -1,10 +1,8 @@
-import { RESTResponse } from '../../rest_response'
+import type { RESTResponse } from '../../responses_rest'
 
-export namespace Time {
-    export type Response = RESTResponse<Result>
+export type Response = RESTResponse<Result>
 
-    export type Result = {
-        unixtime: number;
-        rfc1123: string;
-    }
+export type Result = {
+    unixtime: number;
+    rfc1123: string;
 }

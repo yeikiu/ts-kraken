@@ -1,11 +1,9 @@
-import { RESTResponse } from '../../rest_response'
+import type { RESTResponse } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/cancelAllOrders */
 
-export namespace CancelAll {
-    export type Response = RESTResponse<Result>
+export type Response = RESTResponse<Result>
 
-    export type Result = {
-        count: number;
-    }
+export type Result = {
+    count: number;
 }

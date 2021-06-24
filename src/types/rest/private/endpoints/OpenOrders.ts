@@ -1,16 +1,14 @@
-import { RESTResponse, RESTOrdersSnapshot } from '../../rest_response'
+import type { RESTResponse, RESTOrdersSnapshot } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getOpenOrders */
 
-export namespace OpenOrders {
-    export type Params = {
-        trades?: boolean;
-        userref?: number;
-    }
-    
-    export type Response = RESTResponse<Result>
+export type Params = {
+    trades?: boolean;
+    userref?: number;
+}
 
-    export type Result = {
-        open: RESTOrdersSnapshot
-    }
+export type Response = RESTResponse<Result>
+
+export type Result = {
+    open: RESTOrdersSnapshot
 }

@@ -1,21 +1,21 @@
 import axios, { AxiosInstance } from 'axios'
-import { Assets, PublicREST, AssetPairs, Depth, Spread, SystemStatus, Ticker, Time, OHLC } from '../../types/rest/public'
-import { Trades } from '../../types/rest/public/endpoints/Trades'
 import { krakenAxiosConfig } from '../axios_config'
+
+import type { PublicREST } from '../..'
 
 const publicRESTClient: AxiosInstance = axios.create(krakenAxiosConfig)
 publicRESTClient.defaults.baseURL = `${publicRESTClient.defaults.baseURL}/public`
 publicRESTClient.defaults.method = 'GET'
 
-export async function publicRESTRequest(req: { url: 'AssetPairs', params?: AssetPairs.Params }): Promise<AssetPairs.Result>
-export async function publicRESTRequest(req: { url: 'Assets', params?: Assets.Params }): Promise<Assets.Result>
-export async function publicRESTRequest(req: { url: 'Depth', params: Depth.Params }): Promise<Depth.Result>
-export async function publicRESTRequest(req: { url: 'OHLC', params: OHLC.Params }): Promise<OHLC.Result>
-export async function publicRESTRequest(req: { url: 'Spread', params: Spread.Params }): Promise<Spread.Result>
-export async function publicRESTRequest(req: { url: 'SystemStatus' }): Promise<SystemStatus.Result>
-export async function publicRESTRequest(req: { url: 'Ticker', params: Ticker.Params }): Promise<Ticker.Result>
-export async function publicRESTRequest(req: { url: 'Time' }): Promise<Time.Result>
-export async function publicRESTRequest(req: { url: 'Trades', params: Trades.Params }): Promise<Trades.Result>
+export async function publicRESTRequest(req: { url: 'AssetPairs', params?: PublicREST.Endpoints.AssetPairs.Params }): Promise<PublicREST.Endpoints.AssetPairs.Result>
+export async function publicRESTRequest(req: { url: 'Assets', params?: PublicREST.Endpoints.Assets.Params }): Promise<PublicREST.Endpoints.Assets.Result>
+export async function publicRESTRequest(req: { url: 'Depth', params: PublicREST.Endpoints.Depth.Params }): Promise<PublicREST.Endpoints.Depth.Result>
+export async function publicRESTRequest(req: { url: 'OHLC', params: PublicREST.Endpoints.OHLC.Params }): Promise<PublicREST.Endpoints.OHLC.Result>
+export async function publicRESTRequest(req: { url: 'Spread', params: PublicREST.Endpoints.Spread.Params }): Promise<PublicREST.Endpoints.Spread.Result>
+export async function publicRESTRequest(req: { url: 'SystemStatus' }): Promise<PublicREST.Endpoints.SystemStatus.Result>
+export async function publicRESTRequest(req: { url: 'Ticker', params: PublicREST.Endpoints.Ticker.Params }): Promise<PublicREST.Endpoints.Ticker.Result>
+export async function publicRESTRequest(req: { url: 'Time' }): Promise<PublicREST.Endpoints.Time.Result>
+export async function publicRESTRequest(req: { url: 'Trades', params: PublicREST.Endpoints.Trades.Params }): Promise<PublicREST.Endpoints.Trades.Result>
 
 /**
  * Request against PUBLIC-REST API

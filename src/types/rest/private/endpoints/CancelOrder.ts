@@ -1,16 +1,14 @@
-import { RESTResponse } from '../../rest_response'
+import type { RESTResponse } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/cancelOrder */
 
-export namespace CancelOrder {
-    export type Params = {
-        txid: string | number;
-    }
+export type Params = {
+    txid: string | number;
+}
 
-    export type Response = RESTResponse<Result>
+export type Response = RESTResponse<Result>
 
-    export type Result = {
-        count: number;
-        pending?: boolean;
-    }
+export type Result = {
+    count: number;
+    pending?: boolean;
 }

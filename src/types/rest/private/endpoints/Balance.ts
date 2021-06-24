@@ -1,11 +1,9 @@
-import { RESTResponse } from '../../rest_response'
+import type { RESTResponse } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getAccountBalance */
 
-export namespace Balance {
-    export type Response = RESTResponse<Result>
+export type Response = RESTResponse<Result>
 
-    export type Result = {
-        [asset: string]: string;
-    }
+export type Result = {
+    [asset: string]: string;
 }

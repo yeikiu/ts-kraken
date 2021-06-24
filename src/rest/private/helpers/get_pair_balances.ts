@@ -1,5 +1,6 @@
-import { PrivateREST } from '../../../types/rest/private'
-import { privateRESTRequest } from '../private_rest_request'
+import { privateRESTRequest } from '../../..'
+
+import type { RuntimeApiKeys } from '../../..'
 
 /**
  * Returns an array of prices for two assets in the same order the are passed
@@ -10,7 +11,7 @@ import { privateRESTRequest } from '../private_rest_request'
  *
  * @beta
  */
-export const getPairBalances = async ([base, quote]: string[], injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<string[]> => {
+export const getPairBalances = async ([base, quote]: string[], injectedApiKeys?: RuntimeApiKeys): Promise<string[]> => {
     let rawBalances = await privateRESTRequest({ url: 'Balance' }, injectedApiKeys)
     rawBalances = {
         ...rawBalances,

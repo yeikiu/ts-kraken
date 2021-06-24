@@ -1,16 +1,7 @@
 import { getPrivateSubscription } from '../private_ws_client'
 import { ReplaySubject, Subject } from 'rxjs'
-import { IOrderSnapshot } from '../../../types/order_snapshot'
-import { PrivateWS } from '../../../types/ws/private'
 
-export type OpenOrdersStream = {
-    openOrders$: ReplaySubject<IOrderSnapshot[]>;
-    currentOpenOrdersMap: Map<string, IOrderSnapshot>;
-    openOrderIn$: Subject<IOrderSnapshot>;
-    closedOrderOut$: Subject<IOrderSnapshot>;
-    closedOrdersIds: Set<string>;
-    openOrdersUnsubscribe: () => void;
-}
+import type { IOrderSnapshot, PrivateWS } from '../../..'
 
 /**
  * Returns a set of useful Observables/Objects around the openOrders PRIVATE-WS channel
@@ -25,7 +16,7 @@ export type OpenOrdersStream = {
  *
  * @beta
  */
-export const getOpenOrdersStream = async (tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<OpenOrdersStream> => {
+export const getOpenOrdersStream = async (tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.Helpers.OpenOrdersStream> => {
     const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
     const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
     const openOrderIn$ = new Subject<IOrderSnapshot>();

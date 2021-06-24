@@ -2,8 +2,9 @@ import WebSocketCtor from 'ws'
 import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter } from 'rxjs/operators'
-import { Book, OHLC, PublicWS, Spread, Ticker, Trade } from '../../types/ws/public'
 import { Observable } from 'rxjs'
+
+import type { PublicWS } from '../..'
 
 export const onPublicWSOpened = new Subject()
 export const onPublicWSClosed = new Subject()
@@ -18,11 +19,11 @@ export const publicWSClient = webSocket<unknown>({
 
 export const WSPublicHeartbeat$ = publicWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export function getPublicSubscription(params: Book.Subscription): Observable<Book.Payload>
-export function getPublicSubscription(params: OHLC.Subscription): Observable<OHLC.Payload>
-export function getPublicSubscription(params: Spread.Subscription): Observable<Spread.Payload>
-export function getPublicSubscription(params: Ticker.Subscription): Observable<Ticker.Payload>
-export function getPublicSubscription(params: Trade.Subscription): Observable<Trade.Payload>
+export function getPublicSubscription(params: PublicWS.Channels.book.Subscription): Observable<PublicWS.Channels.book.Payload>
+export function getPublicSubscription(params: PublicWS.Channels.ohlc.Subscription): Observable<PublicWS.Channels.ohlc.Payload>
+export function getPublicSubscription(params: PublicWS.Channels.spread.Subscription): Observable<PublicWS.Channels.spread.Payload>
+export function getPublicSubscription(params: PublicWS.Channels.ticker.Subscription): Observable<PublicWS.Channels.ticker.Payload>
+export function getPublicSubscription(params: PublicWS.Channels.trade.Subscription): Observable<PublicWS.Channels.trade.Payload>
 
 /**
  * Returns a rxjs-Observable connected to passed PUBLIC-WS channelName. You can (un)subscribe from this Observable just like with any rxjs's.

@@ -1,21 +1,18 @@
-import { PublicWS } from '..'
+import type { BaseSubscription } from '..'
 
-export namespace Spread {
+export type Subscription = BaseSubscription & {
+    channelName: 'spread';
+}
 
-    export type Subscription = PublicWS.BaseSubscription & {
-        channelName: 'spread';
-    }
-
-    export type Payload = [
-        number,
-        [
-            string,
-            string,
-            string,
-            string,
-            string
-        ],
+export type Payload = [
+    number,
+    [
+        string,
+        string,
+        string,
         string,
         string
-    ]
-}
+    ],
+    string,
+    string
+]

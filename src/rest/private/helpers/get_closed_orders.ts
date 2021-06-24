@@ -1,23 +1,8 @@
 import { timer } from 'rxjs'
 import { take } from 'rxjs/operators'
-import { IOrderSnapshot } from '../../../types/order_snapshot'
-import { PrivateREST } from '../../../types/rest/private'
-import { privateRESTRequest } from '../private_rest_request'
+import { privateRESTRequest } from '../../..'
 
-type GetClosedOrdersParams = {
-    trades?: boolean;
-    userref?: number;
-    start?: number;
-    end?: number;
-    ofs?: number;
-    closetime?: 'open' | 'close' | 'both';
-};
-
-type FindClosedOrderParam = {
-    orderFilter: (f: Partial<IOrderSnapshot>) => boolean;
-    maxOffset?: number;
-    data?: GetClosedOrdersParams
-}
+import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../..'
 
 /**
  * Returns a nice array of latest closed orders
@@ -30,7 +15,7 @@ type FindClosedOrderParam = {
  * 
  * @beta
  */
-export const getClosedOrders = async (params?: GetClosedOrdersParams, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
+export const getClosedOrders = async (params?: PrivateREST.Helpers.GetClosedOrdersParams, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
     const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys)
     const closedOrdersIds = Object.keys(closed)
     return closedOrdersIds.map(orderid => ({
@@ -57,7 +42,7 @@ export const getClosedOrders = async (params?: GetClosedOrdersParams, injectedAp
  * 
  * @beta
  */
-export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {} }: FindClosedOrderParam, injectedApiKeys?: PrivateREST.RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
+export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {} }: PrivateREST.Helpers.FindClosedOrderParam, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
     if (data?.ofs > maxOffset) {
         console.error(`Order not found within the first ${maxOffset} results...`)
         return null

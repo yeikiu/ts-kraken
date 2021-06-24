@@ -11,20 +11,18 @@
     o = today's opening price
 */
 
-import { Ticker  as restTicket} from "./rest/public";
-import { Ticker as wsTicker } from "./ws/public";
+import type { PublicWS, PublicREST } from '..'
 
-export type IPriceTicker = {
+type IPriceTicker = {
     utcTimestamp: number;
     pair: string;
     price: string;
-    rawKrakenPayload: wsTicker.Payload | restTicket.Result;
 }
 
 export type IWSPriceTicker = IPriceTicker & {
-    rawKrakenPayload: wsTicker.Payload;
+    rawKrakenPayload: PublicWS.Channels.ticker.Payload;
 }
 
 export type IRESTPriceTicker = IPriceTicker & {
-    rawKrakenPayload: restTicket.Result;
+    rawKrakenPayload: PublicREST.Endpoints.Ticker.Result;
 }

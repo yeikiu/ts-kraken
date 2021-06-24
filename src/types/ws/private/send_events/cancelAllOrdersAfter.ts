@@ -1,16 +1,14 @@
-import { PrivateWS } from "..";
+import type { BaseEvent, BaseEventResponse } from '..'
 
 /* https://docs.kraken.com/websockets/#message-cancelAllOrdersAfter */
 
-export namespace CancelAllOrdersAfter {
-    export type SendEvent = PrivateWS.BaseEvent & {
-        event: 'cancelAllOrdersAfter';
-        timeout: number; // Timeout specified in seconds. 0 to disable the timer.
-    }
+export type SendEvent = BaseEvent & {
+    event: 'cancelAllOrdersAfter';
+    timeout: number; // Timeout specified in seconds. 0 to disable the timer.
+}
 
-    export type EventResponse = PrivateWS.BaseEventResponse & {
-        event: 'cancelAllOrdersAfterStatus';
-        currentTime: string;
-        triggerTime: string;
-    }
+export type EventResponse = BaseEventResponse & {
+    event: 'cancelAllOrdersAfterStatus';
+    currentTime: string;
+    triggerTime: string;
 }

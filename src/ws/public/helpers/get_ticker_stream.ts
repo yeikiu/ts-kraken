@@ -1,18 +1,12 @@
 import { getPublicSubscription } from '../public_ws_client'
 import { filter, } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
-import { IWSPriceTicker } from '../../../types/price_ticker'
+
+import type { IWSPriceTicker, PublicWS } from '../../..'
 
 type GetPriceTickerParams = {
     baseAsset: string;
     quoteAsset: string;
-}
-
-export type TickerStream = {
-    priceTicker$: ReplaySubject<IWSPriceTicker>;
-    lastPrice$: ReplaySubject<string>;
-    getLastPrice: () => string;
-    priceTickerUnsubscribe: () => void;
 }
 
 /**
@@ -25,7 +19,7 @@ export type TickerStream = {
  *
  * @beta
  */
-export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): TickerStream => {
+export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): PublicWS.Helpers.TickerStream => {
     const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
     const priceTicker$ = new ReplaySubject<IWSPriceTicker>(1)
     const lastPrice$ = new ReplaySubject<string>(1)
