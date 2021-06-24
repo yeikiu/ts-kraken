@@ -1,4 +1,4 @@
-name: badges_wf
+name: sync_badges
 on:
   push:
     branches: [ master ]

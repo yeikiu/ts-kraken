@@ -1,0 +1,24 @@
+name: release_to_npm
+on:
+  release:
+    types: [ created ]
+
+jobs:
+
+  release_to_npm:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - uses: actions/setup-node@v1
+        with:
+          registry-url: https://registry.npmjs.org/
+
+      - run: |
+          npm i
+          npm run build
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
