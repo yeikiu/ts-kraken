@@ -82,7 +82,7 @@ npx ts-kraken
 * **.pubsub** PublicChannel _params? jqFilter? -table?_
 
 ````
-.pubSub ticker pair[]=XBT/USD .[1].c[0]
+.pubsub ticker pair[]=XBT/USD .[1].c[0]
 ````
 
 ````
