@@ -2,7 +2,7 @@
 
 > All major changes will be added to this file top-to-bottom
 
-- ### v3.0.2
+- ### v3.0.3
 
     - #### fix:
         - rename `preinstall` npm script into `fix:audit`

@@ -194,6 +194,14 @@ const testTsKraken = async () => {
 testTsKraken()
 ````
 
+### Invoke the repl within `node_modules`
+
+> While working on your project, if it depends on `ts-kraken` you can invoke the repl in the shell directly with:
+
+````
+npx kraken-repl
+````
+
 <br />
 
 ---
