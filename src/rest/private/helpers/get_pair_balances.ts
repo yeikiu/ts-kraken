@@ -18,6 +18,8 @@ export const getPairBalances = async ([base, quote]: string[], injectedApiKeys?:
         'USD': rawBalances['ZUSD'] || '0',
         'EUR': rawBalances['ZEUR'] || '0',
         'ETH': rawBalances['XETH'] || '0',
+        'XBT': rawBalances['XXBT'] || '0',
+        'BTC': rawBalances['XXBT'] || '0',
     }
     
     return [rawBalances[base], rawBalances[quote]]
