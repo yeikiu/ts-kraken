@@ -2,6 +2,12 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.5
+
+    - #### feature:
+        - `getSpreadStream` and `getTradesStream` WS Helpers
+
+
 - ### v3.0.4
 
     - #### fix:

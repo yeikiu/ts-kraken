@@ -10,7 +10,9 @@ import { getTicker } from './rest/public/helpers/get_ticker'
 import { publicRESTRequest } from './rest/public/public_rest_request'
 import { getOpenOrdersStream } from './ws/private/helpers/get_open_orders_stream'
 import { getPrivateSubscription, onPrivateWSClosed, sendPrivateEvent, WSPrivateHeartbeat$ } from './ws/private/private_ws_client'
+import { getSpreadStream } from './ws/public/helpers/get_spread_stream'
 import { getTickerStream } from './ws/public/helpers/get_ticker_stream'
+import { getTradesStream } from './ws/public/helpers/get_trades_stream'
 import { getPublicSubscription, onPublicWSClosed, WSPublicHeartbeat$ } from './ws/public/public_ws_client'
 
 export * from './types'
@@ -21,6 +23,8 @@ export {
     onPublicWSClosed,
     WSPublicHeartbeat$,
     getTickerStream,
+    getSpreadStream,
+    getTradesStream,
 
     /* PRIVATE WS */
     gethWsAuthToken,

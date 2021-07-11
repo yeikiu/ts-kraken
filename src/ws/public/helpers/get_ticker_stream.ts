@@ -44,9 +44,9 @@ export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams)
             rawKrakenPayload,
         })
 
-    }, priceTickerSteamError => {
-        priceTicker$.error(priceTickerSteamError)
-        lastPrice$.error(priceTickerSteamError)
+    }, priceTickerStreamError => {
+        priceTicker$.error(priceTickerStreamError)
+        lastPrice$.error(priceTickerStreamError)
     })
 
     const getLastPrice = () => lastPrice

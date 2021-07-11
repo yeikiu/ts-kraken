@@ -3,6 +3,8 @@ export * from './shared/order_snapshot'
 export * from './shared/price_ticker'
 export * from './shared/valid_ohlc_interval'
 export * from './shared/runtime_api_keys'
+export * from './shared/spread_snapshot'
+export * from './shared/trade_snapshot'
 
 export * from './ws/public/helpers'
 export * from './ws/private/helpers'
