@@ -2,7 +2,7 @@
 
 > All major changes will be added to this file top-to-bottom
 
-- ### v3.0.6 **_UNRELEASED_**
+- ### v3.0.6
 
     - #### fix:
         - Add some more assets aliases to `getPairBalances` REST helper
