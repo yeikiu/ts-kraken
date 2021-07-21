@@ -2,6 +2,13 @@
 
 > All major changes will be added to this file top-to-bottom
 
+
+- ### v3.0.7
+
+    - #### feat:
+        - Added `watchPairPrice` helper method
+
+
 - ### v3.0.6
 
     - #### fix:

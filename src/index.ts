@@ -13,6 +13,7 @@ import { getPrivateSubscription, onPrivateWSClosed, sendPrivateEvent, WSPrivateH
 import { getSpreadStream } from './ws/public/helpers/get_spread_stream'
 import { getTickerStream } from './ws/public/helpers/get_ticker_stream'
 import { getTradesStream } from './ws/public/helpers/get_trades_stream'
+import { watchPairPrice } from './ws/public/helpers/watch_pair_price'
 import { getPublicSubscription, onPublicWSClosed, WSPublicHeartbeat$ } from './ws/public/public_ws_client'
 
 export * from './types'
@@ -25,6 +26,7 @@ export {
     getTickerStream,
     getSpreadStream,
     getTradesStream,
+    watchPairPrice,
 
     /* PRIVATE WS */
     gethWsAuthToken,
