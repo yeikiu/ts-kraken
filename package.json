@@ -33,16 +33,16 @@
 		"@typescript-eslint/parser": "^4.4.0",
 		"eslint": "^7.11.0",
 		"eslint-plugin-import": "^2.22.0",
-		"nodemon": "^2.0.4",
+		"nodemon": "^2.0.13",
 		"rimraf": "^3.0.2",
 		"ts-node": "^9.1.1",
 		"typescript": "^4.2.3"
 	},
 	"dependencies": {
-		"axios": "^0.21.1",
+		"axios": "^0.23.0",
 		"chalk": "^4.1.1",
 		"dotenv": "^10.0.0",
-		"node-jq": "^1.12.0",
+		"node-jq": "^2.0.0",
 		"qs": "^6.9.6",
 		"rxjs": "^6.6.6",
 		"ws": "^7.4.4"
@@ -52,6 +52,7 @@
 	},
 	"scripts": {
 		"build": "npm run lint && rimraf dist && tsc -p .",
+		"lint:warn": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\"",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
 		"kraken-repl": "ts-node src/repl/repl_cli.ts",
