@@ -1,4 +1,4 @@
-import type { BinaryData } from 'fs'
+// import type { BinaryData } from 'fs'
 import type { RESTResponse } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/retrieveExport */

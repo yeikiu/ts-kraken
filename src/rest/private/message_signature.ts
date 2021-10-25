@@ -9,8 +9,8 @@ export const getMessageSignature = ({ path, payload, nonce, apiSecret }: GetMess
   const secretBuffer = Buffer.from(apiSecret, 'base64')
   const hash = createHash('sha256')
   const hmac = createHmac('sha512', secretBuffer)
-  const hashDigest = hash.update(nonce + message).digest('latin1')
-  const hmacDigest = hmac.update(path + hashDigest, 'latin1').digest('base64')
+  const hashDigest = hash.update(nonce + message).digest('base64')
+  const hmacDigest = hmac.update(path + hashDigest, 'base64').digest('base64')
 
   return hmacDigest
 }
