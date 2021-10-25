@@ -14,11 +14,11 @@ import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../../types
  * @beta
  */
 export const getOpenOrders = async (params?: PrivateREST.Helpers.GetOpenOrdersParams, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
-    const { open } = await privateRESTRequest({ url: 'OpenOrders', data: params }, injectedApiKeys)
-    const openOrdersIds = Object.keys(open)
-    return openOrdersIds.map(orderid => ({
-        orderid, // injected for improved response usability
-        avg_price: open[orderid].price, // injected for consistency with WS openOrders payload
-        ...open[orderid]
-    }) as IOrderSnapshot)
+  const { open } = await privateRESTRequest({ url: 'OpenOrders', data: params }, injectedApiKeys)
+  const openOrdersIds = Object.keys(open)
+  return openOrdersIds.map(orderid => ({
+    orderid, // injected for improved response usability
+    avg_price: open[orderid].price, // injected for consistency with WS openOrders payload
+    ...open[orderid]
+  }) as IOrderSnapshot)
 }

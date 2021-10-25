@@ -17,60 +17,62 @@ import type { IOrderSnapshot, PrivateWS } from '../../../types'
  * @beta
  */
 export const getOpenOrdersStream = async (tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.Helpers.OpenOrdersStream> => {
-    const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
-    const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
-    const openOrderIn$ = new Subject<IOrderSnapshot>();
-    const closedOrderOut$ = new Subject<IOrderSnapshot>();
+  const openOrders$ = new ReplaySubject<IOrderSnapshot[]>(1);
+  const currentOpenOrdersMap = new Map<string, IOrderSnapshot>()
+  const openOrderIn$ = new Subject<IOrderSnapshot>();
+  const closedOrderOut$ = new Subject<IOrderSnapshot>();
 
-    const closedOrdersIds = new Set<string>();
-    const openOrdersWS = await getPrivateSubscription({
-        channelName: 'openOrders',
-    }, tokenOrKeys)
+  const closedOrdersIds = new Set<string>();
+  const openOrdersWS = await getPrivateSubscription({
+    channelName: 'openOrders',
+  }, tokenOrKeys)
     
-    const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe(([ordersSnapshot]) => {
-        ordersSnapshot.forEach(orderSnapshot => {
-            const [orderid] = Object.keys(orderSnapshot)
-            if (closedOrdersIds.has(orderid)) { 
-                currentOpenOrdersMap.delete(orderid)
-                return
-            }
+  const { unsubscribe: openOrdersUnsubscribe } = openOrdersWS.subscribe({
+    next: ([ordersSnapshot]) => {
+      ordersSnapshot.forEach(orderSnapshot => {
+        const [orderid] = Object.keys(orderSnapshot)
+        if (closedOrdersIds.has(orderid)) { 
+          currentOpenOrdersMap.delete(orderid)
+          return
+        }
 
-            const mergedOrderSnapshot: IOrderSnapshot = {
-                orderid, // injected
-                price: orderSnapshot[orderid].avg_price, // injected
-                reason: orderSnapshot[orderid].cancel_reason, // injected
-                ...currentOpenOrdersMap.get(orderid),
-                ...orderSnapshot[orderid],
-            }
+        const mergedOrderSnapshot: IOrderSnapshot = {
+          orderid, // injected
+          price: orderSnapshot[orderid].avg_price, // injected
+          reason: orderSnapshot[orderid].cancel_reason, // injected
+          ...currentOpenOrdersMap.get(orderid),
+          ...orderSnapshot[orderid],
+        }
 
-            if (!currentOpenOrdersMap.has(orderid)) {
-                currentOpenOrdersMap.set(orderid, mergedOrderSnapshot)
-                openOrderIn$.next(mergedOrderSnapshot)
-            
-            } else if (['closed', 'expired', 'canceled'].includes(mergedOrderSnapshot.status)) {
-                closedOrdersIds.add(orderid)
-                currentOpenOrdersMap.delete(orderid)
-                closedOrderOut$.next(mergedOrderSnapshot)
-            
-            } else {
-                currentOpenOrdersMap.set(orderid, mergedOrderSnapshot)
-            }
-        })
+        if (!currentOpenOrdersMap.has(orderid)) {
+          currentOpenOrdersMap.set(orderid, mergedOrderSnapshot)
+          openOrderIn$.next(mergedOrderSnapshot)
+                
+        } else if (['closed', 'expired', 'canceled'].includes(mergedOrderSnapshot.status)) {
+          closedOrdersIds.add(orderid)
+          currentOpenOrdersMap.delete(orderid)
+          closedOrderOut$.next(mergedOrderSnapshot)
+                
+        } else {
+          currentOpenOrdersMap.set(orderid, mergedOrderSnapshot)
+        }
+      })
 
-        openOrders$.next(Array.from(currentOpenOrdersMap.values()))
-
-    }, openOrdersStreamError => {
-        openOrders$.error(openOrdersStreamError)
-        openOrderIn$.error(openOrdersStreamError)
-        closedOrderOut$.error(openOrdersStreamError)
-    })
-
-    return {
-        openOrders$,
-        currentOpenOrdersMap,
-        openOrderIn$,
-        closedOrderOut$,
-        closedOrdersIds,
-        openOrdersUnsubscribe
+      openOrders$.next(Array.from(currentOpenOrdersMap.values()))
+    }, 
+    error: openOrdersStreamError => {
+      openOrders$.error(openOrdersStreamError)
+      openOrderIn$.error(openOrdersStreamError)
+      closedOrderOut$.error(openOrdersStreamError)
     }
+  })
+
+  return {
+    openOrders$,
+    currentOpenOrdersMap,
+    openOrderIn$,
+    closedOrderOut$,
+    closedOrdersIds,
+    openOrdersUnsubscribe
+  }
 }

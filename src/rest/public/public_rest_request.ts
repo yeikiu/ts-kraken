@@ -25,9 +25,9 @@ export async function publicRESTRequest(req: { url: 'Trades', params: PublicREST
  * @returns Promise<PrivateREST.Result>
  */
 export async function publicRESTRequest({ url, params }: PublicREST.Request): Promise<PublicREST.Result> {
-    const { data: { result, error }} = await publicRESTClient.request<PublicREST.Response>({ url, params })
-    if (error?.length) {
-        throw new Error(error?.join(' '))
-    }
-    return result
+  const { data: { result, error }} = await publicRESTClient.request<PublicREST.Response>({ url, params })
+  if (error?.length) {
+    throw new Error(error?.join(' '))
+  }
+  return result
 }

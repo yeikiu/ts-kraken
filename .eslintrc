@@ -18,6 +18,7 @@
       {
         "avoidEscape": true
       }
-    ]
+    ],
+    "indent": ["error", 2]
   }
 }

@@ -20,45 +20,48 @@ type GetTradesStreamParams = {
  * @beta
  */
 export const getTradesStream = ({ baseAsset, quoteAsset }: GetTradesStreamParams): PublicWS.Helpers.TradesStream => {
-    const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
-    const lastTradeSnapshot$ = new ReplaySubject<IWSTradeSnapshot>(1)
-    let lastTrade: IWSTradeSnapshot = null
+  const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
+  const lastTradeSnapshot$ = new ReplaySubject<IWSTradeSnapshot>(1)
+  let lastTrade: IWSTradeSnapshot = null
 
-    const spread$ = getPublicSubscription({
-        channelName: 'trade',
-        pair: [pair],
-    })
+  const spread$ = getPublicSubscription({
+    channelName: 'trade',
+    pair: [pair],
+  })
 
-    const { unsubscribe: tradesStreamUnsubscribe } = spread$.pipe(
-        filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'trade')
-    ).subscribe(([,lastTrades]) => {
-        const [lastPairTrade] = lastTrades.reverse()
-        const [lastPrice, lastVol, rawLastTs, rawSide, rawType] = lastPairTrade
-        
-        const lastTradeUTCts = Number(`${rawLastTs.split('.')[0]}000`)
-        const lastTradeUTCDate = new Date(lastTradeUTCts)
-        const side = rawSide === 'b' ? 'buy' : 'sell'
-        const type = rawType === 'l' ? 'limit' : 'market'
+  const { unsubscribe: tradesStreamUnsubscribe } = spread$.pipe(
+    filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'trade')
+  ).subscribe({ 
+    next: ([,lastTrades]) => {
+      const [lastPairTrade] = lastTrades.reverse()
+      const [lastPrice, lastVol, rawLastTs, rawSide, rawType] = lastPairTrade
 
-        lastTrade = {
-            lastTradeUTCts,
-            lastTradeUTCDate,
-            type,
-            side,
-            lastVol,
-            lastPrice
-        }
-        lastTradeSnapshot$.next(lastTrade)
+      const lastTradeUTCts = Number(`${rawLastTs.split('.')[0]}000`)
+      const lastTradeUTCDate = new Date(lastTradeUTCts)
+      const side = rawSide === 'b' ? 'buy' : 'sell'
+      const type = rawType === 'l' ? 'limit' : 'market'
 
-    }, spreadStreamError => {
-        lastTradeSnapshot$.error(spreadStreamError)
-    })
+      lastTrade = {
+        lastTradeUTCts,
+        lastTradeUTCDate,
+        type,
+        side,
+        lastVol,
+        lastPrice
+      }
+      lastTradeSnapshot$.next(lastTrade)
 
-    const getLastTrade = () => lastTrade
-
-    return {
-        lastTradeSnapshot$,
-        getLastTrade,
-        tradesStreamUnsubscribe
+    },
+    error: spreadStreamError => {
+      lastTradeSnapshot$.error(spreadStreamError)
     }
+  })
+
+  const getLastTrade = () => lastTrade
+
+  return {
+    lastTradeSnapshot$,
+    getLastTrade,
+    tradesStreamUnsubscribe
+  }
 }

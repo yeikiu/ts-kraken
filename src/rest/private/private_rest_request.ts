@@ -6,32 +6,32 @@ import { stringify } from 'qs'
 import type { RuntimeApiKeys, PrivateREST } from '../../types'
 
 const createPrivateRESTClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
-    const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
-    privateApiClient.defaults.baseURL = `${privateApiClient.defaults.baseURL}/private`
-    privateApiClient.defaults.headers['API-Key'] = apikey
-    privateApiClient.defaults.method = 'POST'
+  const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)
+  privateApiClient.defaults.baseURL = `${privateApiClient.defaults.baseURL}/private`
+  privateApiClient.defaults.headers['API-Key'] = apikey
+  privateApiClient.defaults.method = 'POST'
 
-    privateApiClient.interceptors.request.use((config) => {
-        const { url } = config
-        const nonce = new Date().getTime() * 1000
+  privateApiClient.interceptors.request.use((config) => {
+    const { url } = config
+    const nonce = new Date().getTime() * 1000
 
-        const payload = {
-            ...config.data,
-            nonce
-        }
-        config.headers['API-Sign'] = getMessageSignature({
-            path: `/${apiVersion}/private/${url}`,
-            payload,
-            nonce,
-            apiSecret
-        })
-        delete config.params
-        config.data = stringify(payload)
-
-        return config
+    const payload = {
+      ...config.data,
+      nonce
+    }
+    config.headers['API-Sign'] = getMessageSignature({
+      path: `/${apiVersion}/private/${url}`,
+      payload,
+      nonce,
+      apiSecret
     })
+    delete config.params
+    config.data = stringify(payload)
 
-    return privateApiClient
+    return config
+  })
+
+  return privateApiClient
 }
 
 const defaultClient = createPrivateRESTClient()
@@ -73,12 +73,12 @@ export async function privateRESTRequest(params: { url: 'WithdrawStatus', data: 
  * @returns Promise<Result>
  */
 export async function privateRESTRequest(params: PrivateREST.Request, tokenOrKeys?: RuntimeApiKeys): Promise<PrivateREST.Result> {
-    const { apiKey, apiSecret } = tokenOrKeys ?? {}
-    const apiClient = (apiKey && apiSecret) ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
-    const { data: { result, error: privateRESTerror } } = await apiClient.request<PrivateREST.Response>(params) || {}
-    if (privateRESTerror?.length) {
-        throw new Error(privateRESTerror.join(' '))
-    }
+  const { apiKey, apiSecret } = tokenOrKeys ?? {}
+  const apiClient = (apiKey && apiSecret) ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
+  const { data: { result, error: privateRESTerror } } = await apiClient.request<PrivateREST.Response>(params) || {}
+  if (privateRESTerror?.length) {
+    throw new Error(privateRESTerror.join(' '))
+  }
 
-    return result
+  return result
 }
