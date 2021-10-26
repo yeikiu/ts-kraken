@@ -16,14 +16,14 @@ import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../../types
  * @beta
  */
 export const getClosedOrders = async (params?: PrivateREST.Helpers.GetClosedOrdersParams, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
-    const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys)
-    const closedOrdersIds = Object.keys(closed)
-    return closedOrdersIds.map(orderid => ({
-        ...closed[orderid],
-        orderid, // injected for improved response usability
-        avg_price: closed[orderid].price, // injected for consistency with WS openOrders payload
-        cancel_reason: closed[orderid].reason, // same as above
-    }) as IOrderSnapshot)
+  const { closed } = await privateRESTRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys)
+  const closedOrdersIds = Object.keys(closed)
+  return closedOrdersIds.map(orderid => ({
+    ...closed[orderid],
+    orderid, // injected for improved response usability
+    avg_price: closed[orderid].price, // injected for consistency with WS openOrders payload
+    cancel_reason: closed[orderid].reason, // same as above
+  }) as IOrderSnapshot)
 }
 
 /**
@@ -43,23 +43,23 @@ export const getClosedOrders = async (params?: PrivateREST.Helpers.GetClosedOrde
  * @beta
  */
 export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {} }: PrivateREST.Helpers.FindClosedOrderParam, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
-    if (data?.ofs > maxOffset) {
-        console.error(`Order not found within the first ${maxOffset} results...`)
-        return null
-    }
+  if (data?.ofs > maxOffset) {
+    console.error(`Order not found within the first ${maxOffset} results...`)
+    return null
+  }
 
-    const closedOrders = await getClosedOrders(data)
-    const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter)
-    if (lastSuccessfullyClosedOrder) {
-        return lastSuccessfullyClosedOrder
-    }
+  const closedOrders = await getClosedOrders(data)
+  const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter)
+  if (lastSuccessfullyClosedOrder) {
+    return lastSuccessfullyClosedOrder
+  }
 
-    // Delay exec. 1.5 seconds to avoid rate limits
-    await timer(1500).pipe(take(1)).toPromise()
-    const { ofs: lastOffset = 0 } = data ?? {}
-    return findClosedOrder({
-        orderFilter,
-        maxOffset,
-        data: { ...data, ofs: closedOrders.length + lastOffset },
-    }, injectedApiKeys)
+  // Delay exec. 1.5 seconds to avoid rate limits
+  await timer(1500).pipe(take(1)).toPromise()
+  const { ofs: lastOffset = 0 } = data ?? {}
+  return findClosedOrder({
+    orderFilter,
+    maxOffset,
+    data: { ...data, ofs: closedOrders.length + lastOffset },
+  }, injectedApiKeys)
 }

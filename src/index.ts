@@ -19,31 +19,31 @@ import { getPublicSubscription, onPublicWSClosed, WSPublicHeartbeat$ } from './w
 export * from './types'
 
 export {
-    /* PUBLIC WS */
-    getPublicSubscription,
-    onPublicWSClosed,
-    WSPublicHeartbeat$,
-    getTickerStream,
-    getSpreadStream,
-    getTradesStream,
-    watchPairPrice,
+  /* PUBLIC WS */
+  getPublicSubscription,
+  onPublicWSClosed,
+  WSPublicHeartbeat$,
+  getTickerStream,
+  getSpreadStream,
+  getTradesStream,
+  watchPairPrice,
 
-    /* PRIVATE WS */
-    gethWsAuthToken,
-    getPrivateSubscription,
-    onPrivateWSClosed,
-    WSPrivateHeartbeat$,
-    getOpenOrdersStream,
-    sendPrivateEvent,
+  /* PRIVATE WS */
+  gethWsAuthToken,
+  getPrivateSubscription,
+  onPrivateWSClosed,
+  WSPrivateHeartbeat$,
+  getOpenOrdersStream,
+  sendPrivateEvent,
     
-    /* PUBLIC REST */
-    publicRESTRequest,
-    getTicker,
+  /* PUBLIC REST */
+  publicRESTRequest,
+  getTicker,
 
-    /* PRIVATE REST */
-    privateRESTRequest,
-    getPairBalances,
-    getOpenOrders,
-    getClosedOrders,
-    findClosedOrder,
+  /* PRIVATE REST */
+  privateRESTRequest,
+  getPairBalances,
+  getOpenOrders,
+  getClosedOrders,
+  findClosedOrder,
 }

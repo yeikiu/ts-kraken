@@ -20,41 +20,41 @@ type GetPriceTickerParams = {
  * @beta
  */
 export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams): PublicWS.Helpers.TickerStream => {
-    const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
-    const priceTicker$ = new ReplaySubject<IWSPriceTicker>(1)
-    const lastPrice$ = new ReplaySubject<string>(1)
-    let lastPrice: string = null
+  const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
+  const priceTicker$ = new ReplaySubject<IWSPriceTicker>(1)
+  const lastPrice$ = new ReplaySubject<string>(1)
+  let lastPrice: string = null
 
-    const priceTickerWS = getPublicSubscription({
-        channelName: 'ticker',
-        pair: [pair],
+  const priceTickerWS = getPublicSubscription({
+    channelName: 'ticker',
+    pair: [pair],
+  })
+
+  const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(
+    filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'ticker')
+  ).subscribe(rawKrakenPayload => {
+    const [, { c: [price = null] }] = rawKrakenPayload
+    lastPrice$.next(price)
+    lastPrice = price
+
+    return priceTicker$.next({
+      utcTimestamp: new Date().getTime(),
+      pair,
+      price,
+      rawKrakenPayload,
     })
 
-    const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(
-        filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'ticker')
-    ).subscribe(rawKrakenPayload => {
-        const [, { c: [price = null] }] = rawKrakenPayload
-        lastPrice$.next(price)
-        lastPrice = price
+  }, priceTickerStreamError => {
+    priceTicker$.error(priceTickerStreamError)
+    lastPrice$.error(priceTickerStreamError)
+  })
 
-        return priceTicker$.next({
-            utcTimestamp: new Date().getTime(),
-            pair,
-            price,
-            rawKrakenPayload,
-        })
+  const getLastPrice = () => lastPrice
 
-    }, priceTickerStreamError => {
-        priceTicker$.error(priceTickerStreamError)
-        lastPrice$.error(priceTickerStreamError)
-    })
-
-    const getLastPrice = () => lastPrice
-
-    return {
-        priceTicker$,
-        lastPrice$,
-        getLastPrice,
-        priceTickerUnsubscribe
-    }
+  return {
+    priceTicker$,
+    lastPrice$,
+    getLastPrice,
+    priceTickerUnsubscribe
+  }
 }

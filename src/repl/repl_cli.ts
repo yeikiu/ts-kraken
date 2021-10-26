@@ -18,26 +18,28 @@ const print = (content: unknown, asTable = false) => asTable ? console.table(con
 
 // TODO: extract to util imports
 const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:string, jqFilter?: string, asTable?: boolean) => wsSubscription
-  .subscribe(async payload => {
-    if (jqFilter) {
-      const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
-      /* The `.payload|` jq prefix helps with a strange node-jq bug where arrays
-      are printed as text to console by default even with `output: 'json'` */
-      return print(jqPayload, asTable)
+  .subscribe({
+    next: async payload => {
+      if (jqFilter) {
+        const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' })
+        /* The `.payload|` jq prefix helps with a strange node-jq bug where arrays
+        are printed as text to console by default even with `output: 'json'` */
+        return print(jqPayload, asTable)
+      }
+      print(payload, asTable)
+    },
+    error: subscriptionError => {
+      console.error({ subscriptionError })
+      wsSubscriptions.get(channelName)?.unsubscribe()
+      if (wsSubscriptions.delete(channelName)) {
+        print(`${channelName} unsubscribed! Re-attempting subscription in 5 seconds...`)
+      }
+      
+      setTimeout(() => {
+        const reSubscription = replSubscriptionHandler(wsSubscription, channelName, jqFilter, asTable)
+        wsSubscriptions.set(channelName, reSubscription)
+      }, 5000)
     }
-    print(payload, asTable)
-
-  }, async (subscriptionError) => {
-    console.error({ subscriptionError })
-    wsSubscriptions.get(channelName)?.unsubscribe()
-    if (wsSubscriptions.delete(channelName)) {
-      print(`${channelName} unsubscribed! Re-attempting subscription in 5 seconds...`)
-    }
-    
-    setTimeout(() => {
-      const reSubscription = replSubscriptionHandler(wsSubscription, channelName, jqFilter, asTable)
-      wsSubscriptions.set(channelName, reSubscription)
-    }, 5000)
   })
 
 print(krakenHeader())
@@ -142,7 +144,7 @@ myRepl.defineCommand('pubsub', {
                >> .pubsub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
 ---`,
 
-  action: async (cmdArgs: string) => {
+  action: (cmdArgs: string) => {
     const paramsStr = cmdArgs.replace(' -table', '')
     const asTable = cmdArgs.includes(' -table')
 
@@ -196,7 +198,7 @@ myRepl.defineCommand('unsub', {
                >> .unsub openOrders
 `,
 
-  action: async (subscriptionName) => {
+  action: (subscriptionName: string) => {
     if (!wsSubscriptions.get(subscriptionName)) { 
       return print(`No subscription available for ${subscriptionName} channel`)
     }
@@ -214,7 +216,7 @@ myRepl.defineCommand('unsuball', {
           i.e. >> .unsuball
 `,
 
-  action: async () => {
+  action: () => {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
       sub.unsubscribe()
       if (wsSubscriptions.delete(subscriptionName)) {

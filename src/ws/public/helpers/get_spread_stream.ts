@@ -20,52 +20,54 @@ type GetSpreadStreamParams = {
  * @beta
  */
 export const getSpreadStream = ({ baseAsset, quoteAsset }: GetSpreadStreamParams): PublicWS.Helpers.SpreadStream => {
-    const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
-    const spreadSnapshot$ = new ReplaySubject<IWSSpreadSnapshot>(1)
-    let lastSpread: IWSSpreadSnapshot = null
+  const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
+  const spreadSnapshot$ = new ReplaySubject<IWSSpreadSnapshot>(1)
+  let lastSpread: IWSSpreadSnapshot = null
 
-    const spread$ = getPublicSubscription({
-        channelName: 'spread',
-        pair: [pair],
-    })
+  const spread$ = getPublicSubscription({
+    channelName: 'spread',
+    pair: [pair],
+  })
 
-    const { unsubscribe: spreadStreamUnsubscribe } = spread$.pipe(
-        filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'spread')
-    ).subscribe(rawKrakenPayload => {
-        const [,
-            [
-              bidPrice,
-              askPrice,
-              rawUtcTimestamp,
-              bidVol,
-              askVol
-            ]
-          ] = rawKrakenPayload
+  const { unsubscribe: spreadStreamUnsubscribe } = spread$.pipe(
+    filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'spread')
+  ).subscribe({
+    next: rawKrakenPayload => {
+      const [,
+        [
+          bidPrice,
+          askPrice,
+          rawUtcTimestamp,
+          bidVol,
+          askVol
+        ]
+      ] = rawKrakenPayload
 
-        const spreadUTCts = Number(`${rawUtcTimestamp.split('.')[0]}000`)
-        const spreadUTCDate = new Date(spreadUTCts)
+      const spreadUTCts = Number(`${rawUtcTimestamp.split('.')[0]}000`)
+      const spreadUTCDate = new Date(spreadUTCts)
 
-        const spreadSnapshot: IWSSpreadSnapshot = {
-            spreadUTCts,
-            spreadUTCDate,
-            bidPrice,
-            askPrice,
-            bidVol,
-            askVol,
-        }
+      const spreadSnapshot: IWSSpreadSnapshot = {
+        spreadUTCts,
+        spreadUTCDate,
+        bidPrice,
+        askPrice,
+        bidVol,
+        askVol,
+      }
 
-        lastSpread = spreadSnapshot
-        return spreadSnapshot$.next(lastSpread)
+      lastSpread = spreadSnapshot
+      return spreadSnapshot$.next(lastSpread)
 
-    }, spreadStreamError => {
-        spreadSnapshot$.error(spreadStreamError)
-    })
-
-    const getLastSpread = () => lastSpread
-
-    return {
-        spreadSnapshot$,
-        getLastSpread,
-        spreadStreamUnsubscribe
+    }, error: spreadStreamError => {
+      spreadSnapshot$.error(spreadStreamError)
     }
+  })
+
+  const getLastSpread = () => lastSpread
+
+  return {
+    spreadSnapshot$,
+    getLastSpread,
+    spreadStreamUnsubscribe
+  }
 }

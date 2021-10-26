@@ -18,22 +18,22 @@ type WatchPairPriceParams = {
  * @beta
  */
 export const watchPairPrice = ({ baseAsset, quoteAsset }: WatchPairPriceParams): WatchPairPrice => {
-    const lastPairPrice$ = new ReplaySubject<string>(1)
-    let lastPairPrice: string = null
+  const lastPairPrice$ = new ReplaySubject<string>(1)
+  let lastPairPrice: string = null
 
-    const { lastPrice$: lastTickerPrice$ } = getTickerStream({ baseAsset, quoteAsset })
-    const { lastTradeSnapshot$ } = getTradesStream({ baseAsset, quoteAsset })
-    const lastTradePrice$ = lastTradeSnapshot$.pipe(map(({ lastPrice }) => lastPrice))
+  const { lastPrice$: lastTickerPrice$ } = getTickerStream({ baseAsset, quoteAsset })
+  const { lastTradeSnapshot$ } = getTradesStream({ baseAsset, quoteAsset })
+  const lastTradePrice$ = lastTradeSnapshot$.pipe(map(({ lastPrice }) => lastPrice))
 
-    merge(lastTickerPrice$, lastTradePrice$).subscribe(lastPrice => { 
-        lastPairPrice = lastPrice
-        lastPairPrice$.next(lastPairPrice)
-    })
+  merge(lastTickerPrice$, lastTradePrice$).subscribe(lastPrice => { 
+    lastPairPrice = lastPrice
+    lastPairPrice$.next(lastPairPrice)
+  })
 
-    const getLastPairPrice = () => lastPairPrice
+  const getLastPairPrice = () => lastPairPrice
 
-    return {
-        lastPairPrice$,
-        getLastPairPrice,
-    }
+  return {
+    lastPairPrice$,
+    getLastPairPrice,
+  }
 }
