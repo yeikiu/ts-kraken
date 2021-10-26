@@ -28,7 +28,7 @@
 		"kraken-repl": "dist/repl/repl_cli.js"
 	},
 	"devDependencies": {
-		"@types/node": "11.11.0",
+		"@types/node": "^16.11.6",
 		"@typescript-eslint/eslint-plugin": "^5.1.0",
 		"@typescript-eslint/parser": "^5.1.0",
 		"eslint": "^8.1.0",
@@ -52,6 +52,7 @@
 	},
 	"scripts": {
 		"build": "npm run lint && rimraf dist && tsc -p .",
+		"lint:warn": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\"",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"watch": "nodemon",
 		"kraken-repl": "ts-node src/repl/repl_cli.ts",
