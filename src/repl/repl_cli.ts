@@ -28,7 +28,7 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:st
       }
       print(payload, asTable)
     },
-    error: async (subscriptionError) => {
+    error: subscriptionError => {
       console.error({ subscriptionError })
       wsSubscriptions.get(channelName)?.unsubscribe()
       if (wsSubscriptions.delete(channelName)) {
@@ -144,7 +144,7 @@ myRepl.defineCommand('pubsub', {
                >> .pubsub ticker pair[]=XBT/USD&pair[]=ADA/XBT&pair[]=USDT/USD . as $base|{pair:.[3],price:$base[1].c[0]}
 ---`,
 
-  action: async (cmdArgs: string) => {
+  action: (cmdArgs: string) => {
     const paramsStr = cmdArgs.replace(' -table', '')
     const asTable = cmdArgs.includes(' -table')
 
@@ -198,7 +198,7 @@ myRepl.defineCommand('unsub', {
                >> .unsub openOrders
 `,
 
-  action: async (subscriptionName) => {
+  action: (subscriptionName: string) => {
     if (!wsSubscriptions.get(subscriptionName)) { 
       return print(`No subscription available for ${subscriptionName} channel`)
     }
@@ -216,7 +216,7 @@ myRepl.defineCommand('unsuball', {
           i.e. >> .unsuball
 `,
 
-  action: async () => {
+  action: () => {
     Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
       sub.unsubscribe()
       if (wsSubscriptions.delete(subscriptionName)) {
