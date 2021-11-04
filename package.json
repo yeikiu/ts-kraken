@@ -57,6 +57,7 @@
 		"watch": "nodemon",
 		"kraken-repl": "ts-node src/repl/repl_cli.ts",
 		"fix:audit": "npx npm-force-resolutions && npm i && npm audit",
-		"sync:badges": "npx setup-gh-badges"
+		"sync:badges": "npx setup-gh-badges",
+		"standard": "ts-standard | grep -v strictNullChecks"
 	}
 }

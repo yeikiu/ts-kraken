@@ -1,6 +1,4 @@
 import { config } from 'dotenv'
-config()
-
 import { getClosedOrders, findClosedOrder } from './rest/private/helpers/get_closed_orders'
 import { getOpenOrders } from './rest/private/helpers/get_open_orders'
 import { getPairBalances } from './rest/private/helpers/get_pair_balances'
@@ -15,6 +13,8 @@ import { getTickerStream } from './ws/public/helpers/get_ticker_stream'
 import { getTradesStream } from './ws/public/helpers/get_trades_stream'
 import { watchPairPrice } from './ws/public/helpers/watch_pair_price'
 import { getPublicSubscription, onPublicWSClosed, WSPublicHeartbeat$ } from './ws/public/public_ws_client'
+
+config()
 
 export * from './types'
 
@@ -35,7 +35,7 @@ export {
   WSPrivateHeartbeat$,
   getOpenOrdersStream,
   sendPrivateEvent,
-    
+
   /* PUBLIC REST */
   publicRESTRequest,
   getTicker,
@@ -45,5 +45,5 @@ export {
   getPairBalances,
   getOpenOrders,
   getClosedOrders,
-  findClosedOrder,
+  findClosedOrder
 }
