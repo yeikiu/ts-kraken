@@ -26,7 +26,7 @@ export async function publicRESTRequest (req: { url: 'Trades', params: PublicRES
  */
 export async function publicRESTRequest ({ url, params }: PublicREST.Request): Promise<PublicREST.Result> {
   const { data: { result, error } } = await publicRESTClient.request<PublicREST.Response>({ url, params })
-  if (error?.length) {
+  if (error?.length > 0) {
     throw new Error(error?.join(' '))
   }
   return result

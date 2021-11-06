@@ -95,9 +95,11 @@ myRepl.defineCommand('get', {
       const response = await publicRESTRequest({ url: endpoint, params } as any)
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
-        return print(jqResponse, asTable)
+        print(jqResponse, asTable)
+        return print('\nPress return to continue or control+c to exit...')
       }
       print(response, asTable)
+      print('\nPress return to continue or control+c to exit...')
     } catch (publicRESTerror) {
       console.error({ publicRESTerror })
     }
@@ -127,9 +129,12 @@ myRepl.defineCommand('post', {
       const response = await privateRESTRequest({ url: endpoint, data } as any, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
-        return print(jqResponse, asTable)
+        print(jqResponse, asTable)
+        return print('\nPress return to continue or control+c to exit...')
       }
       print(response, asTable)
+      print('\nPress return to continue or control+c to exit...')
+
     } catch (privateRESTerror) {
       console.error({ privateRESTerror })
     }

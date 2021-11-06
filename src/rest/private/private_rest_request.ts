@@ -76,7 +76,7 @@ export async function privateRESTRequest (params: PrivateREST.Request, tokenOrKe
   const { apiKey, apiSecret } = tokenOrKeys ?? {}
   const apiClient = (apiKey !== '' && apiSecret !== '') ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
   const { data: { result, error: privateRESTerror } } = await apiClient.request<PrivateREST.Response>(params)
-  if (privateRESTerror.length > 0) {
+  if (privateRESTerror?.length > 0) {
     throw new Error(privateRESTerror.join(' '))
   }
 
