@@ -48,12 +48,10 @@ export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams)
     lastPrice$.error(priceTickerStreamError)
   })
 
-  const getLastPrice = (): string => lastPrice
-
   return {
     priceTicker$,
     lastPrice$,
-    getLastPrice,
+    getLastPrice: () => lastPrice,
     priceTickerUnsubscribe
   }
 }
