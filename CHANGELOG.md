@@ -2,6 +2,14 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.11
+
+    - #### feat:
+        - Added `openOrderPartialExec` stream
+
+    - #### chore:
+        - ts-standard code-linting script
+
 - ### v3.0.10
 
     - #### chore:
