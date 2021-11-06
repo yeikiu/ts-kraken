@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { config } from 'dotenv'
 import repl from 'repl'
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
@@ -97,7 +98,6 @@ myRepl.defineCommand('get', {
         return print(jqResponse, asTable)
       }
       print(response, asTable)
-
     } catch (publicRESTerror) {
       console.error({ publicRESTerror })
     }
@@ -130,7 +130,6 @@ myRepl.defineCommand('post', {
         return print(jqResponse, asTable)
       }
       print(response, asTable)
-
     } catch (privateRESTerror) {
       console.error({ privateRESTerror })
     }

@@ -15,12 +15,11 @@ export const getPairBalances = async ([base, quote]: string[], injectedApiKeys?:
   let rawBalances = await privateRESTRequest({ url: 'Balance' }, injectedApiKeys)
   rawBalances = {
     ...rawBalances,
-    'USD': rawBalances['ZUSD'] || '0',
-    'EUR': rawBalances['ZEUR'] || '0',
-    'ETH': rawBalances['XETH'] || '0',
-    'XBT': rawBalances['XXBT'] || '0',
-    'BTC': rawBalances['XXBT'] || '0',
+    USD: rawBalances['ZUSD'] || '0',
+    EUR: rawBalances['ZEUR'] || '0',
+    ETH: rawBalances['XETH'] || '0',
+    XBT: rawBalances['XXBT'] || '0',
+    BTC: rawBalances['XXBT'] || '0',
   }
-    
   return [rawBalances[base], rawBalances[quote]]
 }

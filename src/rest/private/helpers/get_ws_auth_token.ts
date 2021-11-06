@@ -15,8 +15,7 @@ export const gethWsAuthToken = async (injectedApiKeys?: RuntimeApiKeys): Promise
       throw ({ code: 'CUSTOM_ERROR', message: 'no token received' })
     }
     return token
-        
-  } catch({ code, message }) {
+  } catch ({ code, message }) {
     console.error('Kraken gethWsAuthToken error', { code, message })
     throw ({ code, message })
   }

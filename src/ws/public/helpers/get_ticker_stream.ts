@@ -1,12 +1,12 @@
 import { getPublicSubscription } from '../public_ws_client'
-import { filter, } from 'rxjs/operators'
+import { filter } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 
 import type { IWSPriceTicker, PublicWS } from '../../../types'
 
-type GetPriceTickerParams = {
-    baseAsset: string;
-    quoteAsset: string;
+interface GetPriceTickerParams {
+  baseAsset: string
+  quoteAsset: string
 }
 
 /**
@@ -27,7 +27,7 @@ export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams)
 
   const priceTickerWS = getPublicSubscription({
     channelName: 'ticker',
-    pair: [pair],
+    pair: [pair]
   })
 
   const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(
@@ -41,15 +41,14 @@ export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams)
       utcTimestamp: new Date().getTime(),
       pair,
       price,
-      rawKrakenPayload,
+      rawKrakenPayload
     })
-
   }, priceTickerStreamError => {
     priceTicker$.error(priceTickerStreamError)
     lastPrice$.error(priceTickerStreamError)
   })
 
-  const getLastPrice = () => lastPrice
+  const getLastPrice = (): string => lastPrice
 
   return {
     priceTicker$,
