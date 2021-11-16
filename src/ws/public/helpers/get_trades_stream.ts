@@ -1,12 +1,12 @@
 import { getPublicSubscription } from '../public_ws_client'
-import { filter, } from 'rxjs/operators'
+import { filter } from 'rxjs/operators'
 import { ReplaySubject } from 'rxjs'
 
 import type { IWSTradeSnapshot, PublicWS } from '../../../types'
 
-type GetTradesStreamParams = {
-    baseAsset: string;
-    quoteAsset: string;
+interface GetTradesStreamParams {
+  baseAsset: string
+  quoteAsset: string
 }
 
 /**
@@ -26,12 +26,12 @@ export const getTradesStream = ({ baseAsset, quoteAsset }: GetTradesStreamParams
 
   const spread$ = getPublicSubscription({
     channelName: 'trade',
-    pair: [pair],
+    pair: [pair]
   })
 
   const { unsubscribe: tradesStreamUnsubscribe } = spread$.pipe(
     filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'trade')
-  ).subscribe({ 
+  ).subscribe({
     next: ([,lastTrades]) => {
       const [lastPairTrade] = lastTrades.reverse()
       const [lastPrice, lastVol, rawLastTs, rawSide, rawType] = lastPairTrade
@@ -50,18 +50,15 @@ export const getTradesStream = ({ baseAsset, quoteAsset }: GetTradesStreamParams
         lastPrice
       }
       lastTradeSnapshot$.next(lastTrade)
-
     },
     error: spreadStreamError => {
       lastTradeSnapshot$.error(spreadStreamError)
     }
   })
 
-  const getLastTrade = () => lastTrade
-
   return {
     lastTradeSnapshot$,
-    getLastTrade,
+    getLastTrade: () => lastTrade,
     tradesStreamUnsubscribe
   }
 }

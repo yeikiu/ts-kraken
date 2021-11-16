@@ -4,9 +4,9 @@ import { WatchPairPrice } from '../../..'
 import { getTickerStream } from './get_ticker_stream'
 import { getTradesStream } from './get_trades_stream'
 
-type WatchPairPriceParams = {
-    baseAsset: string;
-    quoteAsset: string;
+interface WatchPairPriceParams {
+  baseAsset: string
+  quoteAsset: string
 }
 
 /**
@@ -25,15 +25,13 @@ export const watchPairPrice = ({ baseAsset, quoteAsset }: WatchPairPriceParams):
   const { lastTradeSnapshot$ } = getTradesStream({ baseAsset, quoteAsset })
   const lastTradePrice$ = lastTradeSnapshot$.pipe(map(({ lastPrice }) => lastPrice))
 
-  merge(lastTickerPrice$, lastTradePrice$).subscribe(lastPrice => { 
+  merge(lastTickerPrice$, lastTradePrice$).subscribe(lastPrice => {
     lastPairPrice = lastPrice
     lastPairPrice$.next(lastPairPrice)
   })
 
-  const getLastPairPrice = () => lastPairPrice
-
   return {
     lastPairPrice$,
-    getLastPairPrice,
+    getLastPairPrice: () => lastPairPrice
   }
 }

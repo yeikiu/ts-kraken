@@ -20,8 +20,8 @@ export const privateWSClient = webSocket({
 
 export const WSPrivateHeartbeat$ = privateWSClient.pipe(filter(({ event = null }) => event && event === 'heartbeat'))
 
-export function getPrivateSubscription(params: PrivateWS.Channels.ownTrades.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<PrivateWS.Channels.ownTrades.Payload>>
-export function getPrivateSubscription(params: PrivateWS.Channels.openOrders.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<PrivateWS.Channels.openOrders.Payload>>
+export function getPrivateSubscription (params: PrivateWS.Channels.ownTrades.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<PrivateWS.Channels.ownTrades.Payload>>
+export function getPrivateSubscription (params: PrivateWS.Channels.openOrders.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<PrivateWS.Channels.openOrders.Payload>>
 
 /**
  * Returns a rxjs-Observable connected to passed PRIVATE-WS channelName. You can (un)subscribe from this Observable just like with any rxjs's.
@@ -33,9 +33,9 @@ export function getPrivateSubscription(params: PrivateWS.Channels.openOrders.Sub
  *      - Finally, if injectedApiKeys are passed, a new token will be generated on-the-fly
  * @returns Observable<Payload>
  */
-export async function getPrivateSubscription(params: PrivateWS.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<unknown>> {
+export async function getPrivateSubscription (params: PrivateWS.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<unknown>> {
   const token = tokenOrKeys?.wsToken ?? await gethWsAuthToken({ ...tokenOrKeys })
-    
+
   return privateWSClient.multiplex(() => ({
     event: 'subscribe',
     subscription: {
@@ -43,21 +43,21 @@ export async function getPrivateSubscription(params: PrivateWS.Subscription, tok
       name: params.channelName,
       ...params['snapshot'] ? { snapshot: params['snapshot'] } : {},
       ...params['ratecounter'] ? { ratecounter: params['ratecounter'] } : {},
-    },
-    
+    }
+
   }), () => ({
     event: 'unsubscribe',
     subscription: {
       token,
-      name: params.channelName,
-    },
+      name: params.channelName
+    }
   }), (response): boolean => Array.isArray(response) && response.some(v => typeof v === 'string' && v.startsWith(params.channelName)))
 }
 
-export async function sendPrivateEvent(payload: PrivateWS.SendEvents.addOrder.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.addOrder.EventResponse>
-export async function sendPrivateEvent(payload: PrivateWS.SendEvents.cancelOrder.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.cancelOrder.EventResponse>
-export async function sendPrivateEvent(payload: PrivateWS.SendEvents.cancelAll.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.cancelAll.EventResponse>
-export async function sendPrivateEvent(payload: PrivateWS.SendEvents.cancelAllOrdersAfter.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.cancelAllOrdersAfter.EventResponse>
+export async function sendPrivateEvent (payload: PrivateWS.SendEvents.addOrder.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.addOrder.EventResponse>
+export async function sendPrivateEvent (payload: PrivateWS.SendEvents.cancelOrder.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.cancelOrder.EventResponse>
+export async function sendPrivateEvent (payload: PrivateWS.SendEvents.cancelAll.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.cancelAll.EventResponse>
+export async function sendPrivateEvent (payload: PrivateWS.SendEvents.cancelAllOrdersAfter.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.SendEvents.cancelAllOrdersAfter.EventResponse>
 
 /**
  * Sends a PRIVATE-WS event as a Promise
@@ -69,10 +69,10 @@ export async function sendPrivateEvent(payload: PrivateWS.SendEvents.cancelAllOr
  *      - Finally, if injectedApiKeys are passed, a new token will be generated on-the-fly.
  * @returns Promise<EventResponse>
  */
-export async function sendPrivateEvent(payload: PrivateWS.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.EventResponse> {
+export async function sendPrivateEvent (payload: PrivateWS.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.EventResponse> {
   const token = tokenOrKeys?.wsToken ?? await gethWsAuthToken({ ...tokenOrKeys })
   const { reqid: sendReqId, event: sendEvent } = payload
-    
+
   const [rawResponse] = await Promise.all([
     privateWSClient.pipe(
       filter(sendReqId ? ({ reqid }) => reqid === sendReqId : ({ event }) => event === `${sendEvent}Status`),
@@ -86,9 +86,9 @@ export async function sendPrivateEvent(payload: PrivateWS.SendEvent, tokenOrKeys
   ])
 
   const eventResponse = rawResponse as PrivateWS.EventResponse
-    
+
   if (eventResponse.status === 'error') {
-    throw new Error(JSON.stringify(eventResponse)) 
+    throw new Error(JSON.stringify(eventResponse))
   }
   return eventResponse
 }

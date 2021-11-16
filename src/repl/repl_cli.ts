@@ -1,7 +1,6 @@
 #!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { config } from 'dotenv'
-config()
-
 import repl from 'repl'
 import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
 import { Observable, Subscription } from 'rxjs'
@@ -9,15 +8,17 @@ import krakenHeader from './kraken_header'
 import { run } from 'node-jq'
 import { getPublicSubscription, getPrivateSubscription, publicRESTRequest, privateRESTRequest } from '..'
 
+config()
+
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env
 const wsSubscriptions: Map<string, Subscription> = new Map()
 const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/
 
 // TODO: extract to util imports
-const print = (content: unknown, asTable = false) => asTable ? console.table(content) : console.log(content)
+const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(content)
 
 // TODO: extract to util imports
-const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:string, jqFilter?: string, asTable?: boolean) => wsSubscription
+const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: string, jqFilter?: string, asTable?: boolean): Subscription => wsSubscription
   .subscribe({
     next: async payload => {
       if (jqFilter) {
@@ -34,7 +35,7 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName:st
       if (wsSubscriptions.delete(channelName)) {
         print(`${channelName} unsubscribed! Re-attempting subscription in 5 seconds...`)
       }
-      
+
       setTimeout(() => {
         const reSubscription = replSubscriptionHandler(wsSubscription, channelName, jqFilter, asTable)
         wsSubscriptions.set(channelName, reSubscription)
@@ -46,11 +47,11 @@ print(krakenHeader())
 const myRepl = repl.start('kraken-repl >> ');
 
 // Modify core methods (bit hacky, these are readonly)
-['save', 'load', 'editor', 'clear', 'break', 'exit'].forEach(c => delete (myRepl.commands  as any)[c])
+['save', 'load', 'editor', 'clear', 'break'].forEach(c => delete (myRepl.commands as any)[c])
 const coreMethods = Object.keys(myRepl.commands)
 const editedCoreMethods = coreMethods.reduce((p, c) => ({
   ...p,
-  [c]: { 
+  [c]: {
     ...myRepl.commands[c],
     help: `👉 ${myRepl.commands[c].help}\n---`
   }
@@ -94,10 +95,11 @@ myRepl.defineCommand('get', {
       const response = await publicRESTRequest({ url: endpoint, params } as any)
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
-        return print(jqResponse, asTable)
+        print(jqResponse, asTable)
+        return print('\nPress return to continue or control+c to exit...')
       }
       print(response, asTable)
-
+      print('\nPress return to continue or control+c to exit...')
     } catch (publicRESTerror) {
       console.error({ publicRESTerror })
     }
@@ -127,9 +129,11 @@ myRepl.defineCommand('post', {
       const response = await privateRESTRequest({ url: endpoint, data } as any, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET })
       if (jqFilter) {
         const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' })
-        return print(jqResponse, asTable)
+        print(jqResponse, asTable)
+        return print('\nPress return to continue or control+c to exit...')
       }
       print(response, asTable)
+      print('\nPress return to continue or control+c to exit...')
 
     } catch (privateRESTerror) {
       console.error({ privateRESTerror })
@@ -181,7 +185,7 @@ myRepl.defineCommand('privsub', {
     if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.') }
 
     print(`Subscribing to PRIVATE ${channelName} stream...`)
-    const subscription = await getPrivateSubscription({ 
+    const subscription = await getPrivateSubscription({
       channelName,
       ...snapshot ? { snapshot } : {},
       ...ratecounter ? { ratecounter } : {}
@@ -199,7 +203,7 @@ myRepl.defineCommand('unsub', {
 `,
 
   action: (subscriptionName: string) => {
-    if (!wsSubscriptions.get(subscriptionName)) { 
+    if (!wsSubscriptions.get(subscriptionName)) {
       return print(`No subscription available for ${subscriptionName} channel`)
     }
 

@@ -12,7 +12,7 @@ import type { IOrderSnapshot, RuntimeApiKeys, PrivateREST } from '../../../types
  * @param params - GetClosedOrdersParams
  * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
  * @returns Array<IOrderSnapshot>
- * 
+ *
  * @beta
  */
 export const getClosedOrders = async (params?: PrivateREST.Helpers.GetClosedOrdersParams, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
@@ -22,7 +22,7 @@ export const getClosedOrders = async (params?: PrivateREST.Helpers.GetClosedOrde
     ...closed[orderid],
     orderid, // injected for improved response usability
     avg_price: closed[orderid].price, // injected for consistency with WS openOrders payload
-    cancel_reason: closed[orderid].reason, // same as above
+    cancel_reason: closed[orderid].reason // same as above
   }) as IOrderSnapshot)
 }
 
@@ -31,15 +31,15 @@ export const getClosedOrders = async (params?: PrivateREST.Helpers.GetClosedOrde
  *
  * Helper method for: {@link https://docs.kraken.com/rest/#operation/getClosedOrders | getClosedOrders}
  *
- * 
+ *
  * @remarks
  * This method might run _extremely slow_ for accounts with many past orders
- * 
+ *
  * @param FindClosedOrderParam - { filterFn: Filter to apply on closed orders sequentyally until we find one; maxOffset: Max. number of orders to search for backwards }
  * @param data - GetClosedOrdersParams
  * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
  * @returns IOrderSnapshot
- * 
+ *
  * @beta
  */
 export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {} }: PrivateREST.Helpers.FindClosedOrderParam, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot | null> => {
@@ -57,9 +57,9 @@ export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {}
   // Delay exec. 1.5 seconds to avoid rate limits
   await timer(1500).pipe(take(1)).toPromise()
   const { ofs: lastOffset = 0 } = data ?? {}
-  return findClosedOrder({
+  return await findClosedOrder({
     orderFilter,
     maxOffset,
-    data: { ...data, ofs: closedOrders.length + lastOffset },
+    data: { ...data, ofs: closedOrders.length + lastOffset }
   }, injectedApiKeys)
 }
