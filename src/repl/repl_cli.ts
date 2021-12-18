@@ -6,7 +6,7 @@ import { parse } from 'qs' /* https://stackoverflow.com/a/9547490 */
 import { Observable, Subscription } from 'rxjs'
 import krakenHeader from './kraken_header'
 import { run } from 'node-jq'
-import { getPublicSubscription, getPrivateSubscription, publicRESTRequest, privateRESTRequest } from '..'
+import { getPublicSubscription, getPrivateSubscription, publicRESTRequest, privateRESTRequest, findClosedOrder, IOrderSnapshot, IOrderDescription } from '..'
 
 config()
 
@@ -227,6 +227,45 @@ myRepl.defineCommand('unsuball', {
         print(`${subscriptionName} unsubscribed!`)
       }
     })
+  }
+})
+
+myRepl.defineCommand('find', {
+  help: `👉 Finds the most recent closed order satisfying the filter (optional) within maxOffset range for given pair. Usage >> .find <pair> <orderMatchFilter?> <maxOffset=1000> <jqFilter?>
+
+          i.e. >> .find ADAETH descr[type]=buy 500 .descr.order
+`,
+
+  action: async (orderPairAndFilterStr: string) => {
+    const isSubset = (superObj, subObj) => {
+      return Object.keys(subObj).every(ele => {
+        if (typeof subObj[ele] == 'object') {
+          return isSubset(superObj[ele], subObj[ele]);
+        }
+        return subObj[ele] === superObj[ele]
+      });
+    };
+
+    const [pairStr, orderFilterStr, maxOffset = 1000, jqFilter] = orderPairAndFilterStr.split(' ')
+    const pair = pairStr.toUpperCase().replace('/', '')
+    const parsedFilter = parse(orderFilterStr ?? {})
+    const orderFilter: Partial<IOrderSnapshot> = { 
+      ...parsedFilter,
+      descr: { ...parsedFilter?.descr ?? {}, pair } as IOrderDescription
+    }
+    console.log({ orderFilter })
+    const matchingOrder = await findClosedOrder({
+      orderFilter: (o: Partial<IOrderSnapshot>) => isSubset(o, orderFilter),
+      maxOffset: Number(maxOffset),
+    })
+
+    if (jqFilter) {
+      const jqPayload = await run(jqFilter, matchingOrder, { input: 'json', output: 'json' })
+      /* The `.payload|` jq prefix helps with a strange node-jq bug where arrays
+      are printed as text to console by default even with `output: 'json'` */
+      return print(jqPayload)
+    }
+    print(matchingOrder)
   }
 })
 
