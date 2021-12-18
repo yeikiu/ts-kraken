@@ -79,7 +79,7 @@ npx ts-kraken
 ````
 <br />
 
-* **.find** _pair_ orderMatchFilter? maxOffset=1000 jqFilter?_
+* **.find** _pair orderMatchFilter? maxOffset=1000 jqFilter?_
 
 ````
 .find ADAETH descr[type]=buy 500 .descr.order
