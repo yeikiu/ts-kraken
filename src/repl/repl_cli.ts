@@ -246,6 +246,10 @@ myRepl.defineCommand('find', {
       });
     };
 
+    if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
+      return console.error('No API key/secret loaded!')
+    }
+
     const [pairStr, orderFilterStr, maxOffset = 1000, jqFilter] = orderPairAndFilterStr.split(' ')
     const pair = pairStr.toUpperCase().replace('/', '')
     const parsedFilter = parse(orderFilterStr ?? {})
