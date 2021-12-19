@@ -28,24 +28,20 @@
     - #### fix:
         - Added eslint auto-indentation
 
-
 - ### v3.0.7
 
     - #### feat:
         - Added `watchPairPrice` helper method
-
 
 - ### v3.0.6
 
     - #### fix:
         - Add some more assets aliases to `getPairBalances` REST helper
 
-
 - ### v3.0.5
 
     - #### feature:
         - `getSpreadStream` and `getTradesStream` WS Helpers
-
 
 - ### v3.0.4
 
@@ -53,12 +49,10 @@
         - rename `preinstall` npm script into `fix:audit`
         - README repl examples
 
-
 - ### v3.0.0
 
     - #### refactor:
         - Use only modules instead of namespaces
-
 
 - ### v2.0.0
 
@@ -67,7 +61,6 @@
 
     - #### refactor:
         - Project internal structure/naming
-
 
 - ### v1.0.0
 
