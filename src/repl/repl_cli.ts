@@ -239,12 +239,12 @@ myRepl.defineCommand('find', {
   action: async (orderPairAndFilterStr: string) => {
     const isSubset = (superObj, subObj) => {
       return Object.keys(subObj).every(ele => {
-        if (typeof subObj[ele] == 'object') {
-          return isSubset(superObj[ele], subObj[ele]);
+        if (typeof subObj[ele] === 'object') {
+          return isSubset(superObj[ele], subObj[ele])
         }
         return subObj[ele] === superObj[ele]
-      });
-    };
+      })
+    }
 
     if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
       return console.error('No API key/secret loaded!')
@@ -253,7 +253,7 @@ myRepl.defineCommand('find', {
     const [pairStr, orderFilterStr, maxOffset = 1000, jqFilter] = orderPairAndFilterStr.split(' ')
     const pair = pairStr.toUpperCase().replace('/', '')
     const parsedFilter = parse(orderFilterStr ?? {})
-    const orderFilter: Partial<IOrderSnapshot> = { 
+    const orderFilter: Partial<IOrderSnapshot> = {
       ...parsedFilter,
       descr: { ...parsedFilter?.descr ?? {}, pair } as IOrderDescription
     }
