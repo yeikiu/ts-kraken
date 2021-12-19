@@ -79,6 +79,12 @@ npx ts-kraken
 ````
 <br />
 
+* **.find** _pair orderMatchFilter? maxOffset=1000 jqFilter?_
+
+````
+.find ADAETH descr[type]=buy 500 .descr.order
+````
+
 * **.pubsub** PublicChannel _params? jqFilter? -table?_
 
 ````

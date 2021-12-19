@@ -1,4 +1,4 @@
-import { timer } from 'rxjs'
+import { lastValueFrom, timer } from 'rxjs'
 import { take } from 'rxjs/operators'
 import { privateRESTRequest } from '../../..'
 
@@ -55,7 +55,7 @@ export const findClosedOrder = async ({ orderFilter, maxOffset = 1000, data = {}
   }
 
   // Delay exec. 1.5 seconds to avoid rate limits
-  await timer(1500).pipe(take(1)).toPromise()
+  await lastValueFrom(timer(1500).pipe(take(1)))
   const { ofs: lastOffset = 0 } = data ?? {}
   return await findClosedOrder({
     orderFilter,

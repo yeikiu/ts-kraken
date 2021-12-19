@@ -2,6 +2,11 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.12
+
+    - #### feat:
+        - Added `.find` repl-cli method
+
 - ### v3.0.11
 
     - #### feat:
