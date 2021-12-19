@@ -13,7 +13,7 @@
 		"cli"
 	],
 	"author": "JQ",
-	"contributors": [],
+	"contributors": ["https://github.com/trasherdk"],
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/yeikiu/ts-kraken.git"
