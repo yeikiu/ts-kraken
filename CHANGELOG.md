@@ -2,6 +2,26 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.13
+
+    - #### chore:
+        - 🏁 Updated libs:
+
+            axios ^0.24.0 --> ^0.25.0
+            chalk ^4.1.2 --> ^5.0.0
+            dotenv ^10.0.0 --> ^14.3.0
+            qs ^6.10.2 --> ^6.10.3
+            rxjs ^7.4.0 --> ^7.5.2
+            ws ^8.3.0 --> ^8.4.2
+
+        - 🏁 Updated DEV-libs:
+
+            @types/node ^17.0.0 --> ^17.0.12
+            @typescript-eslint/eslint-plugin ^5.7.0 --> ^5.10.1
+            @typescript-eslint/parser ^5.7.0 --> ^5.10.1
+            eslint-plugin-import ^2.25.3 --> ^2.25.4
+            typescript ^4.5.4 --> ^4.5.5
+
 - ### v3.0.12
 
     - #### feat:
