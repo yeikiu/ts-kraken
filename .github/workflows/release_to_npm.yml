@@ -2,7 +2,7 @@ name: release_to_npm
 on:
   release:
     types:
-     - created
+     - published
 
 jobs:
 
