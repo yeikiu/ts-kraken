@@ -2,6 +2,11 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.15
+
+    - #### chore:
+        - fix: actions workflows
+
 - ### v3.0.14
 
     - #### chore:
