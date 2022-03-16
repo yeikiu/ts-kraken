@@ -1,7 +1,8 @@
 name: sync_badges
 on:
   push:
-    branches: [ master ]
+    branches:
+     - master
 
 jobs:
 

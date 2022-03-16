@@ -19,6 +19,7 @@
             @typescript-eslint/parser ^5.10.1 --> ^5.15.0
             ts-node ^10.4.0 --> ^10.7.0
             typescript ^4.5.5 --> ^4.6.2
+            
 - ### v3.0.13
 
     - #### chore:

@@ -1,7 +1,8 @@
 name: release_to_npm
 on:
   release:
-    types: [ created ]
+    types:
+     - created
 
 jobs:
 
