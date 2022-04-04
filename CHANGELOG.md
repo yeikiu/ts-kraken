@@ -2,6 +2,11 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.17
+
+    - #### chore:
+        - fix: audits
+
 - ### v3.0.16
 
     - #### chore:
