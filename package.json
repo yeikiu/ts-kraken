@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "3.0.16",
+	"version": "3.0.17",
 	"description": "A versatile unofficial ts-lib & node-repl-cli to operate against the Kraken Crypto Exchange",
 	"keywords": [
 		"kraken",
@@ -40,7 +40,7 @@
 		"sync:badges": "npx setup-gh-badges"
 	},
 	"resolutions": {
-		"ansi-regex": "^5.0.1"
+		"minimist": "^1.2.6"
 	},
 	"dependencies": {
 		"axios": "^0.26.1",
