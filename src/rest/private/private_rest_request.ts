@@ -70,10 +70,10 @@ export async function privateRESTRequest (params: { url: 'WithdrawStatus', data:
  *
  * @param params - { url: Endpoint; data: Request; }
  * @param { apiKey, apiSecret } - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
- * @returns Promise<Result>
+ * @returns Promise<PrivateREST.Result>
  */
-export async function privateRESTRequest (params: PrivateREST.Request, tokenOrKeys?: RuntimeApiKeys): Promise<PrivateREST.Result> {
-  const { apiKey, apiSecret } = tokenOrKeys ?? {}
+export async function privateRESTRequest (params: PrivateREST.Request, runtimeApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Result> {
+  const { apiKey, apiSecret } = runtimeApiKeys ?? {}
   const apiClient = (apiKey !== '' && apiSecret !== '') ? createPrivateRESTClient(apiKey, apiSecret) : defaultClient
   const { data: { result, error: privateRESTerror } } = await apiClient.request<PrivateREST.Response>(params)
   if (privateRESTerror?.length > 0) {
