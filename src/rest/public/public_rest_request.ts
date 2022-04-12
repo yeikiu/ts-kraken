@@ -20,7 +20,7 @@ export async function publicRESTRequest (req: { url: 'Trades', params: PublicRES
 /**
  * Request against PUBLIC-REST API
  *
- * @param params - { url: PublicREST.Endpoint; params: PublicREST.Request; }
+ * @param { url: PublicREST.Endpoint; params: PublicREST.Request; }
  * @returns Promise<PublicREST.Result>
  */
 export async function publicRESTRequest ({ url, params }: PublicREST.Request): Promise<PublicREST.Result> {
