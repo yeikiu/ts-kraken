@@ -43,7 +43,7 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: s
     }
   })
 
-print(krakenHeader())
+print(krakenHeader)
 const myRepl = repl.start('kraken-repl >> ');
 
 // Modify core methods (bit hacky, these are readonly)

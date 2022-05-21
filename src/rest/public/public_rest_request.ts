@@ -20,9 +20,8 @@ export async function publicRESTRequest (req: { url: 'Trades', params: PublicRES
 /**
  * Request against PUBLIC-REST API
  *
- * @param params - { url: PublicREST.Endpoint; params: PublicREST.Request; }
- * @param injectedApiKeys - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
- * @returns Promise<PrivateREST.Result>
+ * @param { url: PublicREST.Endpoint; params: PublicREST.Request; }
+ * @returns Promise<PublicREST.Result>
  */
 export async function publicRESTRequest ({ url, params }: PublicREST.Request): Promise<PublicREST.Result> {
   const { data: { result, error } } = await publicRESTClient.request<PublicREST.Response>({ url, params })

@@ -23,25 +23,29 @@ export {
   getPublicSubscription,
   onPublicWSClosed,
   WSPublicHeartbeat$,
+  /* PUBLIC WS HELPERS */
   getTickerStream,
   getSpreadStream,
   getTradesStream,
   watchPairPrice,
 
   /* PRIVATE WS */
-  gethWsAuthToken,
   getPrivateSubscription,
+  sendPrivateEvent,
   onPrivateWSClosed,
   WSPrivateHeartbeat$,
+  /* PRIVATE WS HELPERS */
   getOpenOrdersStream,
-  sendPrivateEvent,
 
   /* PUBLIC REST */
   publicRESTRequest,
+  /* PUBLIC REST HELPERS */
   getTicker,
 
   /* PRIVATE REST */
   privateRESTRequest,
+  /* PRIVATE REST HELPERS */
+  gethWsAuthToken,
   getPairBalances,
   getOpenOrders,
   getClosedOrders,
