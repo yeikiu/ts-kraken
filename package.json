@@ -33,37 +33,31 @@
 		"build": "npm run lint && rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"lint:warn": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\"",
-		"lint:standard": "ts-standard | grep -v strictNullChecks",
 		"watch": "nodemon",
 		"repl": "ts-node src/repl/repl_cli.ts",
-		"force:resolutions": "npm i && npx npm-force-resolutions && npm audit",
 		"sync:badges": "npx setup-gh-badges",
 		"zsh:bump:deps": "deps=$(jq '.dependencies|keys|join(\" \")' package.json | tr -d '\"'); npm uninstall $(echo $deps); npm i $(echo $deps);",
 		"zsh:bump:devDeps": "devDeps=$(jq '.devDependencies|keys|join(\" \")' package.json | tr -d '\"'); npm uninstall $(echo $devDeps); npm i --save-dev $(echo $devDeps);",
 		"zsh:bump:all": "npm run zsh:bump:devDeps && npm run zsh:bump:deps"
 	},
-	"resolutions": {
-		"minimist": "^1.2.6"
-	},
 	"dependencies": {
-		"axios": "^0.26.1",
+		"axios": "^0.27.2",
 		"chalk": "^4.1.2",
-		"dotenv": "^16.0.0",
+		"dotenv": "^16.0.1",
 		"node-jq": "^2.3.3",
 		"qs": "^6.10.3",
 		"rxjs": "^7.5.5",
-		"ws": "^8.5.0"
+		"ws": "^8.6.0"
 	},
 	"devDependencies": {
-		"@types/node": "^17.0.24",
-		"@typescript-eslint/eslint-plugin": "^5.19.0",
-		"@typescript-eslint/parser": "^5.19.0",
-		"eslint": "^7.32.0",
+		"@types/node": "^17.0.35",
+		"@typescript-eslint/eslint-plugin": "^5.25.0",
+		"@typescript-eslint/parser": "^5.25.0",
+		"eslint": "^8.16.0",
 		"eslint-plugin-import": "^2.26.0",
-		"nodemon": "^2.0.15",
+		"nodemon": "^2.0.16",
 		"rimraf": "^3.0.2",
-		"ts-node": "^10.7.0",
-		"ts-standard": "^11.0.0",
-		"typescript": "^4.6.3"
+		"ts-node": "^10.8.0",
+		"typescript": "^4.6.4"
 	}
 }
