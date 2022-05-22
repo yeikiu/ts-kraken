@@ -11,7 +11,7 @@ export type IAddOrder = {
     type: IAddOrderSide;
     volume: string;
     pair: string; // Asset pair id or altname
-    price: string;
+    price?: string;
     price2?: string;
     leverage?: string;
     oflags?: string;
