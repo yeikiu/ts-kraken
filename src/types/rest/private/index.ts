@@ -1,4 +1,4 @@
-import type { AddExport, AddOrder, CancelOrder, ClosedOrders, CancelAllOrdersAfter, DepositAddresses, DepositMethods, DepositStatus, ExportStatus, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradesHistory, TradeVolume, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus, Balance, CancelAll, GetWebSocketsToken } from './endpoints'
+import type { AddExport, AddOrder, CancelOrder, ClosedOrders, CancelAllOrdersAfter, DepositAddresses, DepositMethods, DepositStatus, ExportStatus, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradesHistory, TradeVolume, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus, Balance, CancelAll, GetWebSocketsToken, EditOrder } from './endpoints'
 
 export * as Endpoints from './endpoints'
 export * as Helpers from './helpers'
@@ -7,7 +7,7 @@ export type Endpoint =
     'AddExport' | 'AddOrder' | 'Balance' |
     'CancelAll' | 'CancelAllOrdersAfter' | 'CancelOrder' | 'ClosedOrders' |
     'DepositAddresses' | 'DepositMethods' | 'DepositStatus' |
-    'ExportStatus' | 'GetWebSocketsToken' | 'Ledgers' | 
+    'EditOrder' | 'ExportStatus' | 'GetWebSocketsToken' | 'Ledgers' | 
     'OpenOrders' | 'OpenPositions' |
     'QueryLedgers' | 'QueryOrders' | 'QueryTrades' |
     'RemoveExport' | 'RetrieveExport' |
@@ -17,7 +17,7 @@ export type Endpoint =
 export type Params = AddExport.Params | AddOrder.Params | 
     CancelAllOrdersAfter.Params | CancelOrder.Params | ClosedOrders.Params |
     DepositAddresses.Params | DepositMethods.Params | DepositStatus.Params |
-    ExportStatus.Params | Ledgers.Params |
+    EditOrder.Params | ExportStatus.Params | Ledgers.Params |
     OpenOrders.Params | OpenPositions.Params |
     QueryLedgers.Params | QueryOrders.Params | QueryTrades.Params |
     RemoveExport.Params | RetrieveExport.Params |
@@ -27,7 +27,7 @@ export type Params = AddExport.Params | AddOrder.Params |
 export type Response = AddExport.Response | AddOrder.Response | Balance.Response |
     CancelAll.Response | CancelAllOrdersAfter.Response | CancelOrder.Response | ClosedOrders.Response |
     DepositAddresses.Response | DepositMethods.Response | DepositStatus.Response |
-    ExportStatus.Response | GetWebSocketsToken.Response | Ledgers.Response |
+    EditOrder.Response | ExportStatus.Response | GetWebSocketsToken.Response | Ledgers.Response |
     OpenOrders.Response | OpenPositions.Response |
     QueryLedgers.Response | QueryOrders.Response | QueryTrades.Response |
     RemoveExport.Response | RetrieveExport.Response |
@@ -37,7 +37,7 @@ export type Response = AddExport.Response | AddOrder.Response | Balance.Response
 export type Result = AddExport.Result | AddOrder.Result | Balance.Result |
     CancelAll.Result | CancelAllOrdersAfter.Result | CancelOrder.Result | ClosedOrders.Result |
     DepositAddresses.Result | DepositMethods.Result | DepositStatus.Result |
-    ExportStatus.Result | GetWebSocketsToken.Result | Ledgers.Result |
+    EditOrder.Result | ExportStatus.Result | GetWebSocketsToken.Result | Ledgers.Result |
     OpenOrders.Result | OpenPositions.Result |
     QueryLedgers.Result | QueryOrders.Result | QueryTrades.Result |
     RemoveExport.Result | RetrieveExport.Result |

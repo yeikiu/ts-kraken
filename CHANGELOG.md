@@ -2,6 +2,11 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.21
+
+    - #### features:
+        - New REST `EditOrder` endpoint to edit volume and price on open orders
+
 - ### v3.0.17
 
     - #### chore:

@@ -1,5 +1,6 @@
 export * as AddExport from './endpoints/AddExport'
 export * as AddOrder from './endpoints/AddOrder'
+export * as EditOrder from './endpoints/EditOrder'
 export * as Balance from './endpoints/Balance'
 export * as CancelAll from './endpoints/CancelAll'
 export * as CancelAllOrdersAfter from './endpoints/CancelAllOrdersAfter'
