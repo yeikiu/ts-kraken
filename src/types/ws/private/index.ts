@@ -1,4 +1,4 @@
-import type { addOrder, cancelAll, cancelAllOrdersAfter, cancelOrder } from './send_events'
+import type { addOrder, cancelAll, cancelAllOrdersAfter, cancelOrder, editOrder } from './send_events'
 import type { openOrders, ownTrades } from './channels'
 import type { RuntimeApiKeys } from '../..'
 
@@ -19,16 +19,16 @@ export type Subscription = ownTrades.Subscription | openOrders.Subscription;
 
 export type Payload = ownTrades.Payload | openOrders.Payload;
 
-export type Event = 'addOrder' | 'cancelOrder' | 'cancelAll' | 'cancelAllOrdersAfter';
+export type Event = 'addOrder' | 'cancelOrder' | 'cancelAll' | 'cancelAllOrdersAfter' | 'editOrder';
 
 export type BaseEvent = {
     event: Event;
     reqid?: number;
 }
 
-export type SendEvent = addOrder.SendEvent | cancelOrder.SendEvent | cancelAll.SendEvent | cancelAllOrdersAfter.SendEvent;
+export type SendEvent = addOrder.SendEvent | cancelOrder.SendEvent | cancelAll.SendEvent | cancelAllOrdersAfter.SendEvent | editOrder.SendEvent;
 
-type EventStatus = 'addOrderStatus' | 'cancelOrderStatus' | 'cancelAllStatus' | 'cancelAllOrdersAfterStatus';
+type EventStatus = 'addOrderStatus' | 'cancelOrderStatus' | 'cancelAllStatus' | 'cancelAllOrdersAfterStatus' | 'editOrderStatus';
 export type BaseEventResponse = {
     reqid: number;
     event: EventStatus;
@@ -40,4 +40,4 @@ export type EventError = {
     status: 'error';
 }
 
-export type EventResponse = EventError | addOrder.EventResponse | cancelOrder.EventResponse | cancelAll.EventResponse | cancelAllOrdersAfter.EventResponse;
+export type EventResponse = EventError | addOrder.EventResponse | cancelOrder.EventResponse | cancelAll.EventResponse | cancelAllOrdersAfter.EventResponse | editOrder.EventResponse;
