@@ -5,8 +5,8 @@ import type { RESTResponse, RESTOrdersSnapshot } from '../../responses_rest'
 export type Params = {
     trades?: boolean;
     userref?: number;
-    start?: number;
-    end?: number;
+    start?: number | string;
+    end?: number | string;
     ofs?: number;
     closetime?: 'open' | 'close' | 'both';
 }

@@ -35,6 +35,7 @@ export type IOrderSnapshot = {
     price: string; // REST API ONLY - average price (cumulative; quote currency unless viqc set in oflags) - Injected to WS payload
     stopprice: string; // stop price (quote currency, for trailing stops)
     limitprice: string; // triggered limit price (quote currency, when limit based order type triggered)
+    trigger: 'last' | 'index'; // Price signal used to trigger stop-loss, stop-loss-limit, take-profit and take-profit-limit orders.
     misc: string; // comma delimited list of miscellaneous info: stopped=triggered by stop price, touched=triggered by touch price, liquidation=liquidation, partial=partial fill
     oflags: string; // Optional - comma delimited list of order flags. viqc = volume in quote currency (not currently available), fcib = prefer fee in base currency, fciq = prefer fee in quote currency, nompp = no market price protection, post = post only order (available when ordertype = limit)
     reason?: string; // REST API ONLY - Optional - cancel reason

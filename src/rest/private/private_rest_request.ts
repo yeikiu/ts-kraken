@@ -45,6 +45,7 @@ export async function privateRESTRequest (params: { url: 'ClosedOrders', data: P
 export async function privateRESTRequest (params: { url: 'DepositAddresses', data: PrivateREST.Endpoints.DepositAddresses.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.DepositAddresses.Result>
 export async function privateRESTRequest (params: { url: 'DepositMethods', data: PrivateREST.Endpoints.DepositMethods.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.DepositMethods.Result>
 export async function privateRESTRequest (params: { url: 'DepositStatus', data: PrivateREST.Endpoints.DepositStatus.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.DepositStatus.Result>
+export async function privateRESTRequest (params: { url: 'EditOrder', data: PrivateREST.Endpoints.EditOrder.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.EditOrder.Result>
 export async function privateRESTRequest (params: { url: 'ExportStatus', data: PrivateREST.Endpoints.ExportStatus.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.ExportStatus.Result>
 export async function privateRESTRequest (params: { url: 'GetWebSocketsToken' }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.GetWebSocketsToken.Result>
 export async function privateRESTRequest (params: { url: 'Ledgers', data?: PrivateREST.Endpoints.Ledgers.Params }, injectedApiKeys?: RuntimeApiKeys): Promise<PrivateREST.Endpoints.Ledgers.Result>
