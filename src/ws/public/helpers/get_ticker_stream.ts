@@ -32,20 +32,23 @@ export const getTickerStream = ({ baseAsset, quoteAsset }: GetPriceTickerParams)
 
   const { unsubscribe: priceTickerUnsubscribe } = priceTickerWS.pipe(
     filter(([, , channelName, receivedPair]) => receivedPair === pair && channelName === 'ticker')
-  ).subscribe(rawKrakenPayload => {
-    const [, { c: [price = null] }] = rawKrakenPayload
-    lastPrice$.next(price)
-    lastPrice = price
+  ).subscribe({
+    next: rawKrakenPayload => {
+      const [, { c: [price = null] }] = rawKrakenPayload
+      lastPrice$.next(price)
+      lastPrice = price
 
-    return priceTicker$.next({
-      utcTimestamp: new Date().getTime(),
-      pair,
-      price,
-      rawKrakenPayload
-    })
-  }, priceTickerStreamError => {
-    priceTicker$.error(priceTickerStreamError)
-    lastPrice$.error(priceTickerStreamError)
+      return priceTicker$.next({
+        utcTimestamp: new Date().getTime(),
+        pair,
+        price,
+        rawKrakenPayload
+      })
+    },
+    error: priceTickerStreamError => {
+      priceTicker$.error(priceTickerStreamError)
+      lastPrice$.error(priceTickerStreamError)
+    }
   })
 
   return {
