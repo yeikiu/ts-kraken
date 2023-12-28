@@ -7,4 +7,15 @@ export type Subscription = BaseSubscription & {
     depth?: ValidDepth
 }
 
-export type Payload = Array<unknown>
+export type Payload = [
+    number,
+    {
+        a: string[][],
+        b: string[][],
+        as: string[][],
+        bs: string[][],
+        c: string,
+    },
+    string,
+    string
+]

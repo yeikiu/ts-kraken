@@ -3,7 +3,7 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter, first, timeout } from 'rxjs/operators'
 import { lastValueFrom, Observable } from 'rxjs'
-import { gethWsAuthToken } from '../..'
+import { getWsAuthToken } from '../..'
 
 import type { PrivateWS } from '../../types'
 
@@ -34,7 +34,7 @@ export function getPrivateSubscription (params: PrivateWS.Channels.openOrders.Su
  * @returns Observable<Payload>
  */
 export async function getPrivateSubscription (params: PrivateWS.Subscription, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<Observable<unknown>> {
-  const token = tokenOrKeys?.wsToken ?? await gethWsAuthToken({ ...tokenOrKeys })
+  const token = tokenOrKeys?.wsToken ?? await getWsAuthToken({ ...tokenOrKeys })
 
   return privateWSClient.multiplex(() => ({
     event: 'subscribe',
@@ -70,7 +70,7 @@ export async function sendPrivateEvent (payload: PrivateWS.SendEvents.cancelAllO
  * @returns Promise<EventResponse>
  */
 export async function sendPrivateEvent (payload: PrivateWS.SendEvent, tokenOrKeys?: PrivateWS.TokenOrKeys): Promise<PrivateWS.EventResponse> {
-  const token = tokenOrKeys?.wsToken ?? await gethWsAuthToken({ ...tokenOrKeys })
+  const token = tokenOrKeys?.wsToken ?? await getWsAuthToken({ ...tokenOrKeys })
   const { reqid: sendReqId, event: sendEvent } = payload
 
   const [rawResponse] = await Promise.all([

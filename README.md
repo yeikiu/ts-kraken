@@ -166,7 +166,7 @@ cd dependant/project/path && npm i ts-kraken
 ## Demo playground snippet
 
 ````typescript
-import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream } from 'ts-kraken'
+import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream, getBookStream } from 'ts-kraken'
 
 const apiKeys = {
     /* 
@@ -194,6 +194,15 @@ const testTsKraken = async () => {
     openOrders$.subscribe(openOrdersSnapshot => {
         // Output all open orders any time an order status updates
         console.log({ openOrdersSnapshot })
+    })
+
+    const { bookSnapshot$ } = getBookStream({
+      baseAsset: 'ETH',       
+      quoteAsset: 'EUR',
+      depth: 10
+    })
+    bookSnapshot$.subscribe(({ asks, bids, checksum })=> {
+      console.log({ asks, bids, checksum })
     })
 }
 

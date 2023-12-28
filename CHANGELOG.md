@@ -2,6 +2,11 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v3.0.24
+
+    - #### features:
+        - New WS Helper `getBookStream` to track latest asks and bids
+
 - ### v3.0.21
 
     - #### features:
