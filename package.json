@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "3.0.24",
+	"version": "3.0.25",
 	"description": "A versatile unofficial ts-lib & node-repl-cli to operate against the Kraken Crypto Exchange",
 	"keywords": [
 		"kraken",
@@ -57,7 +57,7 @@
 		"dotenv": "^16.0.3",
 		"node-jq": "^4.2.2",
 		"qs": "^6.11.0",
-		"rxjs": "^7.5.7",
+		"rxjs": "^7.8.1",
 		"ws": "^8.10.0"
 	}
 }

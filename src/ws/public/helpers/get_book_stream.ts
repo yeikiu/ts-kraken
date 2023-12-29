@@ -21,7 +21,7 @@ interface GetBookStreamParams {
  *
  * @beta
  */
-export const getBookStream = ({ baseAsset, quoteAsset, depth }: GetBookStreamParams): PublicWS.Helpers.BookStream => {
+export const getBookStream = ({ baseAsset, quoteAsset, depth = 10 }: GetBookStreamParams): PublicWS.Helpers.BookStream => {
   const pair = `${baseAsset}/${quoteAsset}`.toUpperCase()
   const bookSnapshot$ = new ReplaySubject<IWSBookSnapshot>(1)
   let lastBook: IWSBookSnapshot = null
