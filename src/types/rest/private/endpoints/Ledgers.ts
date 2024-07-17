@@ -1,6 +1,8 @@
-import type { RESTResponse, RESTLedgerEntry } from '../../responses_rest'
+import type { RESTLedgerEntry } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getLedgers */
+
+export type Endpoint = 'Ledgers';
 
 export type Params = {
     asset?: string;
@@ -10,8 +12,6 @@ export type Params = {
     end?: number;
     ofs?: number;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     ledger: RESTLedgerEntry,

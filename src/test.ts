@@ -1,4 +1,4 @@
-import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream, getBookStream } from '.'
+import { publicRESTRequest/* , privateRESTRequest, getOpenOrdersStream */, getBookStream } from '.'
 
 const testTsKraken = async () => {
 
@@ -8,7 +8,7 @@ const testTsKraken = async () => {
   const ethTradingPairInfo = await publicRESTRequest({ url: 'AssetPairs', params: { pair: 'ETHEUR' }})
   console.log({ ethTradingPairInfo })
 
-  // Fetch balance from a different account injecting keys in runtime
+  /* // Fetch balance from a different account injecting keys in runtime
   const currentBalances = await privateRESTRequest({ url: 'Balance' })
   console.log({ currentBalances })
 
@@ -17,7 +17,7 @@ const testTsKraken = async () => {
   openOrders$.subscribe(openOrdersSnapshot => {
     // Output all open orders any time an order status updates
     console.log({ openOrdersSnapshot })
-  })
+  }) */
 
   const { bookSnapshot$ } = getBookStream({
     baseAsset: 'ETH',       

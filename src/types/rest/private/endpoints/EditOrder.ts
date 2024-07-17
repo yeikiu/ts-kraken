@@ -1,7 +1,6 @@
-import type { IAddOrder } from '../../../shared/add_order';
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/editOrder */
+
+export type Endpoint = 'EditOrder';
 
 export type Params = {
     userref?: number;
@@ -15,8 +14,6 @@ export type Params = {
     cancel_response?: boolean; // Used to interpret if client wants to receive pending replace, before the order is completely replaced
     validate?: boolean;
 };
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     txid: string;

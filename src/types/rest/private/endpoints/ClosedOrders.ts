@@ -1,6 +1,8 @@
-import type { RESTResponse, RESTOrdersSnapshot } from '../../responses_rest'
+import type { RESTOrdersSnapshot } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getClosedOrders */
+
+export type Endpoint = 'ClosedOrders';
 
 export type Params = {
     trades?: boolean;
@@ -10,8 +12,6 @@ export type Params = {
     ofs?: number;
     closetime?: 'open' | 'close' | 'both';
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     closed: RESTOrdersSnapshot

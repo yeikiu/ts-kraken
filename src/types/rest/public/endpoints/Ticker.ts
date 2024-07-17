@@ -1,10 +1,10 @@
-import type { RESTResponse } from '../../responses_rest'
+/* https://docs.kraken.com/rest/#tag/Spot-Market-Data/operation/getTickerInformation */
+
+export type Endpoint = 'Ticker';
 
 export type Params = {
     pair: string;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     [pair: string]: {

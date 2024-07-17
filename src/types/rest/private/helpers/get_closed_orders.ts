@@ -1,16 +1,8 @@
 import type { IOrderSnapshot } from "../../..";
-
-export type GetClosedOrdersParams = {
-    trades?: boolean;
-    userref?: number;
-    start?: number;
-    end?: number;
-    ofs?: number;
-    closetime?: 'open' | 'close' | 'both';
-};
+import { ClosedOrders } from "../endpoints";
 
 export type FindClosedOrderParam = {
     orderFilter: (f: Partial<IOrderSnapshot>) => boolean;
     maxOffset?: number;
-    data?: GetClosedOrdersParams
+    data?: ClosedOrders.Params
 }

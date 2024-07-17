@@ -1,18 +1,16 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/getTradableAssetPairs */
+
+export type Endpoint = 'AssetPairs';
 
 export type Params = {
     pair?: string; // Asset pairs to get data for. Example: pair=XXBTCZUSD,XETHXXBT
     info?: 'info' | 'leverage' | 'fees' | 'margin';
 }
 
-export type Response = RESTResponse<Result>
-
 export type Result = {
     [pair: string]: {
         altname: string;
-        wsnamw: string;
+        wsname: string;
         aclass_base: string;
         base: string;
         aclass_quote: string;

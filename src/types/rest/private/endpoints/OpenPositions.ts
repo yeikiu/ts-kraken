@@ -1,15 +1,14 @@
 import type { IOrderSide, IOrderType } from '../../..'
-import type { RESTResponse } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getOpenPositions */
+
+export type Endpoint = 'OpenPositions';
 
 export type Params = {
     txid?: string;
     docalcs?: boolean;
     consolidation?: 'market'
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {[txid: string]: {
     ordertxid: string;

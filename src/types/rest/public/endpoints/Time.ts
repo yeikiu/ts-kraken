@@ -1,6 +1,6 @@
-import type { RESTResponse } from '../../responses_rest'
+/* https://docs.kraken.com/rest/#tag/Spot-Market-Data/operation/getServerTime */
 
-export type Response = RESTResponse<Result>
+export type Endpoint = 'Time';
 
 export type Result = {
     unixtime: number;

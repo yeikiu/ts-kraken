@@ -1,12 +1,10 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/getTradeBalance */
+
+export type Endpoint = 'TradeBalance';
 
 export type Params = {
     asset?: string;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     eb: string;

@@ -1,4 +1,4 @@
-import type { IOrderSide, IOrderSnapshot, IOrderType } from '..'
+import type { IOrderSide, IOrderSnapshot, IOrderType } from '..';
 
 export type RESTResponse<T> = {
     error: string[];

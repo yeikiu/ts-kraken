@@ -1,12 +1,10 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/exportStatus */
+
+export type Endpoint = 'ExportStatus';
 
 export type Params = {
     report: 'trades' | 'ledgers';
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     id: string;
