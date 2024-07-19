@@ -1,6 +1,6 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/addExport */
+
+export type Endpoint = 'AddExport';
 
 export type Params = {
     report: 'trades' | 'ledgers';
@@ -12,8 +12,6 @@ export type Params = {
     starttm?: number;
     endtm?: number;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     id: string;

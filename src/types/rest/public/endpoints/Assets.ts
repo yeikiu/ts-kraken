@@ -1,13 +1,11 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/getAssetInfo */
+
+export type Endpoint = 'Assets';
 
 export type Params = {
     asset: string;
     aclass: string;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     [asset: string]: {

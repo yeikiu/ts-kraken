@@ -1,13 +1,11 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/getStatusRecentDeposits */
+
+export type Endpoint = 'DepositStatus';
 
 export type Params = {
     asset: string;
     method?: string;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     method: string;

@@ -1,6 +1,6 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/walletTransfer */
+
+export type Endpoint = 'WalletTransfer';
 
 export type Params = {
     asset: string;
@@ -8,8 +8,6 @@ export type Params = {
     to: 'Futures Wallet';
     amount: string;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     refid: string;

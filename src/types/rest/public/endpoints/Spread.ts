@@ -1,12 +1,12 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/getRecentSpreads */
+
+export type Endpoint = 'Spread';
 
 export type Params = {
     pair: string;
     since?: number;
 }
-export type Response = RESTResponse<Result>
+
 export type Result = {
     [pair: string]: [number, string, string][];
     

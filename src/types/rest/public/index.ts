@@ -1,34 +1,41 @@
-import type { AssetPairs, Assets, Depth, OHLC, Spread, Ticker, Trades, SystemStatus, Time } from './endpoints';
+import { RESTResponse } from '../responses_rest';
+import { AssetPairs, Assets, Depth, OHLC, Spread, SystemStatus, Ticker, Time, Trades } from './endpoints';
 
-export * as Endpoints from './endpoints'
+export type Endpoint = 
+    AssetPairs.Endpoint | 
+    Assets.Endpoint |
+    Depth.Endpoint | 
+    OHLC.Endpoint |
+    Spread.Endpoint |
+    SystemStatus.Endpoint |
+    Ticker.Endpoint | 
+    Time.Endpoint |
+    Trades.Endpoint;
 
-export type Endpoint =
-    'AssetPairs' | 'Assets' |
-    'Depth' | 'OHLC' |
-    'Spread' | 'SystemStatus' |
-    'Ticker' | 'Time' | 'Trades';
+export type Params<T extends Endpoint> =
+    T extends AssetPairs.Endpoint ? AssetPairs.Params :
+    T extends Assets.Endpoint ? Assets.Params :
+    T extends Depth.Endpoint ? Depth.Params :
+    T extends OHLC.Endpoint ? OHLC.Params :
+    T extends Spread.Endpoint ? Spread.Params :
+    T extends Ticker.Endpoint ? Ticker.Params :
+    T extends Trades.Endpoint ? Trades.Params : never;
 
-export type Params =
-    AssetPairs.Params | Assets.Params |
-    Depth.Params | OHLC.Params |
-    Spread.Params |
-    Ticker.Params | Trades.Params;
-
-export type Response = 
-    AssetPairs.Response | Assets.Response |
-    Depth.Response | OHLC.Response |
-    Spread.Response | SystemStatus.Response |
-    Ticker.Response | Time.Response | Trades.Response;
-    
-
-export type Result =
-    AssetPairs.Result |  Assets.Result |
-    Depth.Result | OHLC.Result |
-    Spread.Result | SystemStatus.Result |
-    Ticker.Result | Time.Result | Trades.Result; 
-
-export type Request = {
-    url: Endpoint;
+export type Request<T extends Endpoint> = {
+    url: T;
     method?: 'GET' | 'get';
-    params?: Params;
+    params?: Params<T>;
 }
+
+export type Result<T extends Endpoint> =
+    T extends AssetPairs.Endpoint ? AssetPairs.Result : 
+    T extends Assets.Endpoint ? Assets.Result :
+    T extends Depth.Endpoint ? Depth.Result :
+    T extends OHLC.Endpoint ? OHLC.Result :
+    T extends Spread.Endpoint ? Spread.Result :
+    T extends SystemStatus.Endpoint ? SystemStatus.Result :
+    T extends Ticker.Endpoint ? Ticker.Result :
+    T extends Time.Endpoint ? Time.Result :
+    T extends Trades.Endpoint ? Trades.Result : never;
+
+export type Response<T extends Endpoint> = RESTResponse<Result<T>>;

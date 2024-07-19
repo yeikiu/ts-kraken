@@ -1,6 +1,6 @@
-import type { RESTResponse } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/removeExport */
+
+export type Endpoint = 'RemoveExport';
 
 export type DeleteParams = {
     id: string;
@@ -13,9 +13,9 @@ export type CancelParams = {
 
 export type Params = DeleteParams | CancelParams;
 
-export type Response = RESTResponse<Result>
-
 export type DeleteResult = { delete: boolean };
 export type CancelResult = { cancel: boolean };
 
-export type Result = DeleteResult | CancelResult;
+export type Result<T extends Params> = 
+    T extends DeleteParams ? DeleteResult :
+    T extends CancelParams ? CancelResult : never;

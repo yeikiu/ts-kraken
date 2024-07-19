@@ -1,6 +1,8 @@
-import { RESTResponse, RESTTradesInfo } from '../../responses_rest'
+import { RESTTradesInfo } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getTradeHistory */
+
+export type Endpoint = 'TradesHistory';
 
 export type Params = {
     type?: 'all' | 'any position' | 'closed position' | 'closing position' | 'no position';
@@ -9,8 +11,6 @@ export type Params = {
     end?: number;
     ofs?: number;
 }
-
-export type Response = RESTResponse<Result>
 
 export type Result = {
     trades: RESTTradesInfo;
