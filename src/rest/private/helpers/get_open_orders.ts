@@ -1,7 +1,8 @@
-import { privateRESTRequest } from '../../..'
+import { privateRestRequest } from '../../..'
 
-import type { IOrderSnapshot, RuntimeApiKeys } from '../../../types'
+import type { IOrderSnapshot } from '../../../types'
 import { OpenOrders } from '../../../types/rest/private/endpoints'
+import { ApiCredentials } from '../../../types/ws/private'
 
 /**
  * Returns a nice array of current open orders
@@ -14,8 +15,8 @@ import { OpenOrders } from '../../../types/rest/private/endpoints'
  *
  * @beta
  */
-export const getOpenOrders = async (params?: OpenOrders.Params, injectedApiKeys?: RuntimeApiKeys): Promise<IOrderSnapshot[]> => {
-  const { open } = await privateRESTRequest({ url: 'OpenOrders', data: params }, injectedApiKeys)
+export const getOpenOrders = async (params?: OpenOrders.Params, injectedApiKeys?: ApiCredentials): Promise<IOrderSnapshot[]> => {
+  const { open } = await privateRestRequest({ url: 'OpenOrders', data: params }, injectedApiKeys)
   const openOrdersIds = Object.keys(open)
   return openOrdersIds.map(orderid => ({
     orderid, // injected for improved response usability

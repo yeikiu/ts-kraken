@@ -1,4 +1,4 @@
-import type { ValidOHLCInterval } from '../../..'
+import type { ValidOhlcInterval } from '../../..'
 
 /* https://docs.kraken.com/rest/#operation/getOHLCData */
 
@@ -6,7 +6,7 @@ export type Endpoint = 'OHLC';
 
 export type Params = {
     pair: string;
-    interval?: ValidOHLCInterval
+    interval?: ValidOhlcInterval
     since?: number; // Return committed OHLC data since given ID
 }
 

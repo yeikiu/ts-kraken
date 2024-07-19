@@ -1,15 +1,34 @@
-import type { ticker, ohlc, book, trade, spread } from './channels'
+import { Instruments, Ohlc, Ticker } from './channels';
+import { Ping } from './requests';
 
-export * as Channels from './channels'
-export * as Helpers from './helpers'
 
-export type Channel = 'ticker' | 'ohlc' | 'trade' | 'spread' | 'book'
+/* REQUESTS */
 
-export type BaseSubscription = {
-    channelName: Channel;
-    pair: string[];
-}
+export type PublicRequest = Ping.Request
 
-export type Subscription = ticker.Subscription | ohlc.Subscription | book.Subscription | trade.Subscription | spread.Subscription;
+export type PublicResponse<T extends PublicRequest> =
+    T extends Ping.Request ? Ping.Response : never;
 
-export type Payload = ticker.Payload | ohlc.Payload | book.Payload | trade.Payload | spread.Payload;
+
+/* CHANNELS */
+
+export type PublicSubscriptionChannel =
+    Instruments.Subscription['params']['channel'] |
+    Ticker.Subscription['params']['channel'] |
+    Ohlc.Subscription['params']['channel'];
+
+export type PublicSubscription<T extends PublicSubscriptionChannel> =
+    T extends Instruments.Subscription['params']['channel'] ? Instruments.Subscription :
+    T extends Ticker.Subscription['params']['channel'] ? Ticker.Subscription :
+    T extends Ohlc.Subscription['params']['channel'] ? Ohlc.Subscription : never;
+
+export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
+    T extends Instruments.Subscription['params']['channel'] ? Instruments.Update :
+    T extends Ticker.Subscription['params']['channel'] ? Ticker.Update :
+    T extends Ohlc.Subscription['params']['channel'] ? Ohlc.Update : never;
+
+type OmitChannel<T extends PublicSubscriptionChannel> = Omit<PublicSubscription<T>['params'], 'channel'>; 
+export type PublicSubscriptionParams<T extends PublicSubscriptionChannel> =
+    T extends Instruments.Subscription['params']['channel'] ? { params?: never } : 
+    T extends Ticker.Subscription['params']['channel'] ? { params: OmitChannel<T> } : 
+    T extends Ohlc.Subscription['params']['channel'] ? { params: OmitChannel<T> } : never

@@ -1,4 +1,4 @@
-import { RESTResponse } from '../responses_rest';
+import { RestResponse } from '../responses_rest';
 import { AssetPairs, Assets, Depth, OHLC, Spread, SystemStatus, Ticker, Time, Trades } from './endpoints';
 
 export type Endpoint = 
@@ -38,4 +38,4 @@ export type Result<T extends Endpoint> =
     T extends Time.Endpoint ? Time.Result :
     T extends Trades.Endpoint ? Trades.Result : never;
 
-export type Response<T extends Endpoint> = RESTResponse<Result<T>>;
+export type Response<T extends Endpoint> = RestResponse<Result<T>>;

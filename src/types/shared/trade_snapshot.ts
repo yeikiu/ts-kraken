@@ -2,7 +2,7 @@
     https://docs.kraken.com/websockets/#message-trade
 */
 
-export type IWSTradeSnapshot = {
+export type IWsTradeSnapshot = {
     lastTradeUTCts: number;
     lastTradeUTCDate: Date;
     side: 'buy' | 'sell';

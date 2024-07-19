@@ -1,4 +1,4 @@
-import type { RESTLedgerEntry } from '../../responses_rest'
+import type { RestLedgerEntry } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getLedgersInfo */
 
@@ -9,4 +9,4 @@ export type Params = {
     trades?: boolean;
 }
 
-export type Result = RESTLedgerEntry;
+export type Result = RestLedgerEntry;

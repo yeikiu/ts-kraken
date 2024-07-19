@@ -1,6 +1,6 @@
-import { publicRESTRequest } from '../public_rest_request'
+import { publicRestRequest } from '../public_rest_request'
 
-import type { IRESTPriceTicker } from '../../../types'
+import type { IRestPriceTicker } from '../../../types'
 
 /**
  * Returns a nice pair ticker
@@ -8,12 +8,12 @@ import type { IRESTPriceTicker } from '../../../types'
  * Helper method for: {@link https://docs.kraken.com/rest/#operation/getTickerInformation | getTickerInformation}
  *
  * @param pair - string
- * @returns IRESTPriceTicker
+ * @returns IRestPriceTicker
  *
  * @beta
  */
-export const getTicker = async (pair: string): Promise<IRESTPriceTicker> => {
-  const result = await publicRESTRequest({ url: 'Ticker', params: { pair } })
+export const getTicker = async (pair: string): Promise<IRestPriceTicker> => {
+  const result = await publicRestRequest({ url: 'Ticker', params: { pair } })
 
   const [pairKey] = Object.keys(result)
   const ticker = result[pairKey]

@@ -1,8 +1,8 @@
 import type { ReplaySubject } from "rxjs";
-import type { IWSBookSnapshot } from "../../..";
+import type { IWsBookSnapshot } from "../../..";
 
 export type BookStream = {
-    bookSnapshot$: ReplaySubject<IWSBookSnapshot>;
-    getLastBook: () => IWSBookSnapshot;
+    bookSnapshot$: ReplaySubject<IWsBookSnapshot>;
+    getLastBook: () => IWsBookSnapshot;
     bookStreamUnsubscribe: () => void;
 }

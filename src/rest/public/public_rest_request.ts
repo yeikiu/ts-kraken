@@ -1,21 +1,21 @@
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig } from '../axios_config'
 
-import type { PublicREST } from '../../types'
+import type { PublicRest } from '../../types'
 import { Endpoint } from '../../types/rest/public'
 
-const publicRESTClient: AxiosInstance = axios.create(krakenAxiosConfig)
-publicRESTClient.defaults.baseURL = `${publicRESTClient.defaults.baseURL}/public`
-publicRESTClient.defaults.method = 'GET'
+const publicRestClient: AxiosInstance = axios.create(krakenAxiosConfig)
+publicRestClient.defaults.baseURL = `${publicRestClient.defaults.baseURL}/public`
+publicRestClient.defaults.method = 'GET'
 
 /**
  * Request against PUBLIC-REST API
  *
- * @param { url: PublicREST.Endpoint; params: PublicREST.Request; }
- * @returns Promise<PublicREST.Result>
+ * @param { url: PublicRest.Endpoint; params: PublicRest.Request; }
+ * @returns Promise<PublicRest.Result>
  */
-export async function publicRESTRequest<E extends Endpoint>({ url, params }: PublicREST.Request<E>): Promise<PublicREST.Result<E>> {
-  const { data: { result, error } } = await publicRESTClient.request<PublicREST.Response<E>>({ url, params })
+export async function publicRestRequest<E extends Endpoint>({ url, params }: PublicRest.Request<E>): Promise<PublicRest.Result<E>> {
+  const { data: { result, error } } = await publicRestClient.request<PublicRest.Response<E>>({ url, params })
   if (error?.length > 0) {
     throw new Error(error?.join(' '))
   }

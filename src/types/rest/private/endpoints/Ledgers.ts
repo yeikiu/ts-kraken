@@ -1,4 +1,4 @@
-import type { RESTLedgerEntry } from '../../responses_rest'
+import type { RestLedgerEntry } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getLedgers */
 
@@ -14,6 +14,6 @@ export type Params = {
 }
 
 export type Result = {
-    ledger: RESTLedgerEntry,
+    ledger: RestLedgerEntry,
     count: number;
 }

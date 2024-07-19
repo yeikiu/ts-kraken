@@ -1,22 +1,23 @@
-import type { BaseSubscription } from '..'
+/* https://docs.kraken.com/api/docs/websocket-v2/ticker */
 
-export type Subscription = BaseSubscription & {
-    channelName: 'ticker';
+import { BaseSubscription, BaseUnsubscription } from "../../";
+
+export namespace Ticker {
+    export type Subscription = BaseSubscription<{
+        channel: "ticker";
+        symbol: string[];
+        event_trigger?: 'bbo' | 'trades';
+        snapshot?: boolean;
+    }>;
+
+    export type Unsubscription = BaseUnsubscription<{
+        channel: "ticker";
+        symbol: string[];
+    }>;
+
+    export type Update = {
+        channel: "ticker";
+        type: "snapshot" | "update";
+        data: any;
+    };
 }
-
-export type Payload = [
-    number,
-    {
-        a: [string, number, string],
-        b: [string, number, string],
-        c: [string, string],
-        v: [string, string],
-        p: [string, string],
-        t: [number, number],
-        l: [string, string],
-        h: [string, string],
-        o: [string, string]
-    },
-    string,
-    string
-]

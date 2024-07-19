@@ -1,6 +1,6 @@
-import { privateRESTRequest } from '../../..'
+import { privateRestRequest } from '../../..'
 
-import type { RuntimeApiKeys } from '../../../types'
+import { ApiCredentials } from '../../../types/ws/private'
 
 /**
  * Returns a valid token to use in our WS subscriptions and private requests
@@ -8,9 +8,9 @@ import type { RuntimeApiKeys } from '../../../types'
  * @param { apiKey, apiSecret } - <OPTIONAL> If not passed, process.env keys will be used to generate a token
  * @returns wsToken string
  */
-export const getWsAuthToken = async (injectedApiKeys?: RuntimeApiKeys): Promise<string> => {
+export const getWsAuthToken = async (injectedApiKeys?: ApiCredentials): Promise<string> => {
   try {
-    const { token } = await privateRESTRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {}
+    const { token } = await privateRestRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {}
     if (!token) {
       throw ({ code: 'CUSTOM_ERROR', message: 'no token received' })
     }

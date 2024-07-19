@@ -1,8 +1,8 @@
 import type { ReplaySubject } from "rxjs";
-import type { IWSPriceTicker } from "../../..";
+import type { IWsPriceTicker } from "../../..";
 
 export type TickerStream = {
-    priceTicker$: ReplaySubject<IWSPriceTicker>;
+    priceTicker$: ReplaySubject<IWsPriceTicker>;
     lastPrice$: ReplaySubject<string>;
     getLastPrice: () => string;
     priceTickerUnsubscribe: () => void;

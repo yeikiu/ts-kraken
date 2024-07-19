@@ -1,8 +1,8 @@
 import type { ReplaySubject } from "rxjs";
-import type { IWSSpreadSnapshot } from "../../..";
+import type { IWsSpreadSnapshot } from "../../..";
 
 export type SpreadStream = {
-    spreadSnapshot$: ReplaySubject<IWSSpreadSnapshot>;
-    getLastSpread: () => IWSSpreadSnapshot;
+    spreadSnapshot$: ReplaySubject<IWsSpreadSnapshot>;
+    getLastSpread: () => IWsSpreadSnapshot;
     spreadStreamUnsubscribe: () => void;
 }

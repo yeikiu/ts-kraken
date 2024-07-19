@@ -1,4 +1,4 @@
-import { RESTResponse } from '../responses_rest';
+import { RestResponse } from '../responses_rest';
 import { AddExport, AddOrder, Balance, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradesHistory, TradeVolume, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
 
 export type Endpoint =
@@ -98,4 +98,4 @@ export type Result<T extends Endpoint> =
     T extends WithdrawInfo.Endpoint ? WithdrawInfo.Result :
     T extends WithdrawStatus.Endpoint ? WithdrawStatus.Result : never;
 
-export type Response<T extends Endpoint> = RESTResponse<Result<T>>;
+export type Response<T extends Endpoint> = RestResponse<Result<T>>;

@@ -1,4 +1,4 @@
-import { RESTFeeTierInfo } from '../../responses_rest'
+import { RestFeeTierInfo } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getTradeVolume */
 
@@ -12,6 +12,6 @@ export type Params = {
 export type Result = {
     currency: string;
     volume: string;
-    fees: { [pair: string]: RESTFeeTierInfo };
-    fees_maker: { [pair: string]: RESTFeeTierInfo };
+    fees: { [pair: string]: RestFeeTierInfo };
+    fees_maker: { [pair: string]: RestFeeTierInfo };
 }

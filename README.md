@@ -166,7 +166,7 @@ cd dependant/project/path && npm i ts-kraken
 ## Demo playground snippet
 
 ````typescript
-import { publicRESTRequest, privateRESTRequest, getOpenOrdersStream, getBookStream } from 'ts-kraken'
+import { publicRestRequest, privateRestRequest, getOpenOrdersStream, getBookStream } from 'ts-kraken'
 
 const apiKeys = {
     /* 
@@ -179,14 +179,14 @@ const apiKeys = {
 
 const testTsKraken = async () => {
 
-    const allTradingPairs = await publicRESTRequest({ url: 'AssetPairs' })
+    const allTradingPairs = await publicRestRequest({ url: 'AssetPairs' })
     console.log(`Total trading pairs: ${Object.keys(allTradingPairs).length}`)
 
-    const ethTradingPairInfo = await publicRESTRequest({ url: 'AssetPairs', params: { pair: 'ETHEUR' }})
+    const ethTradingPairInfo = await publicRestRequest({ url: 'AssetPairs', params: { pair: 'ETHEUR' }})
     console.log({ ethTradingPairInfo })
 
     // Fetch balance from a different account injecting keys in runtime
-    const currentBalances = await privateRESTRequest({ url: 'Balance' }, apiKeys)
+    const currentBalances = await privateRestRequest({ url: 'Balance' }, apiKeys)
     console.log({ currentBalances })
 
     // Notice we are not passing an `apiKeys` param in the next private method, process.env ones will be used by default

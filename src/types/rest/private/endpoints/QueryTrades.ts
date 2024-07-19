@@ -1,4 +1,4 @@
-import type { RESTTradesInfo } from '../../responses_rest'
+import type { RestTradesInfo } from '../../responses_rest'
 
 /* https://docs.kraken.com/rest/#operation/getTradesInfo */
 
@@ -9,4 +9,4 @@ export type Params = {
     trades?: boolean;
 }
 
-export type Result = RESTTradesInfo
+export type Result = RestTradesInfo

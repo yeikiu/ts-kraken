@@ -1,11 +1,11 @@
 import type { IOrderSide, IOrderSnapshot, IOrderType } from '..';
 
-export type RESTResponse<T> = {
+export type RestResponse<T> = {
     error: string[];
     result: T;
 }
 
-export type RESTOrdersSnapshot = {
+export type RestOrdersSnapshot = {
     [txid: string]:
         Omit<IOrderSnapshot, 'orderid'> &
         Omit<IOrderSnapshot, 'avg_price'> &
@@ -13,7 +13,7 @@ export type RESTOrdersSnapshot = {
         Omit<IOrderSnapshot, 'ratecount'>;
 }
 
-export type RESTTradesInfo = {[ordertxid: string]: {
+export type RestTradesInfo = {[ordertxid: string]: {
     pair: string;
     time: number;
     type: IOrderSide;
@@ -34,7 +34,7 @@ export type RESTTradesInfo = {[ordertxid: string]: {
     trades: string[];
 }}
 
-export type RESTLedgerEntry = {[ledger_id: string]: {
+export type RestLedgerEntry = {[ledger_id: string]: {
     refid: string;
     time: number;
     type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
@@ -46,7 +46,7 @@ export type RESTLedgerEntry = {[ledger_id: string]: {
     balance: string;
 }}
 
-export type RESTFeeTierInfo = {
+export type RestFeeTierInfo = {
     fee: string;
     minfee: string;
     maxfee: string;

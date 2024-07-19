@@ -1,43 +1,34 @@
-import type { addOrder, cancelAll, cancelAllOrdersAfter, cancelOrder, editOrder } from './send_events'
-import type { openOrders, ownTrades } from './channels'
-import type { RuntimeApiKeys } from '../..'
+import { Balances } from "./channels/balances";
+import { AddOrder } from "./requests/addOrder";
 
-export * as Channels from './channels'
-export * as SendEvents from './send_events'
-export * as Helpers from './helpers'
+export { OpenOrdersStream } from './helpers/open_orders_stream'
 
-export type Channel =
-    'ownTrades' | 'openOrders' | 'addOrder'
+export type ApiToken = string;
+export type ApiCredentials = {
+    apiKey: string;
+    apiSecret: string;
+};
 
-export type BaseSubscription = {
-    channelName: Channel;
-}
 
-export type TokenOrKeys = RuntimeApiKeys & { wsToken?: string; };
+/* REQUESTS */
 
-export type Subscription = ownTrades.Subscription | openOrders.Subscription;
+export type PrivateRequest = AddOrder.Request
 
-export type Payload = ownTrades.Payload | openOrders.Payload;
+export type PrivateResponse<T extends PrivateRequest> =
+    T extends AddOrder.Request ? AddOrder.Response : never;
 
-export type Event = 'addOrder' | 'cancelOrder' | 'cancelAll' | 'cancelAllOrdersAfter' | 'editOrder';
 
-export type BaseEvent = {
-    event: Event;
-    reqid?: number;
-}
+/* CHANNELS */
 
-export type SendEvent = addOrder.SendEvent | cancelOrder.SendEvent | cancelAll.SendEvent | cancelAllOrdersAfter.SendEvent | editOrder.SendEvent;
+export type PrivateSubscriptionChannel =
+    Balances.Subscription['params']['channel'];
 
-type EventStatus = 'addOrderStatus' | 'cancelOrderStatus' | 'cancelAllStatus' | 'cancelAllOrdersAfterStatus' | 'editOrderStatus';
-export type BaseEventResponse = {
-    reqid: number;
-    event: EventStatus;
-    status: 'ok';
-}
-export type EventError = {
-    errorMessage: string;
-    event: EventStatus;
-    status: 'error';
-}
+export type PrivateSubscription<T extends PrivateSubscriptionChannel> =
+    T extends Balances.Subscription['params']['channel'] ? Balances.Subscription : never;
 
-export type EventResponse = EventError | addOrder.EventResponse | cancelOrder.EventResponse | cancelAll.EventResponse | cancelAllOrdersAfter.EventResponse | editOrder.EventResponse;
+export type PrivateSubscriptionUpdate<T extends PrivateSubscriptionChannel> =
+    T extends Balances.Subscription['params']['channel'] ? Balances.Update : never;
+
+type OmitChannel<T extends PrivateSubscriptionChannel> = Omit<PrivateSubscription<T>['params'], 'channel'>; 
+export type PrivateSubscriptionParams<T extends PrivateSubscriptionChannel> =
+    T extends Balances.Subscription['params']['channel'] ? { params: OmitChannel<T> } : never
