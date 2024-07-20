@@ -5,7 +5,7 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter, first, timeout } from 'rxjs/operators'
 import { Observable, lastValueFrom } from 'rxjs'
-import { getWsAuthToken } from '../rest/private/helpers'
+import { getWsAuthToken } from '../../rest/private'
 import { Heartbeat, Status } from '$types/ws/public/channels'
 import { ApiCredentials, ApiToken, PrivateRequest, PrivateResponse, PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate } from '$types/ws/private'
 
