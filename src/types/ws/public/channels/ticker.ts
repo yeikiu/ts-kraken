@@ -5,9 +5,9 @@ import { BaseSubscription, BaseUnsubscription } from "../../";
 export namespace Ticker {
     export type Subscription = BaseSubscription<{
         channel: "ticker";
+        snapshot?: boolean;
         symbol: string[];
         event_trigger?: 'bbo' | 'trades';
-        snapshot?: boolean;
     }>;
 
     export type Unsubscription = BaseUnsubscription<{
@@ -18,6 +18,19 @@ export namespace Ticker {
     export type Update = {
         channel: "ticker";
         type: "snapshot" | "update";
-        data: any;
+        data: [{
+            symbol: string;
+            ask: number;
+            ask_qty: number;
+            bid: number;
+            bid_qty: number;
+            change: number;
+            change_pct: number;
+            high: number;
+            last: number;
+            low: number;
+            volume: number;
+            vwap: number;
+        }];
     };
 }

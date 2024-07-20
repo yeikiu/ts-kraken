@@ -38,26 +38,29 @@ const testTsKraken = async () => {
     req_id: 1
   }).then(eventResponse => console.log({ eventResponse })) */
 
-  /* const sub = getPublicSubscription({
-    channel: 'ohlc',
+  /* const publicSub = getPublicSubscription({
+    channel: 'book',
     params: {
       symbol: ['ETH/USD'],
-      interval: 1,
     },
     req_id: 2
   });
-  sub.subscribe(subUpdate => console.log({ subUpdate })) */
+  publicSub.subscribe(({ data: [{bids, asks}] }) => console.log({ bids, asks })) */
 
   /* const token = await getWsAuthToken();
   console.log({token}) */
-  const privateSub = await getPrivateSubscription({
+  /* const privateSub = await getPrivateSubscription({
     channel: 'balances',
     req_id: 2,
     params: {
       snapshot: true
     }
   });
-  privateSub.subscribe(({ data }) => console.log({ data }))
+  privateSub.subscribe(({ data: privateData }) => console.log({ privateData })) */
+  sendPrivateEvent({
+    method: 'cancel_all',
+    req_id: 1,
+  }).then(eventResponse => console.log({ eventResponse }))
 }
 
 testTsKraken()

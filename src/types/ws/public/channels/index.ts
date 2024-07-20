@@ -1,13 +1,8 @@
 /* Admin */
 
-/* https://docs.kraken.com/api/docs/websocket-v2/heartbeat */
-export namespace Heartbeat {
-  export type Update = {
-    channel: "heartbeat";
-  };
-}
 
 /* https://docs.kraken.com/api/docs/websocket-v2/status */
+
 export namespace Status {
   export type Update = {
     channel: 'status';
@@ -24,8 +19,19 @@ export namespace Status {
 }
 
 
+/* https://docs.kraken.com/api/docs/websocket-v2/heartbeat */
+
+export namespace Heartbeat {
+  export type Update = {
+    channel: "heartbeat";
+  };
+}
+
+
 /* Market Data */
 
-export { Instruments } from './instruments'
 export { Ticker } from './ticker'
+export { Book } from './book'
 export { Ohlc } from './ohlc'
+export { Trades as Trade } from './trades'
+export { Instruments } from './instruments'

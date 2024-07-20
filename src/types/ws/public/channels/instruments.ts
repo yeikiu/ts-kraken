@@ -1,10 +1,11 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/instrument */
 
-import { BaseSubscription, BaseUnsubscription } from "../../";
+import { BaseSubscription, BaseUnsubscription } from "../..";
 
 export namespace Instruments {
   export type Subscription = BaseSubscription<{
     channel: "instrument";
+    snapshot?: boolean;
   }>;
 
   export type Unsubscription = BaseUnsubscription<{
@@ -17,35 +18,32 @@ export namespace Instruments {
     data: [
       {
         assets: {
-          id: string;
-          status: "depositonly" | "disabled" | "enabled" | "fundingtemporarilydisabled" | "withdrawalonly" | "workinprogress",
-          precision: number;
-          precision_display: 2,
           borrowable: boolean;
           collateral_value: number;
+          id: string;
           margin_rate: number;
+          precision: number;
+          precision_display: 2;
+          status: "depositonly" | "disabled" | "enabled" | "fundingtemporarilydisabled" | "withdrawalonly" | "workinprogress";
         }[],
         pairs: {
-          symbol: string;
           base: string;
           quote: string;
-          status: "cancel_only" | "delisted" | "limit_only" | "maintenance" | "online" | "post_only" | "reduce_only" | "work_in_progress";
-          qty_precision: number;
-          qty_increment: number;
-          price_precision: number;
-          cost_precision: number;
-          has_index: true,
           cost_min: number;
-          price_increment: number;
-          qty_min: number;
-        } & ({
-          marginable: false;
-        } | {
-          marginable: true;
+          cost_precision: number;
+          has_index: true;
           margin_initial: number;
+          marginable: boolean;
           position_limit_long: number;
           position_limit_short: number;
-        })[],
+          price_increment: number;
+          price_precision: number;
+          qty_increment: number;
+          qty_min: number;
+          qty_precision: number;
+          status: "cancel_only" | "delisted" | "limit_only" | "maintenance" | "online" | "post_only" | "reduce_only" | "work_in_progress";
+          symbol: string;
+        }[],
       }
     ];
   };
