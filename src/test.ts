@@ -3,7 +3,9 @@ config();
 
 import { PublicRest } from '.';
 
-PublicRest.publicRestRequest({ url: 'AssetPairs', params: { pair: 'BTC/USD,ETH/BTC' } })
-    .then((assetPairs) => {
-        console.log({ assetPairs })
-    })
+PublicRest.getTickers('BTCUSD,ETHEUR').then(([btcTicker, ethTicker]) => {
+    const { price: btcUsdPrice } = btcTicker;
+    const { price: ethEurPrice } = ethTicker;
+
+    console.log({ btcUsdPrice, ethEurPrice });
+});

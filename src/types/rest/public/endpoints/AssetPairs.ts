@@ -5,9 +5,9 @@
  * ```ts 
     import { PublicRest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'SystemStatus' })
-        .then(({ status, timestamp }) => {
-            console.log({ status, timestamp })
+    PublicRest.publicRestRequest({ url: 'AssetPairs', params: { pair: 'BTC/USD,ETH/BTC' } })
+        .then((assetPairs) => {
+            console.log({ assetPairs })
         })
  * ```
  */
