@@ -1,10 +1,9 @@
 import { config } from 'dotenv';
 config();
 
-// import * as testLib from '.'
+import { PublicRest } from '.';
 
-const testTsKraken = async () => {
-    
-};
-
-testTsKraken();
+PublicRest.publicRestRequest({ url: 'AssetPairs', params: { pair: 'BTC/USD,ETH/BTC' } })
+    .then((assetPairs) => {
+        console.log({ assetPairs })
+    })

@@ -1,12 +1,26 @@
-/* https://docs.kraken.com/rest/#operation/getTradableAssetPairs */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-tradable-asset-pairs | Get Tradable Asset Pairs}
+ * 
+ * @example
+ * ```ts 
+    import { PublicRest } from 'ts-kraken';
 
+    PublicRest.publicRestRequest({ url: 'SystemStatus' })
+        .then(({ status, timestamp }) => {
+            console.log({ status, timestamp })
+        })
+ * ```
+ */
 export type Endpoint = 'AssetPairs';
 
+/** {@inheritDoc Endpoint} */
 export type Params = {
     pair?: string; // Asset pairs to get data for. Example: pair=XXBTCZUSD,XETHXXBT
     info?: 'info' | 'leverage' | 'fees' | 'margin';
+    country_code?: string;
 }
 
+/** {@inheritDoc Endpoint} */
 export type Result = {
     [pair: string]: {
         altname: string;
@@ -16,6 +30,7 @@ export type Result = {
         aclass_quote: string;
         quote: string;
         pair_decimals: number;
+        cost_decimals: number;
         lot_decimals: number;
         lot_multiplier: number;
         leverage_buy: number[];
@@ -26,5 +41,10 @@ export type Result = {
         margin_call: number;
         margin_stop: number;
         ordermin: string;
+        costmin: string;
+        tick_size: string;
+        status: 'online' | 'cancel_only' | 'post_only' | 'limit_only' | 'reduce_only';
+        long_position_limit: number;
+        short_position_limit: number;
     }
 }
