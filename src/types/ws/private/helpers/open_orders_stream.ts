@@ -1,6 +1,6 @@
-import type { ReplaySubject, Subject } from "rxjs";
+import type { ReplaySubject, Subject } from 'rxjs';
 
-import type { IOrderSnapshot } from "../../..";
+import type { IOrderSnapshot } from '$types';
 
 export type OpenOrdersStream = {
     openOrders$: ReplaySubject<IOrderSnapshot[]>;

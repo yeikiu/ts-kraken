@@ -2,7 +2,7 @@
 
 export namespace CancelOnDisconnect {
     export type Request = {
-        method: "cancel_all_orders_after";
+        method: 'cancel_all_orders_after';
         req_id: number;
         params: {
             timeout: number;
@@ -10,7 +10,7 @@ export namespace CancelOnDisconnect {
     }
 
     export type Response = {
-        method: "cancel_all_orders_after";
+        method: 'cancel_all_orders_after';
         req_id: number;
         result: {
             currentTime: string;

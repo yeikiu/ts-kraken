@@ -2,14 +2,14 @@
 
 export namespace EditOrder {
   export type Request = {
-    method: "edit_order";
+    method: 'edit_order';
     req_id: number;
     params: {
       order_id: string;
       symbol: string;
       deadline?: string;
       display_qty?: number;
-      fee_preference?: "base" | "quote";
+      fee_preference?: 'base' | 'quote';
       limit_price?: number;
       no_mpp?: boolean;
       order_qty: number;
@@ -26,7 +26,7 @@ export namespace EditOrder {
   }
 
   export type Response = {
-    method: "edit_order";
+    method: 'edit_order';
     req_id: number;
     result: {
       order_id: string;

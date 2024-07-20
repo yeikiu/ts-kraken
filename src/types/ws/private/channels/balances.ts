@@ -1,18 +1,18 @@
-import { BaseSubscription, BaseUnsubscription } from "../../";
+import { BaseSubscription, BaseUnsubscription } from '../../';
 
 export namespace Balances {
   export type Subscription = BaseSubscription<{
-    channel: "balances";
+    channel: 'balances';
     snapshot?: boolean;
   }>;
 
   export type Unsubscription = BaseUnsubscription<{
-    channel: "balances";
+    channel: 'balances';
   }>;
 
   export type Update = {
-    channel: "balances";
-    type: "snapshot";
+    channel: 'balances';
+    type: 'snapshot';
     data: {
       asset: string;
       asset_class: string;
@@ -24,8 +24,8 @@ export namespace Balances {
       }[];
     };
   } | {
-    channel: "balances";
-    type: "update";
+    channel: 'balances';
+    type: 'update';
     data: {
       asset: string;
       asset_class: string;

@@ -2,7 +2,7 @@
 
 export namespace AddOrder {
   export type Request = {
-    method: "add_order";
+    method: 'add_order';
     req_id: number;
     params: {
       order_type: 'limit' | 'market' | 'iceberg' | 'stop-loss' | 'stop-loss-limit' | 'take-profit' | 'take-profit-limit' | 'trailing-stop' | 'trailing-stop-limit' | 'settle-position';
@@ -21,7 +21,7 @@ export namespace AddOrder {
       cl_ord_id?: string;
       order_userref?: number;
       display_qty?: number;
-      fee_preference?: "base" | "quote";
+      fee_preference?: 'base' | 'quote';
       no_mpp?: boolean;
       stp_type?: 'cancel_newest' | 'cancel_oldest' | 'cancel_both';
       cash_order_qty?: number;
@@ -43,7 +43,7 @@ export namespace AddOrder {
   }
 
   export type Response = {
-    method: "add_order";
+    method: 'add_order';
     req_id: number;
     result: {
       order_id: string;

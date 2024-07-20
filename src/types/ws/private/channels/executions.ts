@@ -1,10 +1,10 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/executions */
 
-import { BaseSubscription, BaseUnsubscription } from "../..";
+import { BaseSubscription, BaseUnsubscription } from '../..';
 
 export namespace Executions {
     export type Subscription = BaseSubscription<{
-        channel: "executions";
+        channel: 'executions';
         snap_trades?: boolean;
         snap_orders?: boolean;
         order_status?: boolean;
@@ -12,12 +12,12 @@ export namespace Executions {
     }>;
 
     export type Unsubscription = BaseUnsubscription<{
-        channel: "executions";
+        channel: 'executions';
     }>;
 
     export type Update = {
-        channel: "executions";
-        type: "snapshot" | "update";
+        channel: 'executions';
+        type: 'snapshot' | 'update';
         data: {
             avg_price: number;
             cash_order_qty: number;

@@ -2,7 +2,7 @@
 
 export namespace CancelOrder {
   export type Request = {
-    method: "cancel_order";
+    method: 'cancel_order';
     req_id: number;
     params: {
       order_id?: string[];
@@ -12,7 +12,7 @@ export namespace CancelOrder {
   }
 
   export type Response = {
-    method: "cancel_order";
+    method: 'cancel_order';
     req_id: number;
     result: {
       order_id: string;

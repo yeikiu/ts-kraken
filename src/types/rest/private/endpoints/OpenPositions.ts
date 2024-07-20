@@ -1,4 +1,4 @@
-import type { IOrderSide, IOrderType } from '../../..'
+import type { IOrderSide, IOrderType } from '$types'
 
 /* https://docs.kraken.com/rest/#operation/getOpenPositions */
 

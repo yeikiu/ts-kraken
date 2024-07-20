@@ -1,5 +1,5 @@
 import { Book, Instruments, Ohlc, Ticker, Trade } from './channels';
-import { Ping } from './requests';
+import { Ping } from './requests/ping';
 
 
 /* REQUESTS */

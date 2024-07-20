@@ -1,20 +1,20 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/instrument */
 
-import { BaseSubscription, BaseUnsubscription } from "../..";
+import { BaseSubscription, BaseUnsubscription } from '../..';
 
 export namespace Instruments {
   export type Subscription = BaseSubscription<{
-    channel: "instrument";
+    channel: 'instrument';
     snapshot?: boolean;
   }>;
 
   export type Unsubscription = BaseUnsubscription<{
-    channel: "instrument";
+    channel: 'instrument';
   }>;
 
   export type Update = {
-    channel: "instrument";
-    type: "snapshot" | "update";
+    channel: 'instrument';
+    type: 'snapshot' | 'update';
     data: [
       {
         assets: {
@@ -24,7 +24,7 @@ export namespace Instruments {
           margin_rate: number;
           precision: number;
           precision_display: 2;
-          status: "depositonly" | "disabled" | "enabled" | "fundingtemporarilydisabled" | "withdrawalonly" | "workinprogress";
+          status: 'depositonly' | 'disabled' | 'enabled' | 'fundingtemporarilydisabled' | 'withdrawalonly' | 'workinprogress';
         }[],
         pairs: {
           base: string;
@@ -41,7 +41,7 @@ export namespace Instruments {
           qty_increment: number;
           qty_min: number;
           qty_precision: number;
-          status: "cancel_only" | "delisted" | "limit_only" | "maintenance" | "online" | "post_only" | "reduce_only" | "work_in_progress";
+          status: 'cancel_only' | 'delisted' | 'limit_only' | 'maintenance' | 'online' | 'post_only' | 'reduce_only' | 'work_in_progress';
           symbol: string;
         }[],
       }

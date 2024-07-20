@@ -1,4 +1,4 @@
-import type { ReplaySubject } from "rxjs";
+import type { ReplaySubject } from 'rxjs';
 
 export type WatchPairPrice = {
     lastPairPrice$: ReplaySubject<string>;

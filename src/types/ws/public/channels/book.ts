@@ -1,24 +1,24 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/book */
 
-import { BaseSubscription, BaseUnsubscription } from "../../";
+import { BaseSubscription, BaseUnsubscription } from '../../';
 
 export namespace Book {
     export type Subscription = BaseSubscription<{
-        channel: "book";
+        channel: 'book';
         snapshot?: boolean;
         symbol: string[];
         depth?: 10 | 25 | 100 | 500 | 1000;
     }>;
 
     export type Unsubscription = BaseUnsubscription<{
-        channel: "book";
+        channel: 'book';
         symbol: string[];
         depth?: 10 | 25 | 100 | 500 | 1000;
     }>;
 
     export type Update = {
-        channel: "book";
-        type: "snapshot" | "update";
+        channel: 'book';
+        type: 'snapshot' | 'update';
         data: [{
             symbol: string;
             bids: {

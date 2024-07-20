@@ -1,13 +1,13 @@
-import { Balances } from "./channels/balances";
-import { Executions } from "./channels/executions";
-import { Orders } from "./channels/orders";
-import { AddOrder } from "./requests/add_order";
-import { BatchAdd } from "./requests/batch_add";
-import { BatchCancel } from "./requests/batch_cancel";
-import { CancelAll } from "./requests/cancel_all";
-import { CancelOnDisconnect } from "./requests/cancel_all_orders_after";
-import { CancelOrder } from "./requests/cancel_order";
-import { EditOrder } from "./requests/edit_order";
+import { Balances } from './channels/balances';
+import { Executions } from './channels/executions';
+import { Orders } from './channels/orders';
+import { AddOrder } from './requests/add_order';
+import { BatchAdd } from './requests/batch_add';
+import { BatchCancel } from './requests/batch_cancel';
+import { CancelAll } from './requests/cancel_all';
+import { CancelOnDisconnect } from './requests/cancel_all_orders_after';
+import { CancelOrder } from './requests/cancel_order';
+import { EditOrder } from './requests/edit_order';
 
 export { OpenOrdersStream } from './helpers/open_orders_stream'
 

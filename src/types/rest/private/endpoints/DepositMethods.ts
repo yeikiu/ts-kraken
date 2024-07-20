@@ -11,5 +11,5 @@ export type Result = {
     limit: string | false;
     fee: string;
     'address-setup-fee': string;
-    "gen-address": boolean;
+    'gen-address': boolean;
 }[]

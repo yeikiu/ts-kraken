@@ -11,8 +11,8 @@
     o = today's opening price
 */
 
-import type { PublicWs } from '..'
-import { Ticker } from '../rest/public/endpoints';
+import { Ticker as RestTicker } from '../rest/public/endpoints';
+import { Ticker } from '$types/ws/public/channels';
 
 type IPriceTicker = {
     utcTimestamp: number;
@@ -21,9 +21,9 @@ type IPriceTicker = {
 }
 
 export type IWsPriceTicker = IPriceTicker & {
-    rawKrakenPayload: any // PublicWS.Channels.ticker.Payload;
+    rawKrakenPayload: Ticker.Update;
 }
 
 export type IRestPriceTicker = IPriceTicker & {
-    rawKrakenPayload: Ticker.Result;
+    rawKrakenPayload: RestTicker.Result;
 }

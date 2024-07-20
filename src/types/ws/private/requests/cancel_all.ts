@@ -2,13 +2,13 @@
 
 export namespace CancelAll {
     export type Request = {
-        method: "cancel_all";
+        method: 'cancel_all';
         req_id: number;
-        params?: {};
+        params?: never;
     }
 
     export type Response = {
-        method: "cancel_all";
+        method: 'cancel_all';
         req_id: number;
         result: {
             count: number;

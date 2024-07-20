@@ -1,4 +1,4 @@
-import type { IAddOrder } from '../../../shared/add_order';
+import type { IAddOrder } from '$types/shared/add_order';
 
 /* https://docs.kraken.com/rest/#operation/addOrder */
 

@@ -1,11 +1,11 @@
 export type BaseSubscription<T> = {
-    method: "subscribe";
+    method: 'subscribe';
     req_id?: number;
     params: T;
 }
 
 export type BaseUnsubscription<T> = {
-    method: "unsubscribe";
+    method: 'unsubscribe';
     req_id?: number;
     params: T;
 }

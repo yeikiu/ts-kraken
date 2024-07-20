@@ -2,7 +2,7 @@
 
 export namespace BatchAdd {
   export type Request = {
-    method: "batch_add";
+    method: 'batch_add';
     req_id: number;
     params: {
       symbol: string;
@@ -23,7 +23,7 @@ export namespace BatchAdd {
         display_qty?: number;
         effective_time?: string;
         expire_time?: string;
-        fee_preference?: "base" | "quote";
+        fee_preference?: 'base' | 'quote';
         limit_price?: number;
         limit_price_type?: 'static' | 'pct' | 'quote';
         margin?: boolean;
@@ -45,7 +45,7 @@ export namespace BatchAdd {
   }
 
   export type Response = {
-    method: "batch_add";
+    method: 'batch_add';
     req_id: number;
     result: {
       order_id: string;

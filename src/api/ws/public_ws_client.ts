@@ -1,7 +1,7 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/status */
 
 import { filter, first, timeout } from 'rxjs/operators'
-import { lastValueFrom, Observable } from 'rxjs'
+import { Observable, lastValueFrom } from 'rxjs'
 import { Subject } from 'rxjs/internal/Subject'
 import { webSocket } from 'rxjs/webSocket'
 import WebSocketCtor from 'ws'

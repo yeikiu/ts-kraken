@@ -1,23 +1,23 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/ticker */
 
-import { BaseSubscription, BaseUnsubscription } from "../../";
+import { BaseSubscription, BaseUnsubscription } from '../../';
 
 export namespace Ticker {
     export type Subscription = BaseSubscription<{
-        channel: "ticker";
+        channel: 'ticker';
         snapshot?: boolean;
         symbol: string[];
         event_trigger?: 'bbo' | 'trades';
     }>;
 
     export type Unsubscription = BaseUnsubscription<{
-        channel: "ticker";
+        channel: 'ticker';
         symbol: string[];
     }>;
 
     export type Update = {
-        channel: "ticker";
-        type: "snapshot" | "update";
+        channel: 'ticker';
+        type: 'snapshot' | 'update';
         data: [{
             symbol: string;
             ask: number;

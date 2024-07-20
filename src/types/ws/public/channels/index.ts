@@ -6,10 +6,10 @@
 export namespace Status {
   export type Update = {
     channel: 'status';
-    type: "update";
+    type: 'update';
     data: [
       {
-        api_version: "v2";
+        api_version: 'v2';
         connection_id: number;
         system: 'online' | 'cancel_only' | 'maintenance' | 'post_only';
         version: string;
@@ -23,7 +23,7 @@ export namespace Status {
 
 export namespace Heartbeat {
   export type Update = {
-    channel: "heartbeat";
+    channel: 'heartbeat';
   };
 }
 

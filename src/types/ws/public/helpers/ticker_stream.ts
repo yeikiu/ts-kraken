@@ -1,5 +1,5 @@
-import type { ReplaySubject } from "rxjs";
-import type { IWsPriceTicker } from "../../..";
+import type { ReplaySubject } from 'rxjs';
+import type { IWsPriceTicker } from '$types';
 
 export type TickerStream = {
     priceTicker$: ReplaySubject<IWsPriceTicker>;

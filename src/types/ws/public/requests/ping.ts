@@ -5,12 +5,12 @@
 
 export namespace Ping {
     export type Request = {
-        method: "ping";
+        method: 'ping';
         req_id: number;
     }
 
     export type Response = {
-        method: "pong";
+        method: 'pong';
         req_id: number;
     }
 }

@@ -1,5 +1,5 @@
-import type { ReplaySubject } from "rxjs";
-import type { IWsTradeSnapshot } from "../../..";
+import type { ReplaySubject } from 'rxjs';
+import type { IWsTradeSnapshot } from '$types';
 
 export type TradesStream = {
     lastTradeSnapshot$: ReplaySubject<IWsTradeSnapshot>;

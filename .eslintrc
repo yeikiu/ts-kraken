@@ -11,25 +11,18 @@
     "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
-    "quotes": [
-      "error",
-      "single",
-      {
-        "avoidEscape": true
-      }
-    ],
+    "quotes": ["error", "single"],
     "indent": [
       "error",
       4
     ],
-     "sort-imports": [
-      "error",
+     "sort-imports": ["error",
       {
-        "ignoreCase": true, 
         "ignoreDeclarationSort": true,
         "allowSeparatedGroups": true
       }
     ],
-    "import/order": ["error"]
+    "import/order": ["error"],
+    "@typescript-eslint/no-namespace": ["off"]
   }
 }
