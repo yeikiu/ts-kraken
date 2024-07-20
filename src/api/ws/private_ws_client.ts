@@ -5,9 +5,9 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter, first, timeout } from 'rxjs/operators'
 import { lastValueFrom, Observable } from 'rxjs'
-import { Heartbeat, Status } from '../types/ws/public/channels'
-import { ApiCredentials, ApiToken, PrivateRequest, PrivateResponse, PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate } from '../types/ws/private'
 import { getWsAuthToken } from '../rest/private/helpers'
+import { Heartbeat, Status } from '../../types/ws/public/channels'
+import { ApiToken, ApiCredentials, PrivateRequest, PrivateResponse, PrivateSubscriptionChannel, PrivateSubscription, PrivateSubscriptionParams, PrivateSubscriptionUpdate } from '../../types/ws/private'
 
 export const onPrivateWsOpened = new Subject()
 export const onPrivateWsClosed = new Subject()

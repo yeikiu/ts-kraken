@@ -1,5 +1,6 @@
-import { privateRestRequest } from '../../..'
-import { ApiCredentials } from '../../../types/ws/private'
+import { ApiCredentials } from '../../../../types/ws/private'
+import { privateRestRequest } from '../private_rest_request'
+
 
 /**
  * Returns an array of prices for two assets in the same order the are passed

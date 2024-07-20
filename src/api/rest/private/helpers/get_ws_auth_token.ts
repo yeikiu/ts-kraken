@@ -1,6 +1,5 @@
-import { privateRestRequest } from '../../..'
-
-import { ApiCredentials } from '../../../types/ws/private'
+import { ApiCredentials } from '../../../../types/ws/private'
+import { privateRestRequest } from '../private_rest_request'
 
 /**
  * Returns a valid token to use in our WS subscriptions and private requests

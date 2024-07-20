@@ -1,6 +1,7 @@
-import { getWsAuthToken, publicRestRequest,/* , privateRestRequest, getOpenOrdersStream, getBookStream */ } from '.'
-import { getPublicSubscription, sendPublicEvent, publicWsHeartbeat$, publicWsStatus$ } from './ws/public_ws_client'
-import { getPrivateSubscription, sendPrivateEvent, privateWsHeartbeat$, privateWsStatus$ } from './ws/private_ws_client'
+import { config } from 'dotenv'
+config()
+
+import { sendPrivateEvent } from './api/ws'
 
 const testTsKraken = async () => {
 

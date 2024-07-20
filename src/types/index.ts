@@ -8,7 +8,8 @@ export * from './shared/book_snapshot'
 
 export * as PublicRest from './rest/public'
 export * as PrivateRest from './rest/private'
-export * from './rest/private/helpers'
+export * from './rest/private/helpers/get_closed_orders'
+export * from './rest/responses_rest'
 
 export * as PublicWs from './ws/public'
 export * as PrivateWs from './ws/private'

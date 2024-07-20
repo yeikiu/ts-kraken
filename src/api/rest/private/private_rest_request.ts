@@ -2,10 +2,9 @@ import { getMessageSignature } from './message_signature'
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig, apiVersion } from './../axios_config'
 import { stringify } from 'qs'
-
-import type { PrivateRest } from '../../types'
-import { Endpoint } from '../../types/rest/private'
-import { ApiCredentials } from '../../types/ws/private'
+import { Endpoint } from '../../../types/rest/private'
+import { PrivateRest } from '../../../types'
+import { ApiCredentials } from '../../../types/ws/private'
 
 const createPrivateRestClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
   const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig)

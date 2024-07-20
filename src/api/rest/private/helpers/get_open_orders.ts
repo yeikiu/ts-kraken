@@ -1,8 +1,8 @@
-import { privateRestRequest } from '../../..'
+import { privateRestRequest } from '..'
+import { IOrderSnapshot } from '../../../../types'
+import { OpenOrders } from '../../../../types/rest/private/endpoints'
+import { ApiCredentials } from '../../../../types/ws/private'
 
-import type { IOrderSnapshot } from '../../../types'
-import { OpenOrders } from '../../../types/rest/private/endpoints'
-import { ApiCredentials } from '../../../types/ws/private'
 
 /**
  * Returns a nice array of current open orders

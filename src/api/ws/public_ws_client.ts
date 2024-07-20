@@ -5,8 +5,8 @@ import { webSocket } from 'rxjs/webSocket'
 import { Subject } from 'rxjs/internal/Subject'
 import { filter, first, timeout } from 'rxjs/operators'
 import { lastValueFrom, Observable } from 'rxjs'
-import { Heartbeat, Status } from '../types/ws/public/channels'
-import { PublicRequest, PublicResponse, PublicSubscriptionChannel, PublicSubscription, PublicSubscriptionParams, PublicSubscriptionUpdate } from '../types/ws/public'
+import { Heartbeat, Status } from '../../types/ws/public/channels'
+import { PublicRequest, PublicResponse, PublicSubscriptionChannel, PublicSubscription, PublicSubscriptionParams, PublicSubscriptionUpdate } from '../../types/ws/public'
 
 export const onPublicWsOpen = new Subject()
 export const onPublicWsClose = new Subject()

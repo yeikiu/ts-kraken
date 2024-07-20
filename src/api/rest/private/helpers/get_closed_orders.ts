@@ -1,10 +1,9 @@
 import { lastValueFrom, timer } from 'rxjs'
 import { take } from 'rxjs/operators'
-import { privateRestRequest } from '../../..'
-
-import type { IOrderSnapshot, FindClosedOrderParam } from '../../../types'
-import { ClosedOrders } from '../../../types/rest/private/endpoints'
-import { ApiCredentials } from '../../../types/ws/private'
+import { ClosedOrders } from '../../../../types/rest/private/endpoints'
+import { IOrderSnapshot, FindClosedOrderParam } from '../../../../types'
+import { ApiCredentials } from '../../../../types/ws/private'
+import { privateRestRequest } from '../private_rest_request'
 
 /**
  * Returns a nice array of latest closed orders

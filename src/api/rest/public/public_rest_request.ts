@@ -1,8 +1,7 @@
 import axios, { AxiosInstance } from 'axios'
 import { krakenAxiosConfig } from '../axios_config'
-
-import type { PublicRest } from '../../types'
-import { Endpoint } from '../../types/rest/public'
+import { Endpoint } from '../../../types/rest/public'
+import { PublicRest } from '../../../types'
 
 const publicRestClient: AxiosInstance = axios.create(krakenAxiosConfig)
 publicRestClient.defaults.baseURL = `${publicRestClient.defaults.baseURL}/public`
