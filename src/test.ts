@@ -3,9 +3,12 @@ config();
 
 import { PublicRest } from '.';
 
-PublicRest.getTickers('BTCUSD,ETHEUR').then(([btcTicker, ethTicker]) => {
-    const { price: btcUsdPrice } = btcTicker;
-    const { price: ethEurPrice } = ethTicker;
+PublicRest.publicRestRequest({
+    url: 'Spread',
+    params: { pair: 'BTCUSD' }
+}).then(rawData => {
+    const [pairKey] = Object.keys(rawData);
+    const spreadsArr = rawData[pairKey];
 
-    console.log({ btcUsdPrice, ethEurPrice });
+    console.log({ spreadsArr })
 });
