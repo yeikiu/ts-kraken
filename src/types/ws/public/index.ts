@@ -1,6 +1,9 @@
 import { Book, Instruments, Ohlc, Ticker, Trade } from './channels';
 import { Ping } from './requests/ping';
 
+export * as PublicChannels from './channels';
+export * as PublicRequests from './requests';
+
 
 /* REQUESTS */
 

@@ -1,10 +1,10 @@
-import { config } from 'dotenv'
-config()
+import { config } from 'dotenv';
+config();
 
-import * as testLib from '.'
+// import * as testLib from '.'
 
 const testTsKraken = async () => {
     
-}
+};
 
-testTsKraken()
+testTsKraken();

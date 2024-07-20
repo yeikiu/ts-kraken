@@ -9,6 +9,9 @@ import { CancelOnDisconnect } from './requests/cancel_all_orders_after';
 import { CancelOrder } from './requests/cancel_order';
 import { EditOrder } from './requests/edit_order';
 
+export * as PrivateChannels from './channels';
+export * as PrivateRequests from './requests';
+
 export type ApiToken = string;
 export type ApiCredentials = {
     apiKey: string;

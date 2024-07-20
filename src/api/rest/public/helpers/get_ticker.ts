@@ -1,4 +1,4 @@
-import { publicRestRequest } from '../public_rest_request'
+import { publicRestRequest } from '../public_rest_request';
 import { Ticker } from '$types/rest/public/endpoints';
 
 type IRestPriceTicker = {
@@ -19,16 +19,16 @@ type IRestPriceTicker = {
  * @beta
  */
 export const getTicker = async (pair: string): Promise<IRestPriceTicker> => {
-    const result = await publicRestRequest({ url: 'Ticker', params: { pair } })
+    const result = await publicRestRequest({ url: 'Ticker', params: { pair } });
 
-    const [pairKey] = Object.keys(result)
-    const ticker = result[pairKey]
-    const { c: [price] } = ticker || {}
+    const [pairKey] = Object.keys(result);
+    const ticker = result[pairKey];
+    const { c: [price] } = ticker || {};
 
     return {
         utcTimestamp: new Date().getTime(),
         pair,
         price,
         rawKrakenPayload: result
-    }
-}
+    };
+};

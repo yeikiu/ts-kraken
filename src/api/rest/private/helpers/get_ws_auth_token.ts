@@ -1,6 +1,6 @@
 
-import { privateRestRequest } from '../private_rest_request'
-import { type ApiCredentials } from '$types/ws/private'
+import { privateRestRequest } from '../private_rest_request';
+import { type ApiCredentials } from '$types/ws/private';
 
 /**
  * Returns a valid token to use in our WS subscriptions and private requests
@@ -10,15 +10,15 @@ import { type ApiCredentials } from '$types/ws/private'
  */
 export const getWsAuthToken = async (injectedApiKeys?: ApiCredentials): Promise<string> => {
     try {
-        const { token } = await privateRestRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {}
+        const { token } = await privateRestRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {};
         if (!token) {
-            throw ({ code: 'CUSTOM_ERROR', message: 'no token received' })
+            throw ({ code: 'CUSTOM_ERROR', message: 'no token received' });
         }
 
-        return token
+        return token;
 
     } catch ({ code, message }) {
-        console.error('Kraken getWsAuthToken error', { code, message })
-        throw ({ code, message })
+        console.error('Kraken getWsAuthToken error', { code, message });
+        throw ({ code, message });
     }
-}
+};

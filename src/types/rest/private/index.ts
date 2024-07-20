@@ -1,7 +1,9 @@
 import { RestResponse } from '..';
 import { AddExport, AddOrder, Balance, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
 
-export type Endpoint =
+export * as PrivateEndpoints from './endpoints';
+
+export type PrivateEndpoint =
     AddExport.Endpoint |
     AddOrder.Endpoint |
     Balance.Endpoint |
@@ -32,7 +34,7 @@ export type Endpoint =
     WithdrawInfo.Endpoint |
     WithdrawStatus.Endpoint;
 
-export type Params<T extends Endpoint> =
+export type PrivateParams<T extends PrivateEndpoint> =
     T extends AddExport.Endpoint ? AddExport.Params :
     T extends AddOrder.Endpoint ? AddOrder.Params : 
     T extends CancelAllOrdersAfter.Endpoint ? CancelAllOrdersAfter.Params :
@@ -61,13 +63,13 @@ export type Params<T extends Endpoint> =
     T extends WithdrawStatus.Endpoint ? WithdrawStatus.Params : never;
 
 
-export type Request<T extends Endpoint> = {
+export type PrivateRequest<T extends PrivateEndpoint> = {
     url: T;
     method?: 'POST' | 'post';
-    data?: Params<T>;
+    data?: PrivateParams<T>;
 }
     
-export type Result<T extends Endpoint> =
+export type PrivateResult<T extends PrivateEndpoint> =
     T extends AddExport.Endpoint ? AddExport.Result :
     T extends AddOrder.Endpoint ? AddOrder.Result :
     T extends Balance.Endpoint ? Balance.Result :
@@ -98,4 +100,4 @@ export type Result<T extends Endpoint> =
     T extends WithdrawInfo.Endpoint ? WithdrawInfo.Result :
     T extends WithdrawStatus.Endpoint ? WithdrawStatus.Result : never;
 
-export type Response<T extends Endpoint> = RestResponse<Result<T>>;
+export type PrivateResponse<T extends PrivateEndpoint> = RestResponse<PrivateResult<T>>;

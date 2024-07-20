@@ -1,9 +1,8 @@
-import { lastValueFrom, timer } from 'rxjs'
-import { take } from 'rxjs/operators'
-import { privateRestRequest } from '../private_rest_request'
-import { IRestOrderSnapshot } from '.'
-import { ClosedOrders } from '$types/rest/private/endpoints'
-import { ApiCredentials } from '$types/ws/private'
+import { lastValueFrom, timer } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { privateRestRequest } from '../private_rest_request';
+import { ClosedOrders, IRestOrderSnapshot } from '$types/rest/private/endpoints';
+import { ApiCredentials } from '$types/ws/private';
 
 /**
  * Returns a nice array of latest closed orders
@@ -17,14 +16,14 @@ import { ApiCredentials } from '$types/ws/private'
  * @beta
  */
 export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiKeys?: ApiCredentials): Promise<IRestOrderSnapshot[]> => {
-    const { closed } = await privateRestRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys)
-    const closedOrdersIds = Object.keys(closed)
+    const { closed } = await privateRestRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys);
+    const closedOrdersIds = Object.keys(closed);
 
     return closedOrdersIds.map(orderid => ({
         ...closed[orderid],
         orderid, // injected for improved response usability
-    }))
-}
+    }));
+};
 
 /**
  * Bonus method! - Returns the first closed order (single object) to satisfy the filter
@@ -51,23 +50,23 @@ export const findClosedOrder = async ({
 
 }, injectedApiKeys?: ApiCredentials): Promise<IRestOrderSnapshot> => {
     if (data?.ofs > maxOffset) {
-        console.error(`Order not found within the first ${maxOffset} results...`)
-        return null
+        console.error(`Order not found within the first ${maxOffset} results...`);
+        return null;
     }
 
-    const closedOrders = await getClosedOrders(data)
-    const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter)
+    const closedOrders = await getClosedOrders(data);
+    const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter);
     if (lastSuccessfullyClosedOrder) {
-        return lastSuccessfullyClosedOrder
+        return lastSuccessfullyClosedOrder;
     }
 
     // Delay exec. 1.5 seconds to avoid rate limits
-    await lastValueFrom(timer(1500).pipe(take(1)))
-    const { ofs: lastOffset = 0 } = data ?? {}
+    await lastValueFrom(timer(1500).pipe(take(1)));
+    const { ofs: lastOffset = 0 } = data ?? {};
 
     return await findClosedOrder({
         orderFilter,
         maxOffset,
         data: { ...data, ofs: closedOrders.length + lastOffset }
-    }, injectedApiKeys)
-}
+    }, injectedApiKeys);
+};

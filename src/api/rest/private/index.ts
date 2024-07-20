@@ -1,2 +1,2 @@
-export * from './helpers'
-export * from './private_rest_request'
+export * from './helpers';
+export * from './private_rest_request';

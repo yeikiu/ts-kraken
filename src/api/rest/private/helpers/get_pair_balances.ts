@@ -1,5 +1,5 @@
-import { privateRestRequest } from '../private_rest_request'
-import { ApiCredentials } from '$types/ws/private'
+import { privateRestRequest } from '../private_rest_request';
+import { ApiCredentials } from '$types/ws/private';
 
 /**
  * Returns an array of prices for two assets in the same order the are passed
@@ -11,7 +11,7 @@ import { ApiCredentials } from '$types/ws/private'
  * @beta
  */
 export const getPairBalances = async ([base, quote]: string[], injectedApiKeys?: ApiCredentials): Promise<string[]> => {
-    let rawBalances = await privateRestRequest({ url: 'Balance' }, injectedApiKeys)
+    let rawBalances = await privateRestRequest({ url: 'Balance' }, injectedApiKeys);
     rawBalances = {
         ...rawBalances,
         USD: rawBalances['ZUSD'] || '0',
@@ -20,6 +20,6 @@ export const getPairBalances = async ([base, quote]: string[], injectedApiKeys?:
         XBT: rawBalances['XXBT'] || '0',
         BTC: rawBalances['XXBT'] || '0',
         XRP: rawBalances['XXRP'] || '0',
-    }
-    return [rawBalances[base], rawBalances[quote]]
-}
+    };
+    return [rawBalances[base], rawBalances[quote]];
+};

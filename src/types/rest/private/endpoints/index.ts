@@ -1,3 +1,5 @@
+export type IRestOrderSnapshot = RestOrdersSnapshot & { orderid: string; };
+
 export type RestOrdersSnapshot = {
     refid: string;	// Referral order transaction id that created this order
     userref: number; // user reference ID
@@ -30,32 +32,32 @@ export type RestOrdersSnapshot = {
     reason?: string; // REST API ONLY - Optional - cancel reason
 };
 
-export * as AddExport from './AddExport'
-export * as AddOrder from './AddOrder'
-export * as EditOrder from './EditOrder'
-export * as Balance from './Balance'
-export * as CancelAll from './CancelAll'
-export * as CancelAllOrdersAfter from './CancelAllOrdersAfter'
-export * as CancelOrder from './CancelOrder'
-export * as ClosedOrders from './ClosedOrders'
-export * as DepositAddresses from './DepositAddresses'
-export * as DepositMethods from './DepositMethods'
-export * as DepositStatus from './DepositStatus'
-export * as ExportStatus from './ExportStatus'
-export * as GetWebSocketsToken from './GetWebSocketsToken'
-export * as Ledgers from './Ledgers'
-export * as OpenOrders from './OpenOrders'
-export * as OpenPositions from './OpenPositions'
-export * as QueryLedgers from './QueryLedgers'
-export * as QueryOrders from './QueryOrders'
-export * as QueryTrades from './QueryTrades'
-export * as RemoveExport from './RemoveExport'
-export * as RetrieveExport from './RetrieveExport'
-export * as TradeBalance from './TradeBalance'
-export * as TradeVolume from './TradeVolume'
-export * as TradesHistory from './TradesHistory'
-export * as WalletTransfer from './WalletTransfer'
-export * as Withdraw from './Withdraw'
-export * as WithdrawCancel from './WithdrawCancel'
-export * as WithdrawInfo from './WithdrawInfo'
-export * as WithdrawStatus from './WithdrawStatus'
+export * as AddExport from './AddExport';
+export * as AddOrder from './AddOrder';
+export * as EditOrder from './EditOrder';
+export * as Balance from './Balance';
+export * as CancelAll from './CancelAll';
+export * as CancelAllOrdersAfter from './CancelAllOrdersAfter';
+export * as CancelOrder from './CancelOrder';
+export * as ClosedOrders from './ClosedOrders';
+export * as DepositAddresses from './DepositAddresses';
+export * as DepositMethods from './DepositMethods';
+export * as DepositStatus from './DepositStatus';
+export * as ExportStatus from './ExportStatus';
+export * as GetWebSocketsToken from './GetWebSocketsToken';
+export * as Ledgers from './Ledgers';
+export * as OpenOrders from './OpenOrders';
+export * as OpenPositions from './OpenPositions';
+export * as QueryLedgers from './QueryLedgers';
+export * as QueryOrders from './QueryOrders';
+export * as QueryTrades from './QueryTrades';
+export * as RemoveExport from './RemoveExport';
+export * as RetrieveExport from './RetrieveExport';
+export * as TradeBalance from './TradeBalance';
+export * as TradeVolume from './TradeVolume';
+export * as TradesHistory from './TradesHistory';
+export * as WalletTransfer from './WalletTransfer';
+export * as Withdraw from './Withdraw';
+export * as WithdrawCancel from './WithdrawCancel';
+export * as WithdrawInfo from './WithdrawInfo';
+export * as WithdrawStatus from './WithdrawStatus';
