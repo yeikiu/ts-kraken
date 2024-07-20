@@ -5,20 +5,31 @@
     "node": true
   },
   "parser": "@typescript-eslint/parser",
-  "plugins": [],
+  "plugins": ["import"],
   "extends": [
     "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:import/typescript"
+    "plugin:@typescript-eslint/recommended"
   ],
   "rules": {
     "quotes": [
-      2,
+      "error",
       "single",
       {
         "avoidEscape": true
       }
     ],
-    "indent": ["error", 2]
+    "indent": [
+      "error",
+      4
+    ],
+     "sort-imports": [
+      "error",
+      {
+        "ignoreCase": true, 
+        "ignoreDeclarationSort": true,
+        "allowSeparatedGroups": true
+      }
+    ],
+    "import/order": ["error"]
   }
 }
