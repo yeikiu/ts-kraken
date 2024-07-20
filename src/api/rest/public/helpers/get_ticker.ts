@@ -1,5 +1,12 @@
 import { publicRestRequest } from '../public_rest_request'
-import { IRestPriceTicker } from '$types'
+import { Ticker } from '$types/rest/public/endpoints';
+
+type IRestPriceTicker = {
+    utcTimestamp: number;
+    pair: string;
+    price: string;
+    rawKrakenPayload: Ticker.Result
+}
 
 /**
  * Returns a nice pair ticker

@@ -1,4 +1,4 @@
-import { RestTradesInfo } from '../../responses_rest'
+import { QueryTrades } from '.';
 
 /* https://docs.kraken.com/rest/#operation/getTradeHistory */
 
@@ -13,6 +13,6 @@ export type Params = {
 }
 
 export type Result = {
-    trades: RestTradesInfo;
+    trades: QueryTrades.Result;
     count: number;
 }

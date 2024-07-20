@@ -1,4 +1,4 @@
-import type { RestOrdersSnapshot } from '../../responses_rest'
+import { RestOrdersSnapshot } from '.';
 
 /* https://docs.kraken.com/rest/#operation/getClosedOrders */
 
@@ -14,5 +14,5 @@ export type Params = {
 }
 
 export type Result = {
-    closed: RestOrdersSnapshot
+    closed: Record<string, RestOrdersSnapshot>;
 }

@@ -9,8 +9,6 @@ import { CancelOnDisconnect } from './requests/cancel_all_orders_after';
 import { CancelOrder } from './requests/cancel_order';
 import { EditOrder } from './requests/edit_order';
 
-export { OpenOrdersStream } from './helpers/open_orders_stream'
-
 export type ApiToken = string;
 export type ApiCredentials = {
     apiKey: string;

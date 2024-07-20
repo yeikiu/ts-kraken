@@ -1,7 +1,7 @@
 /* https://docs.kraken.com/api/docs/websocket-v2/ohlc */
 
 import { BaseSubscription, BaseUnsubscription } from '$types/ws';
-import { ValidOhlcInterval } from '$types/shared/valid_ohlc_interval';
+import { ValidOhlcInterval } from '$types/rest/public';
 
 export namespace Ohlc {
   export type Subscription = BaseSubscription<{

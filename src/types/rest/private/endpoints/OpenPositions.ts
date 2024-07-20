@@ -1,5 +1,3 @@
-import type { IOrderSide, IOrderType } from '$types'
-
 /* https://docs.kraken.com/rest/#operation/getOpenPositions */
 
 export type Endpoint = 'OpenPositions';
@@ -15,8 +13,8 @@ export type Result = {[txid: string]: {
     posstatus: 'open';
     pair: string;
     time: number;
-    type: IOrderSide;
-    ordertype: IOrderType;
+    type: 'buy' | 'sell';
+    ordertype: 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
     cost: string;
     fee: string; 
     vol: string;

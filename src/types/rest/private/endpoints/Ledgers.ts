@@ -1,4 +1,14 @@
-import type { RestLedgerEntry } from '../../responses_rest'
+export type RestLedgerEntry = Record<string, {
+    refid: string;
+    time: number;
+    type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
+    subtype: string;
+    aclass: string;
+    asset: string;
+    amount: string;
+    fee: string;
+    balance: string;
+}>;
 
 /* https://docs.kraken.com/rest/#operation/getLedgers */
 

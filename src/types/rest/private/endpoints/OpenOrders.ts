@@ -1,4 +1,4 @@
-import type { RestOrdersSnapshot } from '../../responses_rest'
+import { RestOrdersSnapshot } from '.';
 
 /* https://docs.kraken.com/rest/#operation/getOpenOrders */
 

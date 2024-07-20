@@ -1,4 +1,4 @@
-import type { RestLedgerEntry } from '../../responses_rest'
+import { RestLedgerEntry } from './Ledgers';
 
 /* https://docs.kraken.com/rest/#operation/getLedgersInfo */
 

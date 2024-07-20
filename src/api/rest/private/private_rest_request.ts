@@ -3,7 +3,7 @@ import { stringify } from 'qs'
 import { getMessageSignature } from './message_signature'
 import { apiVersion, krakenAxiosConfig } from './../axios_config'
 import { Endpoint } from '$types/rest/private'
-import { PrivateRest } from '$types'
+import { PrivateRestTypes } from '$types'
 import { ApiCredentials } from '$types/ws/private'
 
 const createPrivateRestClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
@@ -43,10 +43,10 @@ const defaultClient = createPrivateRestClient()
  * @param { apiKey, apiSecret } - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
  * @returns Promise<PrivateRest.Result>
  */
-export async function privateRestRequest<E extends Endpoint>(params: PrivateRest.Request<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRest.Result<E>> {
+export async function privateRestRequest<E extends Endpoint>(params: PrivateRestTypes.Request<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.Result<E>> {
     const { apiKey, apiSecret } = runtimeApiKeys ?? {}
     const apiClient = (apiKey !== '' && apiSecret !== '') ? createPrivateRestClient(apiKey, apiSecret) : defaultClient
-    const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRest.Response<E>>(params)
+    const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.Response<E>>(params)
 
     if (privateResterror?.length > 0) {
         throw new Error(privateResterror.join(' '))

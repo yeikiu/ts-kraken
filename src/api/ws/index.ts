@@ -1,2 +1,2 @@
-export * from './public_ws_client'
-export * from './private_ws_client'
+export * as PublicWs from './public_ws_client'
+export * as PrivateWs from './private_ws_client'

@@ -1,5 +1,7 @@
-import { RestResponse } from '../responses_rest';
+import { RestResponse } from '..';
 import { AssetPairs, Assets, Depth, OHLC, Spread, SystemStatus, Ticker, Time, Trades } from './endpoints';
+
+export type ValidOhlcInterval = 1 | 5 | 15 | 30 | 60 | 240 | 1440 | 10080 |  21600;
 
 export type Endpoint = 
     AssetPairs.Endpoint | 

@@ -1,6 +1,13 @@
-import { RestFeeTierInfo } from '../../responses_rest'
-
 /* https://docs.kraken.com/rest/#operation/getTradeVolume */
+
+type RestFeeTierInfo = {
+    fee: string;
+    minfee: string;
+    maxfee: string;
+    nextfee: string;
+    nextvolume: string;
+    tiervolume: string;
+};
 
 export type Endpoint = 'TradeVolume';
 

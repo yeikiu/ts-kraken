@@ -1,4 +1,4 @@
-import type { ValidOhlcInterval } from '$types'
+import type { ValidOhlcInterval } from '$types/rest/public'
 
 /* https://docs.kraken.com/rest/#operation/getOHLCData */
 
