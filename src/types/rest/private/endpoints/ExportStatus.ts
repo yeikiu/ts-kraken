@@ -1,11 +1,26 @@
-/* https://docs.kraken.com/rest/#operation/exportStatus */
-
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/export-status | Get Export Report Status}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateRest } from 'ts-kraken';
+        
+    PrivateRest.privateRestRequest({
+        url: 'ExportStatus',
+        data: { report: 'trades' }
+    }).then(([{ id, descr, status }]) => {
+        console.log(`Report ${id} | ${descr} is ${status}`);
+    });
+ * ```
+ */
 export type Endpoint = 'ExportStatus';
 
+/** {@inheritDoc Endpoint} */
 export type Params = {
     report: 'trades' | 'ledgers';
 }
 
+/** {@inheritDoc Endpoint} */
 export type Result = {
     id: string;
     descr: string;

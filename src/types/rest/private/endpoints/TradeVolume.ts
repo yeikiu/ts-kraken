@@ -1,4 +1,24 @@
-/* https://docs.kraken.com/rest/#operation/getTradeVolume */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-trade-volume | Get Trade Volume}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateRest } from 'ts-kraken';
+
+    PrivateRest.privateRestRequest({
+        url: 'TradeVolume',
+        data: { pair: 'ADA/USD,ADA/EUR' }
+    }).then(({ fees, fees_maker }) => {
+        console.log(fees, fees_maker);
+    });
+ * ```
+ */
+export type Endpoint = 'TradeVolume';
+
+/** {@inheritDoc Endpoint} */
+export type Params = {
+    pair?: string; //Comma delimited list of asset pairs to get fee info on (optional)
+}
 
 type RestFeeTierInfo = {
     fee: string;
@@ -9,12 +29,7 @@ type RestFeeTierInfo = {
     tiervolume: string;
 };
 
-export type Endpoint = 'TradeVolume';
-
-export type Params = {
-    pair?: string; //Comma delimited list of asset pairs to get fee info on (optional)
-}
-
+/** {@inheritDoc Endpoint} */
 export type Result = {
     currency: string;
     volume: string;

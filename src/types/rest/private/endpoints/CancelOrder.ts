@@ -8,5 +8,5 @@ export type Params = {
 
 export type Result = {
     count: number;
-    pending?: boolean;
+    pending: boolean;
 }

@@ -8,5 +8,5 @@ export type Params = {
 
 export type Result = {
     currentTime: string;
-    triggerTime?: string;
+    triggerTime: string;
 }

@@ -1,21 +1,32 @@
-/* https://docs.kraken.com/rest/#operation/removeExport */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/remove-export | Delete Export Report}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateRest } from 'ts-kraken';
 
+    PrivateRest.privateRestRequest({
+        url: 'RemoveExport',
+        data: { id: 'YOUR_EXPORT_ID', type: 'cancel' }
+    }).then(({ cancel }) => {
+        if (cancel) {
+            console.log('Export cancelled successfully!');
+        } else {
+            console.log('Oooops! Can\'t cancel export.');
+        }
+    });
+ * ```
+ */
 export type Endpoint = 'RemoveExport';
 
-export type DeleteParams = {
+/** {@inheritDoc Endpoint} */
+export type Params = {
     id: string;
-    type: 'delete';
-};
-export type CancelParams = {
-    id: string;
-    type: 'cancel';
+    type: 'delete' | 'cancel';
 };
 
-export type Params = DeleteParams | CancelParams;
-
-export type DeleteResult = { delete: boolean };
-export type CancelResult = { cancel: boolean };
-
-export type Result<T extends Params> = 
-    T extends DeleteParams ? DeleteResult :
-    T extends CancelParams ? CancelResult : never;
+/** {@inheritDoc Endpoint} */
+export type Result<T extends Params> = {
+    delete: boolean;
+    cancel: boolean
+};
