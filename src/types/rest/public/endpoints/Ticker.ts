@@ -19,7 +19,7 @@
  * ```
 
  * @remarks
- * _Tip:_ This library implements the helper method {@link PublicRest.getTicker} which outputs a nicer object format.
+ * _Tip:_ This library implements the helper method {@link PublicRest.getTickers} which outputs a nicer object format.
  */
 export type Endpoint = 'Ticker';
 

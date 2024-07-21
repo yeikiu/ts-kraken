@@ -1,14 +1,10 @@
 import { config } from 'dotenv';
 config();
 
-import { PublicRest } from '.';
+import { PrivateRest } from '.';
 
-PublicRest.publicRestRequest({
-    url: 'Spread',
-    params: { pair: 'BTCUSD' }
-}).then(rawData => {
-    const [pairKey] = Object.keys(rawData);
-    const spreadsArr = rawData[pairKey];
-
-    console.log({ spreadsArr })
+PrivateRest.privateRestRequest({
+    url: 'Balance'
+}).then(({ XXBT: btcBalance, ADA: adaBalance }) => {
+    console.log({ btcBalance, adaBalance })
 });
