@@ -3,34 +3,49 @@ import { AssetPairs, Assets, Depth, Ohlc, Spread, SystemStatus, Ticker, Time, Tr
 
 export * as PublicEndpoints from './endpoints';
 
-export type PublicEndpoint = 
-    AssetPairs.Endpoint | 
+export type PublicEndpoint =
+    AssetPairs.Endpoint |
     Assets.Endpoint |
-    Depth.Endpoint | 
+    Depth.Endpoint |
     Ohlc.Endpoint |
     Spread.Endpoint |
-    SystemStatus.Endpoint |
-    Ticker.Endpoint | 
-    Time.Endpoint |
+    SystemStatus.Endpoint | // no params
+    Ticker.Endpoint |
+    Time.Endpoint | // no params
     Trades.Endpoint;
 
 export type PublicParams<T extends PublicEndpoint> =
-    T extends AssetPairs.Endpoint ? AssetPairs.Params :
+    T extends AssetPairs.Endpoint ? AssetPairs.Params : // all optional
     T extends Assets.Endpoint ? Assets.Params :
     T extends Depth.Endpoint ? Depth.Params :
     T extends Ohlc.Endpoint ? Ohlc.Params :
     T extends Spread.Endpoint ? Spread.Params :
-    T extends Ticker.Endpoint ? Ticker.Params :
+    T extends Ticker.Endpoint ? Ticker.Params : // all optional
     T extends Trades.Endpoint ? Trades.Params : never;
 
-export type PublicRequest<T extends PublicEndpoint> = {
-    url: T;
-    method?: 'GET' | 'get';
-    params?: PublicParams<T>;
-}
+export type PublicRequest<T extends PublicEndpoint> = 
+    T extends SystemStatus.Endpoint ? { // no params
+        url: T;
+        params?: never;
+    } :
+    T extends Time.Endpoint ? { // no params
+        url: T;
+        params?: never;
+    } :
+    T extends AssetPairs.Endpoint ? { // all optional
+        url: T;
+        params?: PublicParams<T>;
+    } :
+    T extends Ticker.Endpoint ? { // all optional
+        url: T;
+        params?: PublicParams<T>;
+    } : { // Mandatory params
+        url: T;
+        params: PublicParams<T>;
+    }
 
 export type PublicResult<T extends PublicEndpoint> =
-    T extends AssetPairs.Endpoint ? AssetPairs.Result : 
+    T extends AssetPairs.Endpoint ? AssetPairs.Result :
     T extends Assets.Endpoint ? Assets.Result :
     T extends Depth.Endpoint ? Depth.Result :
     T extends Ohlc.Endpoint ? Ohlc.Result :

@@ -43,10 +43,10 @@ const defaultClient = createPrivateRestClient();
  * @param { apiKey, apiSecret } - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
  * @returns Promise<PrivateRest.Result>
  */
-export async function privateRestRequest<E extends PrivateEndpoint>(params: PrivateRestTypes.PrivateRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateResult<E>> {
+export async function privateRestRequest<E extends PrivateEndpoint>(privateRequest: PrivateRestTypes.PrivateRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateResult<E>> {
     const { apiKey, apiSecret } = runtimeApiKeys ?? {};
     const apiClient = (apiKey !== '' && apiSecret !== '') ? createPrivateRestClient(apiKey, apiSecret) : defaultClient;
-    const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.PrivateResponse<E>>(params);
+    const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.PrivateResponse<E>>(privateRequest);
 
     if (privateResterror?.length > 0) {
         throw new Error(privateResterror.join(' '));

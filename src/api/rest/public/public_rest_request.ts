@@ -13,8 +13,8 @@ publicRestClient.defaults.method = 'GET';
  * @param { url: PublicRestTypes.Endpoint; params: PublicRestTypes.Request; }
  * @returns Promise<PublicRestTypes.Result>
  */
-export async function publicRestRequest<E extends PublicEndpoint>({ url, params }: PublicRestTypes.PublicRequest<E>): Promise<PublicRestTypes.PublicResult<E>> {
-    const { data: { result, error } } = await publicRestClient.request<PublicRestTypes.PublicResponse<E>>({ url, params });
+export async function publicRestRequest<E extends PublicEndpoint>(publicRequest: PublicRestTypes.PublicRequest<E>): Promise<PublicRestTypes.PublicResult<E>> {
+    const { data: { result, error } } = await publicRestClient.request<PublicRestTypes.PublicResponse<E>>(publicRequest);
     if (error?.length > 0) {
         throw new Error(error?.join(' '));
     }

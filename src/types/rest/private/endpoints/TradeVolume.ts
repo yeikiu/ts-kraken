@@ -13,7 +13,6 @@ export type Endpoint = 'TradeVolume';
 
 export type Params = {
     pair?: string; //Comma delimited list of asset pairs to get fee info on (optional)
-    'fee-info'?: boolean;
 }
 
 export type Result = {

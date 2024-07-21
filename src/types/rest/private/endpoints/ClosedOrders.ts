@@ -29,7 +29,7 @@ export type RestClosedOrder = {
     misc: string; // comma delimited list of miscellaneous info: stopped=triggered by stop price, touched=triggered by touch price, liquidation=liquidation, partial=partial fill
     sender_sub_id: string;
     oflags: string; // Optional - comma delimited list of order flags. viqc = volume in quote currency (not currently available), fcib = prefer fee in base currency, fciq = prefer fee in quote currency, nompp = no market price protection, post = post only order (available when ordertype = limit)
-    trades: string;
+    trades: string[];
     reason: string;
 };
 

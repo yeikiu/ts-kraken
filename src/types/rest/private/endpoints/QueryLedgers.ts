@@ -5,7 +5,7 @@ import { RestLedgerEntry } from './Ledgers';
 export type Endpoint = 'QueryLedgers';
 
 export type Params = {
-    id?: string; // Comma delimited list of transaction IDs to query info about (20 maximum)
+    id: string; // Comma delimited list of transaction IDs to query info about (20 maximum)
     trades?: boolean;
 }
 

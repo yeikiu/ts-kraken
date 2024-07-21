@@ -10,6 +10,8 @@ export type Params = {
     start?: number;
     end?: number;
     ofs?: number;
+    consolidate_taker?: boolean;
+    ledgers?: boolean;
 }
 
 export type Result = {

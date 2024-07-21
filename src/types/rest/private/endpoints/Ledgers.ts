@@ -21,6 +21,7 @@ export type Params = {
     start?: number;
     end?: number;
     ofs?: number;
+    without_count?: boolean;
 }
 
 export type Result = {
