@@ -29,7 +29,7 @@ export async function sendPublicEvent<T extends PublicRequest>(request: T): Prom
         lastValueFrom(publicWsClient.pipe(
             filter(({ req_id: incomingReq_id }) => incomingReq_id === req_id),
             first(),
-            timeout(10000) // Assume something went wrong if we didn't get a WS response within 10 seconds...
+            timeout(30000) // Assume something went wrong if we didn't get a WS response within 30 seconds...
         )),
         publicWsClient.next(request)
     ]);

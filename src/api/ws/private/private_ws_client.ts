@@ -35,7 +35,7 @@ export async function sendPrivateEvent<T extends PrivateRequest>(request: T, tok
         lastValueFrom(privateWsClient.pipe(
             filter(({ method: incomingMethod }) => incomingMethod === method),
             first(),
-            timeout(10000) // Assume something went wrong if we didn't get a WS response within 10 seconds...
+            timeout(30000) // Assume something went wrong if we didn't get a WS response within 30 seconds...
         )),
         privateWsClient.next({
             ...request,
