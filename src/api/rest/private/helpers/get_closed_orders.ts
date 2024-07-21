@@ -1,8 +1,10 @@
 import { lastValueFrom, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { privateRestRequest } from '../private_rest_request';
-import { ClosedOrders, IRestOrderSnapshot } from '$types/rest/private/endpoints';
+import { ClosedOrders } from '$types/rest/private/endpoints';
 import { ApiCredentials } from '$types/ws/private';
+
+type IRestClosedOrder = ClosedOrders.RestClosedOrder & { orderid: string; };
 
 /**
  * Returns a nice array of latest closed orders. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | getClosedOrders}
@@ -19,7 +21,7 @@ import { ApiCredentials } from '$types/ws/private';
     });
  * ```
  */
-export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiKeys?: ApiCredentials): Promise<IRestOrderSnapshot[]> => {
+export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder[]> => {
     const { closed } = await privateRestRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys);
     const closedOrdersIds = Object.keys(closed);
 
@@ -31,7 +33,7 @@ export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiK
 
 /**
  * @beta
- * <strong>Bonus method!</strong> - Returns the first closed order (single object) to satisfy the filter. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | getClosedOrders}
+ * <strong>Bonus method!</strong> - Returns the first closed order (single object) to satisfy the filter. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | Get Closed Orders}
  * 
  * @example
  * ```ts 
@@ -50,11 +52,11 @@ export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiK
 export const findClosedOrder = async ({
     orderFilter, maxOffset = 1000, data = {}
 }: {
-    orderFilter: (filterFields: Partial<IRestOrderSnapshot>) => boolean;
+    orderFilter: (filterFields: Partial<IRestClosedOrder>) => boolean;
     maxOffset?: number;
     data?: ClosedOrders.Params
 
-}, injectedApiKeys?: ApiCredentials): Promise<IRestOrderSnapshot> => {
+}, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder> => {
     if (data?.ofs > maxOffset) {
         console.error(`Order not found within the first ${maxOffset} results...`);
         return null;

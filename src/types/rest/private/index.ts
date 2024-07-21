@@ -1,5 +1,5 @@
 import { RestResponse } from '..';
-import { AddExport, AddOrder, Balance, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
+import { AddExport, AddOrder, Balance, BalanceEx, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
 
 export * as PrivateEndpoints from './endpoints';
 
@@ -7,6 +7,7 @@ export type PrivateEndpoint =
     AddExport.Endpoint |
     AddOrder.Endpoint |
     Balance.Endpoint |
+    BalanceEx.Endpoint |
     CancelAll.Endpoint |
     CancelAllOrdersAfter.Endpoint |
     CancelOrder.Endpoint |
@@ -73,6 +74,7 @@ export type PrivateResult<T extends PrivateEndpoint> =
     T extends AddExport.Endpoint ? AddExport.Result :
     T extends AddOrder.Endpoint ? AddOrder.Result :
     T extends Balance.Endpoint ? Balance.Result :
+    T extends BalanceEx.Endpoint ? BalanceEx.Result :
     T extends CancelAll.Endpoint ? CancelAll.Result :
     T extends CancelAllOrdersAfter.Endpoint ? CancelAllOrdersAfter.Result :
     T extends CancelOrder.Endpoint ? CancelOrder.Result :

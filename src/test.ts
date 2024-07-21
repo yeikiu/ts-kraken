@@ -3,8 +3,7 @@ config();
 
 import { PrivateRest } from '.';
 
-PrivateRest.privateRestRequest({
-    url: 'Balance'
-}).then(({ XXBT: btcBalance, ADA: adaBalance }) => {
-    console.log({ btcBalance, adaBalance })
+PrivateRest.getOpenOrders().then(openOrdersArr => {
+    const openOrdersIds = openOrdersArr.map(({ orderid }) => orderid);
+    console.log({ openOrdersIds });
 });
