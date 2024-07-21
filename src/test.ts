@@ -3,7 +3,8 @@ config();
 
 import { PrivateRest } from '.';
 
-PrivateRest.getOpenOrders().then(openOrdersArr => {
-    const openOrdersIds = openOrdersArr.map(({ orderid }) => orderid);
-    console.log({ openOrdersIds });
+PrivateRest.privateRestRequest({
+    url: 'ClosedOrders'
+}).then(({ closed: closedOrders }) => {
+    console.log({ closedOrders })
 });

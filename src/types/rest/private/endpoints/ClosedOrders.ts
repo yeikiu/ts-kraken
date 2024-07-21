@@ -1,5 +1,3 @@
-/* https://docs.kraken.com/rest/#operation/getClosedOrders */
-
 export type RestClosedOrder = {
     refid: string;	// Referral order transaction id that created this order
     userref: number; // user reference ID
@@ -35,8 +33,26 @@ export type RestClosedOrder = {
     reason: string;
 };
 
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | Get Closed Orders}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateRest } from 'ts-kraken';
+
+    PrivateRest.privateRestRequest({
+        url: 'ClosedOrders'
+    }).then(({ closed: closedOrders }) => {
+        console.log({ closedOrders })
+    });
+ * ```
+ *
+ * @remarks
+ * ℹ️ _Tip:_ This library implements the helper method {@link PrivateRest.getClosedOrders} which outputs a nicer array of closed orders
+ */
 export type Endpoint = 'ClosedOrders';
 
+/** {@inheritDoc Endpoint} */
 export type Params = {
     trades?: boolean;
     userref?: number;
@@ -47,6 +63,7 @@ export type Params = {
     consolidate_taker?: boolean;
 }
 
+/** {@inheritDoc Endpoint} */
 export type Result = {
     closed: Record<string, RestClosedOrder>;
 }

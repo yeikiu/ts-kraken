@@ -16,8 +16,9 @@ type IRestClosedOrder = ClosedOrders.RestClosedOrder & { orderid: string; };
     // Fetch latest closed orders (skipping the last 50)
     PrivateRest.getClosedOrders({
         ofs: 50
-    }).then(lastClosedOrder => {
-        console.log({ lastClosedOrder });
+    }).then(lastClosedOrdersArr => {
+        const closedOrdersIds = lastClosedOrdersArr.map(({ orderid }) => orderid);
+        console.log({ closedOrdersIds });
     });
  * ```
  */
