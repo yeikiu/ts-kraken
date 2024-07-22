@@ -26,7 +26,7 @@ export type Params = {
 };
 
 /** {@inheritDoc Endpoint} */
-export type Result<T extends Params> = {
+export type Result = {
     delete: boolean;
     cancel: boolean
 };

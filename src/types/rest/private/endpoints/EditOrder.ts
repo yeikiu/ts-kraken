@@ -1,11 +1,31 @@
-/* https://docs.kraken.com/rest/#operation/editOrder */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/edit-order | Edit Order}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateRest } from 'ts-kraken';
 
+    PrivateRest.privateRestRequest({
+        url: 'EditOrder',
+        data: {
+            pair: "XBTUSD",
+            txid: "OHYO67-6LP66-HMQ437",
+            volume: "1.25",
+            price: "27500",
+            price2: "26500"
+        }
+    }).then(({ olduserref, newuserref }) => {
+        console.log({ olduserref, newuserref });
+    });
+ * ```
+ */
 export type Endpoint = 'EditOrder';
 
 export type Params = {
     userref?: number;
-    txid: string;
+    txid: string | number;
     volume?: string;
+    displayvol?: string;
     pair: string; // Asset pair id or altname
     price?: string;
     price2?: string;

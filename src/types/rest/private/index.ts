@@ -1,11 +1,12 @@
 import { RestResponse } from '..';
-import { AddExport, AddOrder, Balance, BalanceEx, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
+import { AddExport, AddOrder, AddOrderBatch, Balance, BalanceEx, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
 
 export * as PrivateEndpoints from './endpoints';
 
 export type PrivateEndpoint =
     AddExport.Endpoint |
     AddOrder.Endpoint |
+    AddOrderBatch.Endpoint |
     Balance.Endpoint | // no params
     BalanceEx.Endpoint | // no params
     CancelAll.Endpoint | // no params
@@ -38,6 +39,7 @@ export type PrivateEndpoint =
 export type PrivateParams<T extends PrivateEndpoint> =
     T extends AddExport.Endpoint ? AddExport.Params :
     T extends AddOrder.Endpoint ? AddOrder.Params :
+    T extends AddOrderBatch.Endpoint ? AddOrderBatch.Params :
     T extends CancelAllOrdersAfter.Endpoint ? CancelAllOrdersAfter.Params :
     T extends CancelOrder.Endpoint ? CancelOrder.Params :
     T extends ClosedOrders.Endpoint ? ClosedOrders.Params : // all optional
@@ -115,6 +117,7 @@ export type PrivateRequest<T extends PrivateEndpoint> =
 export type PrivateResult<T extends PrivateEndpoint> =
     T extends AddExport.Endpoint ? AddExport.Result :
     T extends AddOrder.Endpoint ? AddOrder.Result :
+    T extends AddOrderBatch.Endpoint ? AddOrderBatch.Result :
     T extends Balance.Endpoint ? Balance.Result :
     T extends BalanceEx.Endpoint ? BalanceEx.Result :
     T extends CancelAll.Endpoint ? CancelAll.Result :
@@ -133,7 +136,7 @@ export type PrivateResult<T extends PrivateEndpoint> =
     T extends QueryLedgers.Endpoint ? QueryLedgers.Result :
     T extends QueryOrders.Endpoint ? QueryOrders.Result :
     T extends QueryTrades.Endpoint ? QueryTrades.Result :
-    T extends RemoveExport.Endpoint ? RemoveExport.Result<RemoveExport.CancelParams | RemoveExport.DeleteParams> :
+    T extends RemoveExport.Endpoint ? RemoveExport.Result :
     T extends RetrieveExport.Endpoint ? RetrieveExport.Result :
     T extends TradeBalance.Endpoint ? TradeBalance.Result :
     T extends TradesHistory.Endpoint ? TradesHistory.Result :

@@ -1,5 +1,6 @@
 export * as AddExport from './AddExport';
 export * as AddOrder from './AddOrder';
+export * as AddOrderBatch from './AddOrderBatch';
 export * as EditOrder from './EditOrder';
 export * as Balance from './Balance';
 export * as BalanceEx from './BalanceEx';
