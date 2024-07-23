@@ -36,6 +36,9 @@ export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
     T extends Trade.Subscription['params']['channel'] ? Trade.Update :
     T extends Instruments.Subscription['params']['channel'] ? Instruments.Update : never;
 
+/**
+ * @internal 
+ */
 type OmitChannel<T extends PublicSubscriptionChannel> = Omit<PublicSubscription<T>['params'], 'channel'>;
 
 export type PublicSubscriptionParams<T extends PublicSubscriptionChannel> =
@@ -43,4 +46,4 @@ export type PublicSubscriptionParams<T extends PublicSubscriptionChannel> =
     T extends Book.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
     T extends Ohlc.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
     T extends Trade.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
-    T extends Instruments.Subscription['params']['channel'] ? { params: OmitChannel<T> } : never;
+    T extends Instruments.Subscription['params']['channel'] ? { params?: OmitChannel<T> } : never;

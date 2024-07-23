@@ -1,8 +1,24 @@
-/* https://docs.kraken.com/api/docs/websocket-v2/executions */
-
 import { BaseSubscription, BaseUnsubscription } from '../..';
 
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/websocket-v2/executions | Executions}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateWs } from 'ts-kraken';
+    const {getPrivateSubscription } = PrivateWs;
+
+    getPrivateSubscription({ channel: 'executions' })
+        .then(balance$ => {
+            balance$.subscribe(({ type, data }) => {
+                console.log({ type, data });
+            });
+        });
+ * ```
+ */
 export namespace Executions {
+    
+    /** {@inheritDoc Executions} */
     export type Subscription = BaseSubscription<{
         channel: 'executions';
         snap_trades?: boolean;
@@ -11,10 +27,12 @@ export namespace Executions {
         ratecounter?: boolean;
     }>;
 
+    /** {@inheritDoc Executions} */
     export type Unsubscription = BaseUnsubscription<{
         channel: 'executions';
     }>;
 
+    /** {@inheritDoc Executions} */
     export type Update = {
         channel: 'executions';
         type: 'snapshot' | 'update';

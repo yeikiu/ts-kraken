@@ -5,7 +5,7 @@ import { type ApiCredentials } from '$types/ws/private';
 /**
  * Returns a valid token to use in our WS subscriptions and private requests
  *
- * @param { apiKey, apiSecret } - <OPTIONAL> If not passed, process.env keys will be used to generate a token
+ * @param injectedApiKeys - _OPTIONAL:_ If not passed, process.env keys will be used to generate a token
  * @returns wsToken string
  */
 export const getWsAuthToken = async (injectedApiKeys?: ApiCredentials): Promise<string> => {

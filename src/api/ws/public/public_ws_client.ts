@@ -8,26 +8,26 @@ import WebSocketCtor from 'ws';
 import { PublicRequest, PublicResponse, PublicSubscription, PublicSubscriptionChannel, PublicSubscriptionParams, PublicSubscriptionUpdate } from '$types/ws/public';
 import { Heartbeat, Status } from '$types/ws/public/channels';
 
-export const onPublicWsOpen = new Subject();
-export const onPublicWsClose = new Subject();
+export const onPublicWsOpen$ = new Subject();
+export const onPublicWsClose$ = new Subject();
 
 const publicWsClient = webSocket({
     protocol: 'v1',
     url: 'wss://ws.kraken.com/v2',
     WebSocketCtor,
-    openObserver: onPublicWsOpen,
-    closeObserver: onPublicWsClose
+    openObserver: onPublicWsOpen$,
+    closeObserver: onPublicWsClose$
 });
 
 export const publicWsHeartbeat$: Observable<Heartbeat.Update> = publicWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
 export const publicWsStatus$: Observable<Status.Update> = publicWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
 
 export async function sendPublicEvent<T extends PublicRequest>(request: T): Promise<PublicResponse<T>> {
-    const { req_id } = request;
+    const { req_id, method } = request;
 
     const [wsResponse] = await Promise.all([
         lastValueFrom(publicWsClient.pipe(
-            filter(({ req_id: incomingReq_id }) => incomingReq_id === req_id),
+            filter(({ method: res_method, req_id: res_id }) => res_id ? res_id === req_id : method === 'ping' ? res_method === 'pong' : method === res_method),
             first(),
             timeout(30000) // Assume something went wrong if we didn't get a WS response within 30 seconds...
         )),

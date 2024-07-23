@@ -20,19 +20,28 @@ export type Params = {
     pair?: string; //Comma delimited list of asset pairs to get fee info on (optional)
 }
 
-type RestFeeTierInfo = {
-    fee: string;
-    minfee: string;
-    maxfee: string;
-    nextfee: string;
-    nextvolume: string;
-    tiervolume: string;
-};
-
 /** {@inheritDoc Endpoint} */
 export type Result = {
     currency: string;
     volume: string;
-    fees: { [pair: string]: RestFeeTierInfo };
-    fees_maker: { [pair: string]: RestFeeTierInfo };
+    fees: {
+        [pair: string]: {
+            fee: string;
+            minfee: string;
+            maxfee: string;
+            nextfee: string;
+            nextvolume: string;
+            tiervolume: string;
+        }
+    };
+    fees_maker: {
+        [pair: string]: {
+            fee: string;
+            minfee: string;
+            maxfee: string;
+            nextfee: string;
+            nextvolume: string;
+            tiervolume: string;
+        }
+    };
 }

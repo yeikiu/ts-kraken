@@ -35,4 +35,4 @@ export type Result = {
     datastarttm: string;
     dataendtm: string;
     asset: string;
-}[]
+}[];

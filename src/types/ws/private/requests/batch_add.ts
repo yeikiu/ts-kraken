@@ -3,7 +3,7 @@
 export namespace BatchAdd {
   export type Request = {
     method: 'batch_add';
-    req_id: number;
+    req_id?: number;
     params: {
       symbol: string;
       deadline?: string;

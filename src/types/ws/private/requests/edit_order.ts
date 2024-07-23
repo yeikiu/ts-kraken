@@ -3,7 +3,7 @@
 export namespace EditOrder {
   export type Request = {
     method: 'edit_order';
-    req_id: number;
+    req_id?: number;
     params: {
       order_id: string;
       symbol: string;

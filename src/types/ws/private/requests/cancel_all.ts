@@ -3,7 +3,7 @@
 export namespace CancelAll {
     export type Request = {
         method: 'cancel_all';
-        req_id: number;
+        req_id?: number;
         params?: never;
     }
 

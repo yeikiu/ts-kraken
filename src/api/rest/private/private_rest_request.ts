@@ -37,11 +37,8 @@ const createPrivateRestClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret 
 
 const defaultClient = createPrivateRestClient();
 /**
- * Request against PRIVATE-REST API
+ * Request against `https://api.kraken.com/0/private/<Endpoint>`
  *
- * @param params - { url: Endpoint; data: Request; }
- * @param { apiKey, apiSecret } - <OPTIONAL> Pair of keys to use in runtime if no keys are set in your process.env or you want to use multiple keypairs...
- * @returns Promise<PrivateRest.Result>
  */
 export async function privateRestRequest<E extends PrivateEndpoint>(privateRequest: PrivateRestTypes.PrivateRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateResult<E>> {
     const { apiKey, apiSecret } = runtimeApiKeys ?? {};

@@ -3,7 +3,7 @@
 export namespace BatchCancel {
   export type Request = {
     method: 'batch_cancel';
-    req_id: number;
+    req_id?: number;
     params: {
       orders: string[];
       cl_ord_id?: string[];

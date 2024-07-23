@@ -3,7 +3,7 @@
 export namespace CancelOnDisconnect {
     export type Request = {
         method: 'cancel_all_orders_after';
-        req_id: number;
+        req_id?: number;
         params: {
             timeout: number;
         }

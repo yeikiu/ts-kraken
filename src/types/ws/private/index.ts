@@ -43,6 +43,7 @@ export type PrivateResponse<T extends PrivateRequest> =
 /* CHANNELS */
 
 export type PrivateSubscriptionChannel =
+    Executions.Subscription['params']['channel'] |
     Balances.Subscription['params']['channel'] |
     Orders.Subscription['params']['channel'];
 
@@ -59,6 +60,6 @@ export type PrivateSubscriptionUpdate<T extends PrivateSubscriptionChannel> =
 type OmitChannel<T extends PrivateSubscriptionChannel> = Omit<PrivateSubscription<T>['params'], 'channel'>;
 
 export type PrivateSubscriptionParams<T extends PrivateSubscriptionChannel> =
-    T extends Executions.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
-    T extends Balances.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
+    T extends Executions.Subscription['params']['channel'] ? { params?: OmitChannel<T> } :
+    T extends Balances.Subscription['params']['channel'] ? { params?: OmitChannel<T> } :
     T extends Orders.Subscription['params']['channel'] ? { params: OmitChannel<T> } : never

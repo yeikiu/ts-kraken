@@ -8,10 +8,8 @@ publicRestClient.defaults.baseURL = `${publicRestClient.defaults.baseURL}/public
 publicRestClient.defaults.method = 'GET';
 
 /**
- * Request against PUBLIC-REST API
+ * Request against `https://api.kraken.com/0/public/<Endpoint>`
  *
- * @param { url: PublicRestTypes.Endpoint; params: PublicRestTypes.Request; }
- * @returns Promise<PublicRestTypes.Result>
  */
 export async function publicRestRequest<E extends PublicEndpoint>(publicRequest: PublicRestTypes.PublicRequest<E>): Promise<PublicRestTypes.PublicResult<E>> {
     const { data: { result, error } } = await publicRestClient.request<PublicRestTypes.PublicResponse<E>>(publicRequest);

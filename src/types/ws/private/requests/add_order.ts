@@ -3,7 +3,7 @@
 export namespace AddOrder {
   export type Request = {
     method: 'add_order';
-    req_id: number;
+    req_id?: number;
     params: {
       order_type: 'limit' | 'market' | 'iceberg' | 'stop-loss' | 'stop-loss-limit' | 'take-profit' | 'take-profit-limit' | 'trailing-stop' | 'trailing-stop-limit' | 'settle-position';
       side: 'buy' | 'sell';
