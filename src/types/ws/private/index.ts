@@ -21,6 +21,9 @@ export type ApiCredentials = {
 
 /* REQUESTS */
 
+/**
+ * @ignore 
+ */
 export type PrivateWsMethod =
     'add_order' |
     'batch_add' |
@@ -30,6 +33,9 @@ export type PrivateWsMethod =
     'cancel_order' |
     'edit_order';
 
+/**
+ * @ignore 
+ */
 export type BasePrivateWsRequest<M extends PrivateWsMethod, P> = 
     M extends 'cancel_all' ? {
         req_id?: number;
@@ -41,6 +47,9 @@ export type BasePrivateWsRequest<M extends PrivateWsMethod, P> =
         params: P;
     };
 
+/**
+ * @ignore 
+ */
 export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
     method: M;
     req_id: number;
@@ -51,6 +60,9 @@ export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
     error: string;
 };
 
+/**
+ * @ignore 
+ */
 export type PrivateRequest =
     AddOrder.Request |
     EditOrder.Request |
@@ -60,6 +72,9 @@ export type PrivateRequest =
     BatchAdd.Request |
     BatchCancel.Request;
 
+/**
+ * @ignore 
+ */
 export type PrivateResponse<T extends PrivateRequest> =
     T extends AddOrder.Request ? AddOrder.Response :
     T extends EditOrder.Request ? EditOrder.Response :
@@ -77,11 +92,17 @@ export type PrivateSubscriptionChannel =
     'balances' |
     'level3';
 
+/**
+ * @ignore 
+ */
 export type PrivateSubscription<T extends PrivateSubscriptionChannel> =
     T extends 'executions' ? Executions.Subscription :
     T extends 'balances' ? Balances.Subscription :
     T extends 'level3' ? Orders.Subscription : never;
 
+/**
+ * @ignore 
+ */
 export type PrivateSubscriptionUpdate<T extends PrivateSubscriptionChannel> =
     T extends 'executions' ? Executions.Update :
     T extends 'balances' ? Balances.Update :
@@ -89,6 +110,9 @@ export type PrivateSubscriptionUpdate<T extends PrivateSubscriptionChannel> =
 
 type OmitChannel<T extends PrivateSubscriptionChannel> = Omit<PrivateSubscription<T>['params'], 'channel'>;
 
+/**
+ * @ignore 
+ */
 export type PrivateSubscriptionParams<T extends PrivateSubscriptionChannel> =
     T extends 'executions' ? { params?: OmitChannel<T> } :
     T extends 'balances' ? { params?: OmitChannel<T> } :

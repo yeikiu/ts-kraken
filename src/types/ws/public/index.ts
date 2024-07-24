@@ -7,10 +7,19 @@ export * as PublicRequests from './requests';
 
 /* REQUESTS */
 
+/**
+ * @ignore 
+ */
 export type PublicWsMethod = 'ping';
 
+/**
+ * @ignore 
+ */
 export type PublicRequest = Ping.Request
 
+/**
+ * @ignore 
+ */
 export type PublicResponse<T extends PublicRequest> =
     T extends Ping.Request ? Ping.Response : never;
 
@@ -24,6 +33,9 @@ export type PublicSubscriptionChannel =
     'trade' |
     'instrument';
 
+/**
+ * @ignore 
+ */
 export type PublicSubscription<T extends PublicSubscriptionChannel> =
     T extends 'ticker' ? Ticker.Subscription :
     T extends 'book' ? Book.Subscription :
@@ -31,6 +43,9 @@ export type PublicSubscription<T extends PublicSubscriptionChannel> =
     T extends 'trade' ? Trade.Subscription :
     T extends 'instrument' ? Instruments.Subscription : never;
 
+/**
+ * @ignore 
+ */
 export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
     T extends 'ticker' ? Ticker.Update :
     T extends 'book' ? Book.Update :
@@ -39,10 +54,13 @@ export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
     T extends 'instrument' ? Instruments.Update : never;
 
 /**
- * @internal 
+ * @ignore 
  */
 type OmitChannel<T extends PublicSubscriptionChannel> = Omit<PublicSubscription<T>['params'], 'channel'>;
 
+/**
+ * @ignore 
+ */
 export type PublicSubscriptionParams<T extends PublicSubscriptionChannel> =
     T extends 'ticker' ? { params: OmitChannel<T> } :
     T extends 'book' ? { params: OmitChannel<T> } :

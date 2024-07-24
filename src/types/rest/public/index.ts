@@ -14,6 +14,9 @@ export type PublicEndpoint =
     'Time' | // no params
     'Trades';
 
+/**
+ * @ignore
+ */    
 export type PublicParams<T extends PublicEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Params : // all optional
     T extends 'Assets' ? Assets.Params :
@@ -23,6 +26,9 @@ export type PublicParams<T extends PublicEndpoint> =
     T extends 'Ticker' ? Ticker.Params : // all optional
     T extends 'Trades' ? Trades.Params : never;
 
+/**
+ * @ignore
+ */    
 export type PublicRequest<T extends PublicEndpoint> = 
     T extends 'SystemStatus' ? { // no params
         url: T;
@@ -44,6 +50,9 @@ export type PublicRequest<T extends PublicEndpoint> =
         params: PublicParams<T>;
     }
 
+/**
+ * @ignore
+ */    
 export type PublicResult<T extends PublicEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Result :
     T extends 'Assets' ? Assets.Result :
@@ -55,4 +64,7 @@ export type PublicResult<T extends PublicEndpoint> =
     T extends 'Time' ? Time.Result :
     T extends 'Trades' ? Trades.Result : never;
 
+/**
+ * @ignore
+ */    
 export type PublicResponse<T extends PublicEndpoint> = RestResponse<PublicResult<T>>;

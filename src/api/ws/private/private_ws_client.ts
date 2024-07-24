@@ -15,11 +15,7 @@ import { ApiCredentials, ApiToken, PrivateRequest, PrivateResponse, PrivateSubsc
     import { PrivateWs } from 'ts-kraken';
 
     PrivateWs.onPrivateWsOpen$.subscribe(() => {
-        console.log('WebsocketV2 connected successfully!\n');
-    });
-
-    PrivateWs.privateWsStatus$.subscribe(({ channel, data: [{ api_version, system }] }) => {
-        console.log({ channel, api_version, system });
+        console.log('Private WebsocketV2 connected successfully!\n');
     });
 * ```
 */
@@ -33,7 +29,7 @@ export const onPrivateWsOpen$ = new Subject();
     import { PrivateWs } from 'ts-kraken';
 
     PrivateWs.onPrivateWsClose$.subscribe(() => {
-        console.log('WebsocketV2 connection closed!\n');
+        console.log('Private WebsocketV2 connection closed!\n');
         
         // Code to handle lost connection here...
     });
@@ -91,7 +87,7 @@ function isToken(tokenOrKeys: ApiToken | ApiCredentials): tokenOrKeys is ApiToke
 }
 
 /**
- * Returns a Promise from a private WebsocketV2 request.
+ * Returns a Promise from a private WebsocketV2 method request.
  * 
  * @example
  * ```ts
@@ -135,7 +131,8 @@ export async function sendPrivateRequest<R extends PrivateRequest>(request: R, t
 }
 
 /**
- * Returns a {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable} for the given private channel you can call `.subscribe()` on.
+ * Returns a Promise of a {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable} for the given
+ * private channel. You can call `.subscribe()` on the resolved `Observable` to receive data updates.
  * 
  * @example
  * ```ts
