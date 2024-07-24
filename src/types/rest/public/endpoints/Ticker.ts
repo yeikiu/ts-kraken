@@ -21,22 +21,28 @@
  * @remarks
  * _Tip:_ This library implements the helper method {@link PublicRest.getTickers} which outputs a nicer object format.
  */
-export type Endpoint = 'Ticker';
+export namespace Ticker {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    pair?: string;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Ticker';
+
+    /** {@inheritDoc Ticker} */
+    export type Params = {
+        pair?: string;
+    }
+
+    /** {@inheritDoc Ticker} */
+    export type Result = Record<string, {
+        a: string[];
+        b: string[];
+        c: string[];
+        v: string[];
+        p: string[];
+        t: number[];
+        l: string[];
+        h: string[];
+        o: string;
+    }>;
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = Record<string, {
-    a: string[];
-    b: string[];
-    c: string[];
-    v: string[];
-    p: string[];
-    t: number[];
-    l: string[];
-    h: string[];
-    o: string;
-}>;

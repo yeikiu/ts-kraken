@@ -14,18 +14,24 @@
         });
  * ```
  */
-export type Endpoint = 'Depth';
+export namespace Depth {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    pair: string;
-    count?: number; // maximum number of asks/bids: 1 .. 500
-}
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Depth';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    [pair: string]: {
-        asks: [string, string, number];
-        bids: [string, string, number];
+    /** {@inheritDoc Depth} */
+    export type Params = {
+        pair: string;
+        count?: number; // maximum number of asks/bids: 1 .. 500
+    }
+
+    /** {@inheritDoc Depth} */
+    export type Result = {
+        [pair: string]: {
+            asks: [string, string, number];
+            bids: [string, string, number];
+        }
     }
 }

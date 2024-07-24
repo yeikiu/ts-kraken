@@ -1,10 +1,10 @@
 import { lastValueFrom, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { privateRestRequest } from '../private_rest_request';
-import { ClosedOrders } from '$types/rest/private/endpoints';
+import { ClosedOrders, RestClosedOrder } from '$types/rest/private/endpoints';
 import { ApiCredentials } from '$types/ws/private';
 
-type IRestClosedOrder = ClosedOrders.RestClosedOrder & { orderid: string; };
+type IRestClosedOrder = RestClosedOrder & { orderid: string; };
 
 /**
  * Returns a nice array of latest closed orders. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | getClosedOrders}

@@ -5,7 +5,7 @@
  * ```ts 
     import { PublicRest } from 'ts-kraken';
 
-    PublicWs.sendPublicEvent({ method: 'ping', req_id: 42 })
+    PublicWs.sendPublicRequest({ method: 'ping', req_id: 42 })
         .then(({ method, req_id, time_in, time_out }) => {
             console.log({ method, req_id, time_in, time_out });
         });

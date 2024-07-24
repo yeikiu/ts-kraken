@@ -21,6 +21,36 @@ export type ApiCredentials = {
 
 /* REQUESTS */
 
+export type PrivateWsMethod =
+    'add_order' |
+    'batch_add' |
+    'batch_cancel' |
+    'cancel_all_orders_after' | 
+    'cancel_all' |
+    'cancel_order' |
+    'edit_order';
+
+export type BasePrivateWsRequest<M extends PrivateWsMethod, P> = 
+    M extends 'cancel_all' ? {
+        req_id?: number;
+        method: M;
+        params?: never;
+    } : {
+        req_id?: number;
+        method: M;
+        params: P;
+    };
+
+export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
+    method: M;
+    req_id: number;
+    time_in: string;
+    time_out: string;
+    success: boolean;
+    result: R;
+    error: string;
+};
+
 export type PrivateRequest =
     AddOrder.Request |
     EditOrder.Request |
@@ -43,23 +73,23 @@ export type PrivateResponse<T extends PrivateRequest> =
 /* CHANNELS */
 
 export type PrivateSubscriptionChannel =
-    Executions.Subscription['params']['channel'] |
-    Balances.Subscription['params']['channel'] |
-    Orders.Subscription['params']['channel'];
+    'executions' |
+    'balances' |
+    'level3';
 
 export type PrivateSubscription<T extends PrivateSubscriptionChannel> =
-    T extends Executions.Subscription['params']['channel'] ? Executions.Subscription :
-    T extends Balances.Subscription['params']['channel'] ? Balances.Subscription :
-    T extends Orders.Subscription['params']['channel'] ? Orders.Subscription : never;
+    T extends 'executions' ? Executions.Subscription :
+    T extends 'balances' ? Balances.Subscription :
+    T extends 'level3' ? Orders.Subscription : never;
 
 export type PrivateSubscriptionUpdate<T extends PrivateSubscriptionChannel> =
-    T extends Executions.Subscription['params']['channel'] ? Executions.Update :
-    T extends Balances.Subscription['params']['channel'] ? Balances.Update :
-    T extends Orders.Subscription['params']['channel'] ? Orders.Update : never;
+    T extends 'executions' ? Executions.Update :
+    T extends 'balances' ? Balances.Update :
+    T extends 'level3' ? Orders.Update : never;
 
 type OmitChannel<T extends PrivateSubscriptionChannel> = Omit<PrivateSubscription<T>['params'], 'channel'>;
 
 export type PrivateSubscriptionParams<T extends PrivateSubscriptionChannel> =
-    T extends Executions.Subscription['params']['channel'] ? { params?: OmitChannel<T> } :
-    T extends Balances.Subscription['params']['channel'] ? { params?: OmitChannel<T> } :
-    T extends Orders.Subscription['params']['channel'] ? { params: OmitChannel<T> } : never
+    T extends 'executions' ? { params?: OmitChannel<T> } :
+    T extends 'balances' ? { params?: OmitChannel<T> } :
+    T extends 'level3' ? { params: OmitChannel<T> } : never

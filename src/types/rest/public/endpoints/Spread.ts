@@ -16,16 +16,22 @@
     });
  * ```
  */
-export type Endpoint = 'Spread';
+export namespace Spread {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    pair: string;
-    since?: number;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Spread';
+
+    /** {@inheritDoc Spread} */
+    export type Params = {
+        pair: string;
+        since?: number;
+    }
+
+    /** {@inheritDoc Spread} */
+    export type Result = {
+        [pair: string]: [number, string, string][];
+
+    } & { last: number; } // ID to be used as since when polling for new spread data
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    [pair: string]: [number, string, string][];
-    
-} & { last: number; } // ID to be used as since when polling for new spread data

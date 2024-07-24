@@ -14,17 +14,23 @@
         });
  * ```
  */
-export type Endpoint = 'OHLC';
+export namespace OHLC {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    pair: string;
-    interval?: 1 | 5 | 15 | 30 | 60 | 240 | 1440 | 10080 |  21600;
-    since?: number; // Return committed OHLC data since given ID
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'OHLC';
+
+    /** {@inheritDoc OHLC} */
+    export type Params = {
+        pair: string;
+        interval?: 1 | 5 | 15 | 30 | 60 | 240 | 1440 | 10080 | 21600;
+        since?: number; // Return committed OHLC data since given ID
+    }
+
+    /** {@inheritDoc OHLC} */
+    export type Result = {
+        [pair: string]: [number, string, string, string, string, string, string, number][];
+
+    } & { last: number; } // ID to be used as since when polling for new, committed OHLC data
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    [pair: string]: [number, string, string, string, string, string, string, number][];
-    
-} & { last: number; } // ID to be used as since when polling for new, committed OHLC data

@@ -6,19 +6,16 @@ import { BaseSubscription, BaseUnsubscription } from '../../';
  * @example
  * ```ts 
     import { PrivateWs } from 'ts-kraken';
-    const { getPrivateSubscription } = PrivateWs;
 
-    getPrivateSubscription({ channel: 'balances', params: { snapshot: true } })
-        .then(balance$ => {
-            balance$.subscribe(({ type, data }) => {
-                if (type === 'snapshot') {
-                    console.log('type snapshot? -> ', { type, adaWallets: data[0].wallets });
-                } else {
-                    console.log('type update? -> ', { type, data });
-                }
+    PrivateWs.getPrivateSubscription({
+        channel: 'balances',
+        params: { snapshot: true }
 
-            });
+    }).then(balancesObservable$ => {
+        balancesObservable$.subscribe(({ data: balancesData }) => {
+            console.log({ balancesData });
         });
+    });
  * ```
  */
 export namespace Balances {

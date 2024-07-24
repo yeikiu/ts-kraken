@@ -7,6 +7,8 @@ export * as PublicRequests from './requests';
 
 /* REQUESTS */
 
+export type PublicWsMethod = 'ping';
+
 export type PublicRequest = Ping.Request
 
 export type PublicResponse<T extends PublicRequest> =
@@ -16,25 +18,25 @@ export type PublicResponse<T extends PublicRequest> =
 /* CHANNELS */
 
 export type PublicSubscriptionChannel =
-    Ticker.Subscription['params']['channel'] |
-    Book.Subscription['params']['channel'] |
-    Ohlc.Subscription['params']['channel'] |
-    Trade.Subscription['params']['channel'] |
-    Instruments.Subscription['params']['channel'];
+    'ticker' |
+    'book' |
+    'ohlc' |
+    'trade' |
+    'instrument';
 
 export type PublicSubscription<T extends PublicSubscriptionChannel> =
-    T extends Ticker.Subscription['params']['channel'] ? Ticker.Subscription :
-    T extends Book.Subscription['params']['channel'] ? Book.Subscription :
-    T extends Ohlc.Subscription['params']['channel'] ? Ohlc.Subscription :
-    T extends Trade.Subscription['params']['channel'] ? Trade.Subscription :
-    T extends Instruments.Subscription['params']['channel'] ? Instruments.Subscription : never;
+    T extends 'ticker' ? Ticker.Subscription :
+    T extends 'book' ? Book.Subscription :
+    T extends 'ohlc' ? Ohlc.Subscription :
+    T extends 'trade' ? Trade.Subscription :
+    T extends 'instrument' ? Instruments.Subscription : never;
 
 export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
-    T extends Ticker.Subscription['params']['channel'] ? Ticker.Update :
-    T extends Book.Subscription['params']['channel'] ? Book.Update :
-    T extends Ohlc.Subscription['params']['channel'] ? Ohlc.Update :
-    T extends Trade.Subscription['params']['channel'] ? Trade.Update :
-    T extends Instruments.Subscription['params']['channel'] ? Instruments.Update : never;
+    T extends 'ticker' ? Ticker.Update :
+    T extends 'book' ? Book.Update :
+    T extends 'ohlc' ? Ohlc.Update :
+    T extends 'trade' ? Trade.Update :
+    T extends 'instrument' ? Instruments.Update : never;
 
 /**
  * @internal 
@@ -42,8 +44,8 @@ export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
 type OmitChannel<T extends PublicSubscriptionChannel> = Omit<PublicSubscription<T>['params'], 'channel'>;
 
 export type PublicSubscriptionParams<T extends PublicSubscriptionChannel> =
-    T extends Ticker.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
-    T extends Book.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
-    T extends Ohlc.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
-    T extends Trade.Subscription['params']['channel'] ? { params: OmitChannel<T> } :
-    T extends Instruments.Subscription['params']['channel'] ? { params?: OmitChannel<T> } : never;
+    T extends 'ticker' ? { params: OmitChannel<T> } :
+    T extends 'book' ? { params: OmitChannel<T> } :
+    T extends 'ohlc' ? { params: OmitChannel<T> } :
+    T extends 'trade' ? { params: OmitChannel<T> } :
+    T extends 'instrument' ? { params?: OmitChannel<T> } : never;

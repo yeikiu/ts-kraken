@@ -13,10 +13,16 @@
         })
  * ```
  */
-export type Endpoint = 'Time';
+export namespace Time {
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    unixtime: number;
-    rfc1123: string;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Time';
+
+    /** {@inheritDoc Time} */
+    export type Result = {
+        unixtime: number;
+        rfc1123: string;
+    }
 }

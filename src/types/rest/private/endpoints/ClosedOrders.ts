@@ -50,20 +50,26 @@ export type RestClosedOrder = {
  * @remarks
  * ℹ️ _Tip:_ This library implements the helper method {@link PrivateRest.getClosedOrders} which outputs a nicer array of closed orders
  */
-export type Endpoint = 'ClosedOrders';
+export namespace ClosedOrders {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    trades?: boolean;
-    userref?: number;
-    start?: number | string;
-    end?: number | string;
-    ofs?: number;
-    closetime?: 'open' | 'close' | 'both';
-    consolidate_taker?: boolean;
-}
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'ClosedOrders';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    closed: Record<string, RestClosedOrder>;
+    /** {@inheritDoc ClosedOrders} */
+    export type Params = {
+        trades?: boolean;
+        userref?: number;
+        start?: number | string;
+        end?: number | string;
+        ofs?: number;
+        closetime?: 'open' | 'close' | 'both';
+        consolidate_taker?: boolean;
+    }
+
+    /** {@inheritDoc ClosedOrders} */
+    export type Result = {
+        closed: Record<string, RestClosedOrder>;
+    }
 }

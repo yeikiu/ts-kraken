@@ -13,12 +13,18 @@
     });
  * ```
  */
-export type Endpoint = 'RetrieveExport';
+export namespace RetrieveExport {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    id: string;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'RetrieveExport';
+
+    /** {@inheritDoc RetrieveExport} */
+    export type Params = {
+        id: string;
+    }
+
+    /** {@inheritDoc RetrieveExport} */
+    export type Result = DataView;
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = DataView;

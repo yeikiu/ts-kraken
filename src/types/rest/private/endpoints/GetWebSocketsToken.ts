@@ -12,10 +12,16 @@
     });
  * ```
  */
-export type Endpoint = 'GetWebSocketsToken';
+export namespace GetWebSocketsToken {
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    token: string;
-    expires: number;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'GetWebSocketsToken';
+
+    /** {@inheritDoc GetWebSocketsToken} */
+    export type Result = {
+        token: string;
+        expires: number;
+    }
 }

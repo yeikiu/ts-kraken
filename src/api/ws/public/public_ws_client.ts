@@ -22,7 +22,7 @@ const publicWsClient = webSocket({
 export const publicWsHeartbeat$: Observable<Heartbeat.Update> = publicWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
 export const publicWsStatus$: Observable<Status.Update> = publicWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
 
-export async function sendPublicEvent<T extends PublicRequest>(request: T): Promise<PublicResponse<T>> {
+export async function sendPublicRequest<T extends PublicRequest>(request: T): Promise<PublicResponse<T>> {
     const { req_id, method } = request;
 
     const [wsResponse] = await Promise.all([

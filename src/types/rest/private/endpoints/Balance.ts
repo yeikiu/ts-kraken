@@ -12,9 +12,15 @@
     });
  * ```
  */
-export type Endpoint = 'Balance';
+export namespace Balance {
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    [asset: string]: string;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Balance';
+
+    /** {@inheritDoc Balance} */
+    export type Result = {
+        [asset: string]: string;
+    }
 }

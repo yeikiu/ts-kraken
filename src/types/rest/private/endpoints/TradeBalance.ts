@@ -12,23 +12,29 @@
     });
  * ```
  */
-export type Endpoint = 'TradeBalance';
+export namespace TradeBalance {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    asset?: string;
-}
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'TradeBalance';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    eb: string;
-    tb: string;
-    m: string;
-    n: string;
-    c: string;
-    v: string;
-    e: string;
-    mf: string;
-    ml: string;
-    uv: string;
+    /** {@inheritDoc TradeBalance} */
+    export type Params = {
+        asset?: string;
+    }
+
+    /** {@inheritDoc TradeBalance} */
+    export type Result = {
+        eb: string;
+        tb: string;
+        m: string;
+        n: string;
+        c: string;
+        v: string;
+        e: string;
+        mf: string;
+        ml: string;
+        uv: string;
+    }
 }

@@ -11,10 +11,16 @@
         })
  * ```
  */
-export type Endpoint = 'SystemStatus';
+export namespace SystemStatus {
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    status: 'online' | 'maintenance' | 'cancel_only' | 'post_only';
-    timestamp: string;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'SystemStatus';
+
+    /** {@inheritDoc SystemStatus} */
+    export type Result = {
+        status: 'online' | 'maintenance' | 'cancel_only' | 'post_only';
+        timestamp: string;
+    }
 }

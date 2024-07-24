@@ -36,9 +36,21 @@ const createPrivateRestClient = (apikey = process.env.KRAKEN_API_KEY, apiSecret 
 };
 
 const defaultClient = createPrivateRestClient();
+
 /**
- * Request against `https://api.kraken.com/0/private/<Endpoint>`
- *
+ * Sends a Rest request to a private Endpoint @ `https://api.kraken.com/0/private/<Endpoint>`
+ * 
+ * @example
+ * ```ts
+    import { PrivateRest } from 'ts-kraken';
+
+    PrivateRest.privateRestRequest({ url: 'OpenOrders' })
+        .then(({ open }) => {
+            console.log({open});
+        }).catch(error => {
+            console.error({ error });
+        });
+ * ```
  */
 export async function privateRestRequest<E extends PrivateEndpoint>(privateRequest: PrivateRestTypes.PrivateRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateResult<E>> {
     const { apiKey, apiSecret } = runtimeApiKeys ?? {};

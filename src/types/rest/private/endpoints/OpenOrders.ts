@@ -48,15 +48,21 @@ export type RestOpenOrder = {
  * @remarks
  * _Tip:_ This library implements the helper method {@link PrivateRest.getOpenOrders} which outputs a nicer array of open orders
  */
-export type Endpoint = 'OpenOrders';
+export namespace OpenOrders {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    trades?: boolean;
-    userref?: number;
-}
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'OpenOrders';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    open: Record<string, RestOpenOrder>;
+    /** {@inheritDoc OpenOrders} */
+    export type Params = {
+        trades?: boolean;
+        userref?: number;
+    }
+
+    /** {@inheritDoc OpenOrders} */
+    export type Result = {
+        open: Record<string, RestOpenOrder>;
+    }
 }

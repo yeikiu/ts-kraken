@@ -1,7 +1,6 @@
 import { createHash, createHmac } from 'crypto';
 import { stringify } from 'qs';
 
-// Create a signature for a request
 interface GetMessageSignatureParams { path: string, payload: unknown, nonce: number, apiSecret: string }
 
 export const getMessageSignature = ({ path, payload, nonce, apiSecret }: GetMessageSignatureParams): string => {

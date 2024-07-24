@@ -1,5 +1,3 @@
-/* https://docs.kraken.com/api/docs/websocket-v2/status */
-
 import WebSocketCtor from 'ws';
 import { webSocket } from 'rxjs/webSocket';
 import { Subject } from 'rxjs/internal/Subject';
@@ -10,7 +8,7 @@ import { Heartbeat, Status } from '$types/ws/public/channels';
 import { ApiCredentials, ApiToken, PrivateRequest, PrivateResponse, PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate } from '$types/ws/private';
 
 /**
- * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}
+ * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
  * 
  * @example
  * ```ts
@@ -28,7 +26,7 @@ import { ApiCredentials, ApiToken, PrivateRequest, PrivateResponse, PrivateSubsc
 export const onPrivateWsOpen$ = new Subject();
 
 /**
- * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}
+ * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
  * 
  * @example
  * ```ts
@@ -92,7 +90,21 @@ function isToken(tokenOrKeys: ApiToken | ApiCredentials): tokenOrKeys is ApiToke
     return typeof tokenOrKeys === 'string';
 }
 
-export async function sendPrivateEvent<T extends PrivateRequest>(request: T, tokenOrKeys?: ApiToken | ApiCredentials): Promise<PrivateResponse<T>> {
+/**
+ * Returns a Promise from a private WebsocketV2 request.
+ * 
+ * @example
+ * ```ts
+    import { PrivateWs } from 'ts-kraken';
+
+    PrivateWs.sendPrivateRequest({ method: 'cancel_all' }).then(({ count }) => {
+        console.log({ count });
+    }).catch(error => {
+        console.error({ error });
+    });
+* ```
+*/
+export async function sendPrivateRequest<R extends PrivateRequest>(request: R, tokenOrKeys?: ApiToken | ApiCredentials): Promise<PrivateResponse<R>['result']> {
     const token = isToken(tokenOrKeys) ? tokenOrKeys : await getWsAuthToken(tokenOrKeys);
     const { req_id, method } = request;
 
@@ -101,7 +113,7 @@ export async function sendPrivateEvent<T extends PrivateRequest>(request: T, tok
             filter(({  method: res_method, req_id: res_id }) => res_id ? res_id === req_id : method === res_method),
             first(),
             timeout(30000) // Assume something went wrong if we didn't get a WS response within 30 seconds...
-        )),
+        )) as Promise<PrivateResponse<R>>,
         privateWsClient.next({
             ...request,
             params: {
@@ -110,10 +122,36 @@ export async function sendPrivateEvent<T extends PrivateRequest>(request: T, tok
             }
         })
     ]);
+    console.log({wsResponse});
+    if(wsResponse.success) {
+        // TODO: report `batch_cancel` is missing the `result` field in the response
+        if (method === 'batch_cancel' && 'orders_cancelled' in wsResponse) {
+            return { orders_cancelled: wsResponse.orders_cancelled } as PrivateResponse<R>['result'];
+        }
+        return wsResponse.result;
+    }
 
-    return wsResponse as PrivateResponse<T>;
+    throw `Method ${method} returned error: ${wsResponse?.error ?? 'unknown'}`;
 }
 
+/**
+ * Returns a {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable} for the given private channel you can call `.subscribe()` on.
+ * 
+ * @example
+ * ```ts
+    import { PrivateWs } from 'ts-kraken';
+
+    PrivateWs.getPrivateSubscription({
+        channel: 'balances',
+        params: { snapshot: true }
+
+    }).then(balancesObservable$ => {
+        balancesObservable$.subscribe(({ data: balancesData }) => {
+            console.log({ balancesData });
+        });
+    });
+* ```
+*/
 export async function getPrivateSubscription<C extends PrivateSubscriptionChannel>({
     channel, params, req_id
 }: {

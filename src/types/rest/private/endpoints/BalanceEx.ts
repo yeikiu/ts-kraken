@@ -12,14 +12,20 @@
     });
  * ```
  */
-export type Endpoint = 'BalanceEx';
+export namespace BalanceEx {
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    [asset: string]: {
-        balance: string;
-        credit: string;
-        credit_used: string;
-        hold_trade: string;
-    };
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'BalanceEx';
+
+    /** {@inheritDoc BalanceEx} */
+    export type Result = {
+        [asset: string]: {
+            balance: string;
+            credit: string;
+            credit_used: string;
+            hold_trade: string;
+        };
+    }
 }

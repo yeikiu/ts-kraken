@@ -17,16 +17,22 @@
     });
  * ```
  */
-export type Endpoint = 'RemoveExport';
+export namespace RemoveExport {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    id: string;
-    type: 'delete' | 'cancel';
-};
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'RemoveExport';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    delete: boolean;
-    cancel: boolean
-};
+    /** {@inheritDoc RemoveExport} */
+    export type Params = {
+        id: string;
+        type: 'delete' | 'cancel';
+    };
+
+    /** {@inheritDoc RemoveExport} */
+    export type Result = {
+        delete: boolean;
+        cancel: boolean
+    };
+}

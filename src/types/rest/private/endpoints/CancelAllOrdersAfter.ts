@@ -15,15 +15,21 @@
     });
  * ```
  */
-export type Endpoint = 'CancelAllOrdersAfter';
+export namespace CancelAllOrdersAfter {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    timeout: number;
-}
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'CancelAllOrdersAfter';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    currentTime: string;
-    triggerTime: string;
+    /** {@inheritDoc CancelAllOrdersAfter} */
+    export type Params = {
+        timeout: number;
+    }
+
+    /** {@inheritDoc CancelAllOrdersAfter} */
+    export type Result = {
+        currentTime: string;
+        triggerTime: string;
+    }
 }

@@ -16,17 +16,23 @@
     });
  * ```
  */
-export type Endpoint = 'Trades';
+export namespace Trades {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    pair: string;
-    since?: number;
-    count?: number;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Trades';
+
+    /** {@inheritDoc Trades} */
+    export type Params = {
+        pair: string;
+        since?: number;
+        count?: number;
+    }
+
+    /** {@inheritDoc Trades} */
+    export type Result = {
+        [pair: string]: [string, string, number, string, string, string][];
+
+    } & { last: string; } // ID to be used as since when polling for new trade data
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    [pair: string]: [string, string, number, string, string, string][];
-    
-} & { last: string; } // ID to be used as since when polling for new trade data

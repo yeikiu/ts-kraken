@@ -15,16 +15,22 @@
     });
  * ```
  */
-export type Endpoint = 'CancelOrderBatch';
+export namespace CancelOrderBatch {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    orders: (string | number)[];
-} | {
-    cl_ord_ids: string[];
-};
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'CancelOrderBatch';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    count: number;
-};
+    /** {@inheritDoc CancelOrderBatch} */
+    export type Params = {
+        orders: (string | number)[];
+    } | {
+        cl_ord_ids: string[];
+    };
+
+    /** {@inheritDoc CancelOrderBatch} */
+    export type Result = {
+        count: number;
+    };
+}

@@ -12,10 +12,16 @@
     });
  * ```
  */
-export type Endpoint = 'CancelAll';
+export namespace CancelAll {
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    count: number;
-    pending: number;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'CancelAll';
+
+    /** {@inheritDoc CancelAll} */
+    export type Result = {
+        count: number;
+        pending: number;
+    }
 }

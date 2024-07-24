@@ -15,17 +15,23 @@
     });
  * ```
  */
-export type Endpoint = 'CancelOrder';
+export namespace CancelOrder {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    txid: string | number;
-} | {
-    cl_ord_id: string;
-};
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'CancelOrder';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    count: number;
-    pending: boolean;
-};
+    /** {@inheritDoc CancelOrder} */
+    export type Params = {
+        txid: string | number;
+    } | {
+        cl_ord_id: string;
+    };
+
+    /** {@inheritDoc CancelOrder} */
+    export type Result = {
+        count: number;
+        pending: boolean;
+    };
+}

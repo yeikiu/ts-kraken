@@ -3,10 +3,18 @@ import { privateRestRequest } from '../private_rest_request';
 import { type ApiCredentials } from '$types/ws/private';
 
 /**
- * Returns a valid token to use in our WS subscriptions and private requests
- *
- * @param injectedApiKeys - _OPTIONAL:_ If not passed, process.env keys will be used to generate a token
- * @returns wsToken string
+ * Returns a token string required for WebsocketV2 usage. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-websockets-token | Get Websockets Token}
+ * 
+ * @example
+ * ```ts 
+    import { PrivateRest } from 'ts-kraken';
+
+    PrivateRest.getWsAuthToken().then(wsToken => {
+        console.log({ wsToken });
+    });
+ * ```
+ * @remarks
+ * You don't need to generate this token to use any method from {@link PrivateWs} as it will automatically inject one for you.
  */
 export const getWsAuthToken = async (injectedApiKeys?: ApiCredentials): Promise<string> => {
     try {

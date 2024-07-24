@@ -1,8 +1,8 @@
 import { privateRestRequest } from '..';
 import { ApiCredentials } from '$types/ws/private';
-import { OpenOrders } from '$types/rest/private/endpoints';
+import { OpenOrders, RestOpenOrder } from '$types/rest/private/endpoints';
 
-type IRestOpenOrder = OpenOrders.RestOpenOrder & { orderid: string; };
+type IRestOpenOrder = RestOpenOrder & { orderid: string; };
 
 /**
  * Returns a nice array of current open orders. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-open-orders | Get Open Orders}

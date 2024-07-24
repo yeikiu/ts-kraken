@@ -12,31 +12,37 @@
     });
  * ```
  */
-export type Endpoint = 'Ledgers';
+export namespace Ledgers {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    asset?: string;
-    aclass?: string;
-    type?: 'all' | 'deposit' | 'withdrawal' | 'tarde' | 'margin';
-    start?: number;
-    end?: number;
-    ofs?: number;
-    without_count?: boolean;
-}
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Ledgers';
 
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    ledger: Record<string, {
-        refid: string;
-        time: number;
-        type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
-        subtype: string;
-        aclass: string;
-        asset: string;
-        amount: string;
-        fee: string;
-        balance: string;
-    }>;
-    count: number;
+    /** {@inheritDoc Ledgers} */
+    export type Params = {
+        asset?: string;
+        aclass?: string;
+        type?: 'all' | 'deposit' | 'withdrawal' | 'tarde' | 'margin';
+        start?: number;
+        end?: number;
+        ofs?: number;
+        without_count?: boolean;
+    }
+
+    /** {@inheritDoc Ledgers} */
+    export type Result = {
+        ledger: Record<string, {
+            refid: string;
+            time: number;
+            type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
+            subtype: string;
+            aclass: string;
+            asset: string;
+            amount: string;
+            fee: string;
+            balance: string;
+        }>;
+        count: number;
+    }
 }

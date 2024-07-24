@@ -13,23 +13,29 @@
     });
  * ```
  */
-export type Endpoint = 'QueryLedgers';
+export namespace QueryLedgers {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    id: string; // Comma delimited list of transaction IDs to query info about (20 maximum)
-    trades?: boolean;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'QueryLedgers';
+
+    /** {@inheritDoc QueryLedgers} */
+    export type Params = {
+        id: string; // Comma delimited list of transaction IDs to query info about (20 maximum)
+        trades?: boolean;
+    }
+
+    /** {@inheritDoc QueryLedgers} */
+    export type Result = Record<string, {
+        refid: string;
+        time: number;
+        type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
+        subtype: string;
+        aclass: string;
+        asset: string;
+        amount: string;
+        fee: string;
+        balance: string;
+    }>;
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = Record<string, {
-    refid: string;
-    time: number;
-    type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
-    subtype: string;
-    aclass: string;
-    asset: string;
-    amount: string;
-    fee: string;
-    balance: string;
-}>;

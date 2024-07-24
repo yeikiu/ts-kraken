@@ -13,26 +13,32 @@
     });
  * ```
  */
-export type Endpoint = 'ExportStatus';
+export namespace ExportStatus {
 
-/** {@inheritDoc Endpoint} */
-export type Params = {
-    report: 'trades' | 'ledgers';
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'ExportStatus';
+
+    /** {@inheritDoc ExportStatus} */
+    export type Params = {
+        report: 'trades' | 'ledgers';
+    }
+
+    /** {@inheritDoc ExportStatus} */
+    export type Result = {
+        id: string;
+        descr: string;
+        format: string;
+        report: string;
+        subtype: string;
+        status: 'Queued' | 'Processing' | 'Processed';
+        fields: string;
+        createdtm: string;
+        starttm: string;
+        completedtm: string;
+        datastarttm: string;
+        dataendtm: string;
+        asset: string;
+    }[];
 }
-
-/** {@inheritDoc Endpoint} */
-export type Result = {
-    id: string;
-    descr: string;
-    format: string;
-    report: string;
-    subtype: string;
-    status: 'Queued' | 'Processing' | 'Processed';
-    fields: string;
-    createdtm: string;
-    starttm: string;
-    completedtm: string;
-    datastarttm: string;
-    dataendtm: string;
-    asset: string;
-}[];
