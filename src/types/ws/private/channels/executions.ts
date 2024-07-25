@@ -6,12 +6,11 @@ import { BaseSubscription, BaseUnsubscription } from '../..';
  * @example
  * ```ts 
     import { PrivateWs } from 'ts-kraken';
-    const {getPrivateSubscription } = PrivateWs;
 
-    getPrivateSubscription({ channel: 'executions' })
-        .then(balance$ => {
-            balance$.subscribe(({ type, data }) => {
-                console.log({ type, data });
+    PrivateWs.getPrivateSubscription({ channel: 'executions' })
+        .then(executions$ => {
+            executions$.subscribe((executionData) => {
+                console.log({ executionData });
             });
         });
  * ```

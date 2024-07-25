@@ -5,7 +5,7 @@ import { BaseSubscription, BaseUnsubscription } from '../../';
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { PublicWs } from 'ts-kraken';
 
     PublicWs.getPublicSubscription({ channel: 'ticker', params: { symbol: ['BTC/USD'] } })
         .subscribe(({ data: [{ symbol, last }] }) => {
