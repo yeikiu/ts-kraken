@@ -88,7 +88,7 @@ export namespace Executions {
                 status: 'triggered' | 'untriggered';
                 timestamp: string;
             }
-        };
+        }[];
         sequence: number; // TODO: report not in docs
     };
 }
