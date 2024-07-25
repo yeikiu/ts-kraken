@@ -7,26 +7,32 @@ import { type ApiCredentials } from '$types/ws/private';
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { PrivateRest, PrivateWs } from "ts-kraken";
 
-    PrivateRest.getWsAuthToken().then(wsToken => {
-        console.log({ wsToken });
+    PrivateRest.getWsAuthToken().then(async token => {
+        console.log({ token })
+
+        const balances$ = await PrivateWs.getPrivateSubscription({
+            channel: 'balances',
+            params: { snapshot: true }
+        }, token) // Pass token here to save time as the method won't need to fetch one internally!
+
+        balances$.subscribe(({data}) => {
+            console.table(data)
+        })
+
+    }).catch(error => {
+        console.log({ error })
     });
  * ```
  * @remarks
- * You don't need to generate this token to use any method from {@link PrivateWs} as it will automatically inject one for you.
+ * You don't need to generate this token to use any method from {@link PrivateWs} as they will automatically inject one _on-the-fly_ for you.
  */
 export const getWsAuthToken = async (injectedApiKeys?: ApiCredentials): Promise<string> => {
-    try {
-        const { token } = await privateRestRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {};
-        if (!token) {
-            throw ({ code: 'CUSTOM_ERROR', message: 'no token received' });
-        }
-
-        return token;
-
-    } catch ({ code, message }) {
-        console.error('Kraken getWsAuthToken error', { code, message });
-        throw ({ code, message });
+    const { token } = await privateRestRequest({ url: 'GetWebSocketsToken' }, injectedApiKeys) || {};
+    if (!token) {
+        throw ({ code: 'CUSTOM_ERROR', message: 'no token received' });
     }
+
+    return token;
 };

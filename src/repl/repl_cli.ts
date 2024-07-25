@@ -88,10 +88,10 @@ myRepl.defineCommand('showkeys', {
 });
 
 myRepl.defineCommand('get', {
-    help: `👉 Fetch PUBLIC REST data. Usage >> .get PublicEndpoint <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
+    help: `👉 Fetch PUBLIC REST data. Usage >> .get <PublicEndpoint> <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-          i.e. >> .get Time .rfc1123
-               >> .get AssetPairs . as $base|keys|map($base[.])|map({pair:.wsname,decimals:.pair_decimals,min:.ordermin}) -table
+            i.e.    >> .get Time .rfc1123
+                    >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,pair_decimals,ordermin}) -table
 ---`,
 
     action: async (cmdArgs: string) => {
@@ -119,10 +119,10 @@ myRepl.defineCommand('get', {
 });
 
 myRepl.defineCommand('post', {
-    help: `👉 Fetch PRIVATE REST data. Usage >> .post PrivateEndpoint <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
+    help: `👉 Fetch PRIVATE REST data. Usage >> .post PrivateEndpoint <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-          i.e. >> .post OpenOrders
-               >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
+            i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
+                    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
 ---`,
 
     action: async (cmdArgs: string) => {
@@ -154,10 +154,10 @@ myRepl.defineCommand('post', {
 });
 
 myRepl.defineCommand('pubsub', {
-    help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
+    help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-          i.e. >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
-               >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0] as $base|{symbol:$base.symbol,price:$base.last}
+            i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
+                    >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
 ---`,
 
     action: (cmdArgs: string) => {
@@ -177,9 +177,10 @@ myRepl.defineCommand('pubsub', {
 });
 
 myRepl.defineCommand('privsub', {
-    help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2> <jqFilterExpr>
+    help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-          i.e. >> .privsub executions snap_orders=true .data|map({ order_id, side, order_qty, symbol, order_type, limit_price })
+            i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
+                    >> .privsub executions snap_orders=true .data|map({order_id, side, order_qty, symbol, order_type, limit_price}) -table
 `,
 
     action: async (cmdArgs: string) => {
@@ -212,8 +213,8 @@ myRepl.defineCommand('privsub', {
 myRepl.defineCommand('unsub', {
     help: `👉 Closes WebSocket stream for GIVEN subscriptionName.
 
-          i.e. >> .unsub ticker
-               >> .unsub openOrders
+            i.e.    >> .unsub ticker
+                    >> .unsub executions
 `,
 
     action: (subscriptionName: string) => {
@@ -231,7 +232,7 @@ myRepl.defineCommand('unsub', {
 myRepl.defineCommand('unsuball', {
     help: `👉 Closes WebSocket stream for ALL subscriptions.
 
-          i.e. >> .unsuball
+            i.e.    >> .unsuball
 `,
 
     action: () => {
@@ -245,9 +246,12 @@ myRepl.defineCommand('unsuball', {
 });
 
 myRepl.defineCommand('find', {
-    help: `👉 Finds the most recent closed order satisfying the filter (optional) within maxOffset range for given pair. Usage >> .find <pair> <orderMatchFilter?> <maxOffset=1000> <jqFilter?>
+    help: `👉 Finds the most recent closed order satisfying the filter (optional) within maxOffset range for given pair.
+                    
+            Usage   >> .find <pair> <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory for .find!)
 
-          i.e. >> .find ADAETH descr[type]=buy 500 .descr.order
+            i.e.    >> .find ADAETH descr[type]=buy 500 .descr.order
+                    >> .find BTCUSD descr[type]=sell 500 .descr.order
 `,
 
     action: async (orderPairAndFilterStr: string) => {
@@ -264,7 +268,7 @@ myRepl.defineCommand('find', {
             return console.error('No API key/secret loaded!');
         }
 
-        const [pairStr, orderFilterStr, maxOffset = 1000, jqFilter] = orderPairAndFilterStr.split(' ');
+        const [pairStr, orderFilterStr = '', maxOffset = 1000, jqFilter = ''] = orderPairAndFilterStr.split(' ').map((str) => str.trim());
         const pair = pairStr.toUpperCase().replace('/', '');
         const parsedFilter = parse(orderFilterStr ?? {});
         const orderFilter: Partial<RestClosedOrder> = {
