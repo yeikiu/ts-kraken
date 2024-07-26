@@ -12,7 +12,7 @@ import { findClosedOrder, privateRestRequest } from '../api/rest/private';
 import { getPublicSubscription } from '../api/ws/public/public_ws_client';
 import { getPrivateSubscription } from '../api/ws/private/private_ws_client';
 import krakenHeader from './kraken_header';
-import { RestClosedOrder } from '$types/rest/private/endpoints';
+import { RestClosedOrder } from '../types/rest/private/endpoints';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env;
 const wsSubscriptions: Map<string, Subscription> = new Map();

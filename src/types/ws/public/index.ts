@@ -15,12 +15,12 @@ export type PublicWsMethod = 'ping';
 /**
  * @ignore 
  */
-export type PublicRequest = Ping.Request
+export type PublicWsRequest = Ping.Request
 
 /**
  * @ignore 
  */
-export type PublicResponse<T extends PublicRequest> =
+export type PublicWsResponse<T extends PublicWsRequest> =
     T extends Ping.Request ? Ping.Response : never;
 
 

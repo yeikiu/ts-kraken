@@ -1,9 +1,9 @@
 import { RestResponse } from '..';
 import { AssetPairs, Assets, Depth, OHLC, Spread, SystemStatus, Ticker, Time, Trades } from './endpoints';
 
-export * as PublicEndpoints from './endpoints';
+export * as PublicRestEndpoints from './endpoints';
 
-export type PublicEndpoint =
+export type PublicRestEndpoint =
     'AssetPairs' |
     'Assets' |
     'Depth' |
@@ -17,7 +17,7 @@ export type PublicEndpoint =
 /**
  * @ignore
  */    
-export type PublicParams<T extends PublicEndpoint> =
+export type PublicRestParams<T extends PublicRestEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Params : // all optional
     T extends 'Assets' ? Assets.Params :
     T extends 'Depth' ? Depth.Params :
@@ -29,7 +29,7 @@ export type PublicParams<T extends PublicEndpoint> =
 /**
  * @ignore
  */    
-export type PublicRequest<T extends PublicEndpoint> = 
+export type PublicRestRequest<T extends PublicRestEndpoint> = 
     T extends 'SystemStatus' ? { // no params
         url: T;
         params?: never;
@@ -40,20 +40,20 @@ export type PublicRequest<T extends PublicEndpoint> =
     } :
     T extends 'AssetPairs' ? { // all optional
         url: T;
-        params?: PublicParams<T>;
+        params?: PublicRestParams<T>;
     } :
     T extends 'Ticker' ? { // all optional
         url: T;
-        params?: PublicParams<T>;
+        params?: PublicRestParams<T>;
     } : { // Mandatory params
         url: T;
-        params: PublicParams<T>;
+        params: PublicRestParams<T>;
     }
 
 /**
  * @ignore
  */    
-export type PublicResult<T extends PublicEndpoint> =
+export type PublicRestResult<T extends PublicRestEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Result :
     T extends 'Assets' ? Assets.Result :
     T extends 'Depth' ? Depth.Result :
@@ -67,4 +67,4 @@ export type PublicResult<T extends PublicEndpoint> =
 /**
  * @ignore
  */    
-export type PublicResponse<T extends PublicEndpoint> = RestResponse<PublicResult<T>>;
+export type PublicRestResponse<T extends PublicRestEndpoint> = RestResponse<PublicRestResult<T>>;

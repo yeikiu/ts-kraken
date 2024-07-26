@@ -1,6 +1,6 @@
 import { privateRestRequest } from '..';
-import { ApiCredentials } from '$types/ws/private';
-import { OpenOrders, RestOpenOrder } from '$types/rest/private/endpoints';
+import { ApiCredentials } from '../../../../types/rest/private';
+import { OpenOrders, RestOpenOrder } from '../../../../types/rest/private/endpoints';
 
 type IRestOpenOrder = RestOpenOrder & { orderid: string; };
 

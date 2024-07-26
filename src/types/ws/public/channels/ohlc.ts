@@ -1,4 +1,5 @@
-import { BaseSubscription, BaseUnsubscription } from '$types/ws';
+import { BaseSubscription, BaseUnsubscription } from '../..';
+
 
 /**
  * Reference: {@link https://docs.kraken.com/api/docs/websocket-v2/ohlc | Candles (OHLC)}

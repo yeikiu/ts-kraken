@@ -1,8 +1,8 @@
 import { lastValueFrom, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { privateRestRequest } from '../private_rest_request';
-import { ClosedOrders, RestClosedOrder } from '$types/rest/private/endpoints';
-import { ApiCredentials } from '$types/ws/private';
+import { ClosedOrders, RestClosedOrder } from '../../../../types/rest/private/endpoints';
+import { ApiCredentials } from '../../../../types/rest/private';
 
 type IRestClosedOrder = RestClosedOrder & { orderid: string; };
 

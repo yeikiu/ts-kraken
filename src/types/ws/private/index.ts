@@ -12,12 +12,6 @@ import { EditOrder } from './requests/edit_order';
 export * as PrivateChannels from './channels';
 export * as PrivateRequests from './requests';
 
-export type ApiToken = string;
-export type ApiCredentials = {
-    apiKey: string;
-    apiSecret: string;
-};
-
 
 /* REQUESTS */
 
@@ -63,7 +57,7 @@ export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
 /**
  * @ignore 
  */
-export type PrivateRequest =
+export type PrivateWsRequest =
     AddOrder.Request |
     EditOrder.Request |
     CancelOrder.Request |
@@ -75,7 +69,7 @@ export type PrivateRequest =
 /**
  * @ignore 
  */
-export type PrivateResponse<T extends PrivateRequest> =
+export type PrivateWsResponse<T extends PrivateWsRequest> =
     T extends AddOrder.Request ? AddOrder.Response :
     T extends EditOrder.Request ? EditOrder.Response :
     T extends CancelOrder.Request ? CancelOrder.Response :

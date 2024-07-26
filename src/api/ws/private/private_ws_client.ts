@@ -4,8 +4,9 @@ import { Subject } from 'rxjs/internal/Subject';
 import { filter, first, timeout } from 'rxjs/operators';
 import { Observable, lastValueFrom } from 'rxjs';
 import { getWsAuthToken } from '../../rest/private';
-import { Heartbeat, Status } from '$types/ws/public/channels';
-import { ApiCredentials, ApiToken, PrivateRequest, PrivateResponse, PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate } from '$types/ws/private';
+import { Heartbeat, Status } from '../../../types/ws/public/channels';
+import { ApiCredentials, ApiToken } from '../../../types/rest/private';
+import { PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate, PrivateWsRequest, PrivateWsResponse } from '../../../types/ws/private';
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
@@ -100,7 +101,7 @@ function isToken(tokenOrKeys: ApiToken | ApiCredentials): tokenOrKeys is ApiToke
     });
 * ```
 */
-export async function sendPrivateRequest<R extends PrivateRequest>(request: R, tokenOrKeys?: ApiToken | ApiCredentials): Promise<PrivateResponse<R>['result']> {
+export async function sendPrivateRequest<R extends PrivateWsRequest>(request: R, tokenOrKeys?: ApiToken | ApiCredentials): Promise<PrivateWsResponse<R>['result']> {
     const token = isToken(tokenOrKeys) ? tokenOrKeys : await getWsAuthToken(tokenOrKeys);
     const { req_id, method } = request;
 
@@ -109,7 +110,7 @@ export async function sendPrivateRequest<R extends PrivateRequest>(request: R, t
             filter(({  method: res_method, req_id: res_id }) => res_id ? res_id === req_id : method === res_method),
             first(),
             timeout(30000) // Assume something went wrong if we didn't get a WS response within 30 seconds...
-        )) as Promise<PrivateResponse<R>>,
+        )) as Promise<PrivateWsResponse<R>>,
         privateWsClient.next({
             ...request,
             params: {
@@ -122,7 +123,7 @@ export async function sendPrivateRequest<R extends PrivateRequest>(request: R, t
     if(wsResponse.success) {
         // TODO: report `batch_cancel` is missing the `result` field in the response
         if (method === 'batch_cancel' && 'orders_cancelled' in wsResponse) {
-            return { orders_cancelled: wsResponse.orders_cancelled } as PrivateResponse<R>['result'];
+            return { orders_cancelled: wsResponse.orders_cancelled } as PrivateWsResponse<R>['result'];
         }
         return wsResponse.result;
     }

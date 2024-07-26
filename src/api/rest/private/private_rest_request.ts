@@ -1,10 +1,9 @@
 import axios, { AxiosInstance } from 'axios';
 import { stringify } from 'qs';
+import { ApiCredentials, PrivateRestEndpoint } from '../../../types/rest/private';
+import { PrivateRestTypes } from '../../..';
 import { getMessageSignature } from './message_signature';
 import { apiVersion, krakenAxiosConfig } from './../axios_config';
-import { PrivateEndpoint } from '$types/rest/private';
-import { PrivateRestTypes } from '$types';
-import { ApiCredentials } from '$types/ws/private';
 
 const createPrivateRestClient = (apiKey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
     if (!apiKey || !apiSecret) {
@@ -56,7 +55,7 @@ const defaultClient = createPrivateRestClient();
         });
  * ```
  */
-export async function privateRestRequest<E extends PrivateEndpoint>(privateRequest: PrivateRestTypes.PrivateRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateResult<E>> {
+export async function privateRestRequest<E extends PrivateRestEndpoint>(privateRequest: PrivateRestTypes.PrivateRestRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateRestResult<E>> {
     const { apiKey, apiSecret } = runtimeApiKeys ?? {};
     const apiClient = (apiKey !== '' && apiSecret !== '') ? createPrivateRestClient(apiKey, apiSecret) : defaultClient;
 
@@ -70,7 +69,7 @@ export async function privateRestRequest<E extends PrivateEndpoint>(privateReque
         throw new Error('Auth Error');
     }
 
-    const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.PrivateResponse<E>>(privateRequest);
+    const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.PrivateRestResponse<E>>(privateRequest);
 
     if (privateResterror?.length > 0) {
         throw new Error(privateResterror.join(' '));

@@ -3,7 +3,13 @@ import { AddExport, AddOrder, AddOrderBatch, Balance, BalanceEx, CancelAll, Canc
 
 export * as PrivateEndpoints from './endpoints';
 
-export type PrivateEndpoint =
+export type ApiToken = string;
+export type ApiCredentials = {
+    apiKey: string;
+    apiSecret: string;
+};
+
+export type PrivateRestEndpoint =
     'AddExport' |
     'AddOrder' |
     'AddOrderBatch' |
@@ -32,7 +38,7 @@ export type PrivateEndpoint =
 /**
  * @ignore
  */    
-export type PrivateParams<T extends PrivateEndpoint> =
+export type PrivateRestParams<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Params :
     T extends 'AddOrder' ? AddOrder.Params :
     T extends 'AddOrderBatch' ? AddOrderBatch.Params :
@@ -58,7 +64,7 @@ export type PrivateParams<T extends PrivateEndpoint> =
 /**
  * @ignore
  */ 
-export type PrivateRequest<T extends PrivateEndpoint> =
+export type PrivateRestRequest<T extends PrivateRestEndpoint> =
     T extends 'Balance' ? { // no params
         url: T;
         data?: never;
@@ -77,40 +83,40 @@ export type PrivateRequest<T extends PrivateEndpoint> =
     } :
     T extends 'ClosedOrders' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } :
     T extends 'Ledgers' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } :
     T extends 'OpenOrders' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } :
     T extends 'OpenPositions' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } :
     T extends 'TradeBalance' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } :
     T extends 'TradesHistory' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } :
     T extends 'TradeVolume' ? { // all optional
         url: T;
-        data?: PrivateParams<T>;
+        data?: PrivateRestParams<T>;
     } : { // Mandatory params
         url: T;
-        data: PrivateParams<T>;
+        data: PrivateRestParams<T>;
     };
 
 /**
  * @ignore
  */ 
-export type PrivateResult<T extends PrivateEndpoint> =
+export type PrivateRestResult<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Result :
     T extends 'AddOrder' ? AddOrder.Result :
     T extends 'AddOrderBatch' ? AddOrderBatch.Result :
@@ -139,4 +145,4 @@ export type PrivateResult<T extends PrivateEndpoint> =
 /**
  * @ignore
  */ 
-export type PrivateResponse<T extends PrivateEndpoint> = RestResponse<PrivateResult<T>>;
+export type PrivateRestResponse<T extends PrivateRestEndpoint> = RestResponse<PrivateRestResult<T>>;

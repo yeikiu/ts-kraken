@@ -5,8 +5,8 @@ import { Observable, lastValueFrom } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { webSocket } from 'rxjs/webSocket';
 import WebSocketCtor from 'ws';
-import { PublicRequest, PublicResponse, PublicSubscription, PublicSubscriptionChannel, PublicSubscriptionParams, PublicSubscriptionUpdate } from '$types/ws/public';
-import { Heartbeat, Status } from '$types/ws/public/channels';
+import { PublicSubscription, PublicSubscriptionChannel, PublicSubscriptionParams, PublicSubscriptionUpdate, PublicWsRequest, PublicWsResponse } from '../../../types/ws/public';
+import { Heartbeat, Status } from '../../../types/ws/public/channels';
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
@@ -102,7 +102,7 @@ export const publicWsStatus$: Observable<Status.Update> = publicWsClient.pipe(fi
     });
 * ```
 */
-export async function sendPublicRequest<T extends PublicRequest>(request: T): Promise<PublicResponse<T>> {
+export async function sendPublicRequest<T extends PublicWsRequest>(request: T): Promise<PublicWsResponse<T>> {
     const { req_id, method } = request;
 
     const [wsResponse] = await Promise.all([
@@ -114,7 +114,7 @@ export async function sendPublicRequest<T extends PublicRequest>(request: T): Pr
         publicWsClient.next(request)
     ]);
 
-    return wsResponse as PublicResponse<T>;
+    return wsResponse as PublicWsResponse<T>;
 }
 
 /**

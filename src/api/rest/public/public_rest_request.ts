@@ -1,7 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 import { krakenAxiosConfig } from '../axios_config';
-import { PublicEndpoint } from '$types/rest/public';
-import { PublicRestTypes } from '$types';
+import { PublicRestEndpoint } from '../../../types/rest/public';
+import { PublicRestTypes } from '../../..';
 
 const publicRestClient: AxiosInstance = axios.create(krakenAxiosConfig);
 publicRestClient.defaults.baseURL = `${publicRestClient.defaults.baseURL}/public`;
@@ -21,8 +21,8 @@ publicRestClient.defaults.method = 'GET';
         });
  * ```
  */
-export async function publicRestRequest<E extends PublicEndpoint>(publicRequest: PublicRestTypes.PublicRequest<E>): Promise<PublicRestTypes.PublicResult<E>> {
-    const { data: { result, error } } = await publicRestClient.request<PublicRestTypes.PublicResponse<E>>(publicRequest);
+export async function publicRestRequest<E extends PublicRestEndpoint>(publicRequest: PublicRestTypes.PublicRestRequest<E>): Promise<PublicRestTypes.PublicRestResult<E>> {
+    const { data: { result, error } } = await publicRestClient.request<PublicRestTypes.PublicRestResponse<E>>(publicRequest);
     if (error?.length > 0) {
         throw new Error(error?.join(' '));
     }

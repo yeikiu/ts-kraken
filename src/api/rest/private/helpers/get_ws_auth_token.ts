@@ -1,6 +1,6 @@
 
+import { ApiCredentials } from '../../../../types/rest/private';
 import { privateRestRequest } from '../private_rest_request';
-import { type ApiCredentials } from '$types/ws/private';
 
 /**
  * Returns a token string required for WebsocketV2 usage. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-websockets-token | Get Websockets Token}
