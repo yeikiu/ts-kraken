@@ -37,7 +37,7 @@ export type PrivateRestEndpoint =
 
 /**
  * @ignore
- */    
+ */
 export type PrivateRestParams<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Params :
     T extends 'AddOrder' ? AddOrder.Params :
@@ -63,59 +63,31 @@ export type PrivateRestParams<T extends PrivateRestEndpoint> =
 
 /**
  * @ignore
- */ 
+ */
 export type PrivateRestRequest<T extends PrivateRestEndpoint> =
-    T extends 'Balance' ? { // no params
+    T extends 'Balance' |
+    'BalanceEx' |
+    'CancelAll' |
+    'GetWebSocketsToken' ? { // no params
         url: T;
         data?: never;
-    } :
-    T extends 'BalanceEx' ? { // no params
-        url: T;
-        data?: never;
-    } :
-    T extends 'CancelAll' ? { // no params
-        url: T;
-        data?: never;
-    } :
-    T extends 'GetWebSocketsToken' ? { // no params
-        url: T;
-        data?: never;
-    } :
-    T extends 'ClosedOrders' ? { // all optional
+    } : T extends 'ClosedOrders' |
+    'Ledgers' |
+    'OpenOrders' |
+    'OpenPositions' |
+    'TradeBalance' |
+    'TradesHistory' |
+    'TradeVolume' ? { // all optional
         url: T;
         data?: PrivateRestParams<T>;
-    } :
-    T extends 'Ledgers' ? { // all optional
-        url: T;
-        data?: PrivateRestParams<T>;
-    } :
-    T extends 'OpenOrders' ? { // all optional
-        url: T;
-        data?: PrivateRestParams<T>;
-    } :
-    T extends 'OpenPositions' ? { // all optional
-        url: T;
-        data?: PrivateRestParams<T>;
-    } :
-    T extends 'TradeBalance' ? { // all optional
-        url: T;
-        data?: PrivateRestParams<T>;
-    } :
-    T extends 'TradesHistory' ? { // all optional
-        url: T;
-        data?: PrivateRestParams<T>;
-    } :
-    T extends 'TradeVolume' ? { // all optional
-        url: T;
-        data?: PrivateRestParams<T>;
-    } : { // Mandatory params
+    } : { // mandatory params
         url: T;
         data: PrivateRestParams<T>;
     };
 
 /**
  * @ignore
- */ 
+ */
 export type PrivateRestResult<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Result :
     T extends 'AddOrder' ? AddOrder.Result :
@@ -144,5 +116,5 @@ export type PrivateRestResult<T extends PrivateRestEndpoint> =
 
 /**
  * @ignore
- */ 
+ */
 export type PrivateRestResponse<T extends PrivateRestEndpoint> = RestResponse<PrivateRestResult<T>>;

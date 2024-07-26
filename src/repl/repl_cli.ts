@@ -88,7 +88,7 @@ myRepl.defineCommand('showkeys', {
 });
 
 myRepl.defineCommand('get', {
-    help: `👉 Fetch PUBLIC REST data. Usage >> .get <PublicEndpoint> <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Fetch PUBLIC REST data. Usage >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .get Time .rfc1123
                     >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,pair_decimals,ordermin}) -table
@@ -119,7 +119,7 @@ myRepl.defineCommand('get', {
 });
 
 myRepl.defineCommand('post', {
-    help: `👉 Fetch PRIVATE REST data. Usage >> .post PrivateEndpoint <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Fetch PRIVATE REST data. Usage >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
                     >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
@@ -154,7 +154,7 @@ myRepl.defineCommand('post', {
 });
 
 myRepl.defineCommand('pubsub', {
-    help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
                     >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
@@ -177,7 +177,7 @@ myRepl.defineCommand('pubsub', {
 });
 
 myRepl.defineCommand('privsub', {
-    help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privsub subscriptionName <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
                     >> .privsub executions snap_orders=true .data|map({order_id, side, order_qty, symbol, order_type, limit_price}) -table
@@ -248,7 +248,7 @@ myRepl.defineCommand('unsuball', {
 myRepl.defineCommand('find', {
     help: `👉 Finds the most recent closed order satisfying the filter (optional) within maxOffset range for given pair.
                     
-            Usage   >> .find <pair> <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory for .find!)
+            Usage   >> .find <pair>! <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory for .find!)
 
             i.e.    >> .find ADAETH descr[type]=buy 500 .descr.order
                     >> .find BTCUSD descr[type]=sell 500 .descr.order

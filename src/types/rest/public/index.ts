@@ -16,7 +16,7 @@ export type PublicRestEndpoint =
 
 /**
  * @ignore
- */    
+ */
 export type PublicRestParams<T extends PublicRestEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Params : // all optional
     T extends 'Assets' ? Assets.Params :
@@ -28,31 +28,24 @@ export type PublicRestParams<T extends PublicRestEndpoint> =
 
 /**
  * @ignore
- */    
-export type PublicRestRequest<T extends PublicRestEndpoint> = 
-    T extends 'SystemStatus' ? { // no params
+ */
+export type PublicRestRequest<T extends PublicRestEndpoint> =
+    T extends 'SystemStatus' |
+    'Time' ? { // no params
         url: T;
         params?: never;
-    } :
-    T extends 'Time' ? { // no params
-        url: T;
-        params?: never;
-    } :
-    T extends 'AssetPairs' ? { // all optional
+    } : T extends 'AssetPairs' |
+    'Ticker' ? { // all optional
         url: T;
         params?: PublicRestParams<T>;
-    } :
-    T extends 'Ticker' ? { // all optional
-        url: T;
-        params?: PublicRestParams<T>;
-    } : { // Mandatory params
+    } : { // mandatory params
         url: T;
         params: PublicRestParams<T>;
-    }
+    };
 
 /**
  * @ignore
- */    
+ */
 export type PublicRestResult<T extends PublicRestEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Result :
     T extends 'Assets' ? Assets.Result :
@@ -66,5 +59,5 @@ export type PublicRestResult<T extends PublicRestEndpoint> =
 
 /**
  * @ignore
- */    
+ */
 export type PublicRestResponse<T extends PublicRestEndpoint> = RestResponse<PublicRestResult<T>>;
