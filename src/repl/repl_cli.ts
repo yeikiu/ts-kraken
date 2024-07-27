@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 /* eslint-disable @typescript-eslint/no-explicit-any,import/order */
+
 import { config } from 'dotenv';
 config();
 
@@ -48,10 +49,10 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: s
     });
 
 // https://stackoverflow.com/a/65808577 | TODO: extract to util imports
-function * iter(obj) {
+function* iter(obj) {
     for (const [key, value] of Object.entries(obj)) {
         if (Object(value) !== value) yield [obj, key, value];
-        else yield * iter(value);
+        else yield* iter(value);
     }
 }
 
@@ -65,7 +66,9 @@ const editedCoreMethods = coreMethods.reduce((p, c) => ({
     ...p,
     [c]: {
         ...myRepl.commands[c],
-        help: `👉 ${myRepl.commands[c].help}\n---`
+        help: `${c === '.exit' ? '\n\n' : ''}👉 ${myRepl.commands[c].help}
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------\n`
     }
 }), {});
 Object.assign(myRepl.commands, editedCoreMethods);
@@ -83,16 +86,20 @@ myRepl.defineCommand('setkeys', {
 
 myRepl.defineCommand('showkeys', {
     help: `👉 Display current API key/secret in use
----`,
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
     action: () => print({ KRAKEN_API_KEY, KRAKEN_API_SECRET })
 });
 
 myRepl.defineCommand('get', {
-    help: `👉 Fetch PUBLIC REST data. Usage >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Fetch PUBLIC REST data.
+                    
+            Usage   >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .get Time .rfc1123
                     >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,pair_decimals,ordermin}) -table
----`,
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
     action: async (cmdArgs: string) => {
         const paramsStr = cmdArgs.replace(' -table', '');
@@ -100,7 +107,7 @@ myRepl.defineCommand('get', {
 
         const [fullMatch, endpoint, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const params = parse(rawParams);
-        print({ endpoint, params, jqFilter });
+        print({ endpoint, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
         if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
 
         try {
@@ -119,11 +126,16 @@ myRepl.defineCommand('get', {
 });
 
 myRepl.defineCommand('post', {
-    help: `👉 Fetch PRIVATE REST data. Usage >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Fetch PRIVATE REST data.
+                    
+            Usage   >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
                     >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
----`,
+                    >> .post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR
+                    >> .post CancelAll
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
     action: async (cmdArgs: string) => {
         if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
@@ -134,7 +146,7 @@ myRepl.defineCommand('post', {
 
         const [fullMatch, endpoint, rawData, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const data = parse(rawData);
-        print({ endpoint, data, jqFilter });
+        print({ endpoint, ...Object.keys(data).length ? { data } : {}, ...jqFilter ? { jqFilter } : {} });
         if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
 
         try {
@@ -154,11 +166,14 @@ myRepl.defineCommand('post', {
 });
 
 myRepl.defineCommand('pubsub', {
-    help: `👉 Subscribe to PUBLIC WS stream. Usage >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Subscribe to PUBLIC WS stream.
+                    
+            Usage   >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
                     >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
----`,
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
     action: (cmdArgs: string) => {
         const paramsStr = cmdArgs.replace(' -table', '');
@@ -166,7 +181,7 @@ myRepl.defineCommand('pubsub', {
 
         const [fullMatch, channel, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const params = parse(rawParams);
-        print({ channelName: channel, params, jqFilter });
+        print({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
         if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
 
         print(`Subscribing to PUBLIC WebsocketV2 ${channel} stream...`);
@@ -177,7 +192,9 @@ myRepl.defineCommand('pubsub', {
 });
 
 myRepl.defineCommand('privsub', {
-    help: `👉 Subscribe to PRIVATE WS stream. Usage >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+    help: `👉 Subscribe to PRIVATE WS stream.
+                    
+            Usage   >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
                     >> .privsub executions snap_orders=true .data|map({order_id, side, order_qty, symbol, order_type, limit_price}) -table
@@ -192,7 +209,7 @@ myRepl.defineCommand('privsub', {
 
         const [fullMatch, channel, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const params = parse(rawParams);
-        print({ channelName: channel, params, jqFilter });
+        print({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
         if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
 
         for (const [obj, key, value] of iter(params)) {
@@ -246,9 +263,9 @@ myRepl.defineCommand('unsuball', {
 });
 
 myRepl.defineCommand('find', {
-    help: `👉 Finds the most recent closed order satisfying the filter (optional) within maxOffset range for given pair.
+    help: `👉 Finds the most recent closed order satisfying the filter within maxOffset range for given pair.
                     
-            Usage   >> .find <pair>! <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory for .find!)
+            Usage   >> .find <pair>! <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory!)
 
             i.e.    >> .find ADAETH descr[type]=buy 500 .descr.order
                     >> .find BTCUSD descr[type]=sell 500 .descr.order
