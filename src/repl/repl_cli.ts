@@ -98,6 +98,7 @@ myRepl.defineCommand('get', {
 
             i.e.    >> .get Time .rfc1123
                     >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,pair_decimals,ordermin}) -table
+                    >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,ordermin,tick_size}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
@@ -197,7 +198,7 @@ myRepl.defineCommand('privsub', {
             Usage   >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
-                    >> .privsub executions snap_orders=true .data|map({order_id, side, order_qty, symbol, order_type, limit_price}) -table
+                    >> .privsub executions snap_orders=true .data|map({order_id,side,order_qty,symbol,order_type,limit_price}) -table
 `,
 
     action: async (cmdArgs: string) => {
@@ -253,7 +254,12 @@ myRepl.defineCommand('unsuball', {
 `,
 
     action: () => {
-        Array.from(wsSubscriptions).forEach(([subscriptionName, sub]) => {
+        const subsArr = Array.from(wsSubscriptions);
+        if (subsArr.length < 1) {
+            print('Not subscribed to any channel yet...');
+        }
+
+        subsArr.forEach(([subscriptionName, sub]) => {
             sub.unsubscribe();
             if (wsSubscriptions.delete(subscriptionName)) {
                 print(`${subscriptionName} unsubscribed!`);

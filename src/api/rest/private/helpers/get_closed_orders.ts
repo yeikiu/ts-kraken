@@ -58,13 +58,16 @@ export const findClosedOrder = async ({
     data?: ClosedOrders.Params
 
 }, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder> => {
-    if (data?.ofs > maxOffset) {
+    if (data?.ofs >= maxOffset) {
         console.error(`Order not found within the first ${maxOffset} results...`);
         return null;
     }
 
     const closedOrders = await getClosedOrders(data);
-    const lastSuccessfullyClosedOrder = closedOrders.find(orderFilter);
+    const lastSuccessfullyClosedOrder = closedOrders
+        .slice(0, maxOffset)
+        .find(orderFilter);
+        
     if (lastSuccessfullyClosedOrder) {
         return lastSuccessfullyClosedOrder;
     }

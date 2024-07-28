@@ -119,7 +119,7 @@ export async function sendPrivateRequest<R extends PrivateWsRequest>(request: R,
             }
         })
     ]);
-    console.log({wsResponse});
+
     if(wsResponse.success) {
         // TODO: report `batch_cancel` is missing the `result` field in the response
         if (method === 'batch_cancel' && 'orders_cancelled' in wsResponse) {
