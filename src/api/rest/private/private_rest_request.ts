@@ -5,7 +5,7 @@ import { PrivateRestTypes } from '../../..';
 import { getMessageSignature } from './message_signature';
 import { apiVersion, krakenAxiosConfig } from './../axios_config';
 
-const createPrivateRestClient = (apiKey = process.env.KRAKEN_API_KEY, apiSecret = process.env.KRAKEN_API_SECRET): AxiosInstance => {
+const createPrivateRestClient = (apiKey = globalThis.env.KRAKEN_API_KEY, apiSecret = globalThis.env.KRAKEN_API_SECRET): AxiosInstance => {
     if (!apiKey || !apiSecret) {
         return null;
     }
@@ -45,9 +45,9 @@ const defaultClient = createPrivateRestClient();
  * 
  * @example
  * ```ts
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({ url: 'OpenOrders' })
+    privateRestRequest({ url: 'OpenOrders' })
         .then(({ open }) => {
             console.log({open});
         }).catch(error => {

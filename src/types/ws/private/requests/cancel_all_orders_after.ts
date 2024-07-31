@@ -5,9 +5,9 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
  * 
  * @example
  * ```ts 
-    import { PrivateWs } from 'ts-kraken';
+    import { privateWsRequest } from 'ts-kraken';
         
-    PrivateWs.sendPrivateRequest({
+    privateWsRequest({
         method: 'cancel_all_orders_after',
         params: { timeout: 5 }
 

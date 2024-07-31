@@ -3,7 +3,14 @@ import { AddExport, AddOrder, AddOrderBatch, Balance, BalanceEx, CancelAll, Canc
 
 export * as PrivateEndpoints from './endpoints';
 
+/**
+ * TODO_DOC
+ */
 export type ApiToken = string;
+
+/**
+ * TODO_DOC
+ */
 export type ApiCredentials = {
     apiKey: string;
     apiSecret: string;
@@ -61,9 +68,6 @@ export type PrivateRestParams<T extends PrivateRestEndpoint> =
     T extends 'TradeVolume' ? TradeVolume.Params : // all optional
     never;
 
-/**
- * @ignore
- */
 export type PrivateRestRequest<T extends PrivateRestEndpoint> =
     T extends 'Balance' |
     'BalanceEx' |
@@ -85,9 +89,6 @@ export type PrivateRestRequest<T extends PrivateRestEndpoint> =
         data: PrivateRestParams<T>;
     };
 
-/**
- * @ignore
- */
 export type PrivateRestResult<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Result :
     T extends 'AddOrder' ? AddOrder.Result :

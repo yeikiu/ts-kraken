@@ -3,14 +3,14 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'OHLC', params: { pair: 'BTCUSD'}})
+    publicRestRequest({ url: 'OHLC', params: { pair: 'BTCUSD' } })
         .then(rawData => {
             const [pairKey] = Object.keys(rawData);
-            const ohlcData = rawData[pairKey];
-            
-            console.log({ ohlcData })
+            const [, open, high, low, close] = rawData[pairKey].pop();
+
+            console.log({ open, high, low, close });
         });
  * ```
  */

@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/internal/Subject';
 import { webSocket } from 'rxjs/webSocket';
 import WebSocketCtor from 'ws';
 import { PublicSubscription, PublicSubscriptionChannel, PublicSubscriptionParams, PublicSubscriptionUpdate, PublicWsRequest, PublicWsResponse } from '../../../types/ws/public';
-import { Heartbeat, Status } from '../../../types/ws/public/channels';
+import { Heartbeat, Status } from '../../../types/ws';
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
@@ -15,12 +15,12 @@ import { Heartbeat, Status } from '../../../types/ws/public/channels';
  * ```ts
     import { PublicWs } from 'ts-kraken';
 
-    PublicWs.onPublicWsOpen$.subscribe(() => {
+    PublicWs.connected$.subscribe(() => {
         console.log('Public WebsocketV2 connected successfully!\n');
     });
 * ```
 */
-export const onPublicWsOpen$ = new Subject();
+export const connected$ = new Subject();
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
@@ -29,21 +29,21 @@ export const onPublicWsOpen$ = new Subject();
  * ```ts
     import { PublicWs } from 'ts-kraken';
 
-    PublicWs.onPublicWsClose$.subscribe(() => {
+    PublicWs.disconnected$.subscribe(() => {
         console.log('Public WebsocketV2 connection closed!\n');
         
         // Code to handle lost connection here...
     });
 * ```
 */
-export const onPublicWsClose$ = new Subject();
+export const disconnected$ = new Subject();
 
 const publicWsClient = webSocket({
     protocol: 'v1',
     url: 'wss://ws.kraken.com/v2',
     WebSocketCtor,
-    openObserver: onPublicWsOpen$,
-    closeObserver: onPublicWsClose$
+    openObserver: connected$,
+    closeObserver: disconnected$
 });
 
 /**
@@ -55,7 +55,7 @@ const publicWsClient = webSocket({
 
     let lastHeartbeatTs: number = null;
     const maxSecondsWithoutHeartbeat = 10;
-    PublicWs.publicWsHeartbeat$.subscribe(() => {
+    PublicWs.heartbeat$.subscribe(() => {
         const now = new Date().getTime();
         if (lastHeartbeatTs) {
             const diff = (now - lastHeartbeatTs) / 1000;
@@ -67,7 +67,7 @@ const publicWsClient = webSocket({
     });
 * ```
 */
-export const publicWsHeartbeat$: Observable<Heartbeat.Update> = publicWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
+export const heartbeat$: Observable<Heartbeat.Update> = publicWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}
@@ -76,33 +76,27 @@ export const publicWsHeartbeat$: Observable<Heartbeat.Update> = publicWsClient.p
  * ```ts
     import { PublicWs } from 'ts-kraken';
 
-    PrivateWs.publicWsStatus$.subscribe(({ channel, data: [{ api_version, system }] }) => {
+    PublicWs.status$.subscribe(({ channel, data: [{ api_version, system }] }) => {
         console.log({ channel, api_version, system });
     });
 * ```
 */
-export const publicWsStatus$: Observable<Status.Update> = publicWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
+export const status$: Observable<Status.Update> = publicWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
 
 /**
  * Returns a Promise from a public WebsocketV2 method request.
  * 
  * @example
  * ```ts
-    import { PublicWs } from 'ts-kraken';
+    import { publicWsRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({
-        url: 'Ticker',
-        params: { pair: 'BTCUSD,ETHEUR' },
-
-    }).then((btcAndEthTickers) => {
-        console.log({ btcAndEthTickers });
-
-    }).catch(error => {
-        console.error({ error });
-    });
+    publicWsRequest({ method: 'ping', req_id: 42 })
+        .then(({ method, req_id, time_in, time_out }) => {
+            console.log({ method, req_id, time_in, time_out });
+        });
 * ```
 */
-export async function sendPublicRequest<T extends PublicWsRequest>(request: T): Promise<PublicWsResponse<T>> {
+export async function publicWsRequest<T extends PublicWsRequest>(request: T): Promise<PublicWsResponse<T>> {
     const { req_id, method } = request;
 
     const [wsResponse] = await Promise.all([
@@ -123,15 +117,15 @@ export async function sendPublicRequest<T extends PublicWsRequest>(request: T): 
  * 
  * @example
  * ```ts
-    import { PublicWs } from 'ts-kraken';
+    import { publicWsSubscription } from 'ts-kraken';
 
-    PublicWs.getPublicSubscription({ channel: 'ticker', params: { symbol: ['BTC/USD'] } })
+    publicWsSubscription({ channel: 'ticker', params: { symbol: ['BTC/USD'] } })
         .subscribe(({ data: [{ symbol, last }] }) => {
             console.log({ symbol, last });
         });
 * ```
 */
-export function getPublicSubscription<C extends PublicSubscriptionChannel>({
+export function publicWsSubscription<C extends PublicSubscriptionChannel>({
     channel, params, req_id
 }:{
   channel: C, req_id?: PublicSubscription<C>['req_id']

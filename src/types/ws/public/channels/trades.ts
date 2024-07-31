@@ -5,9 +5,9 @@ import { BaseSubscription, BaseUnsubscription } from '../..';
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicWsSubscription } from 'ts-kraken';
 
-    PublicWs.getPublicSubscription({ channel: 'trade', params: { symbol: ['BTC/USD'] } })
+    publicWsSubscription({ channel: 'trade', params: { symbol: ['BTC/USD'] } })
         .subscribe(({ data: [{ side, symbol, price, timestamp }] }) => {
             console.log({ side, symbol, price, timestamp });
         });
@@ -15,20 +15,20 @@ import { BaseSubscription, BaseUnsubscription } from '../..';
  */
 export namespace Trades {
     
-    /** {@inheritDoc Trades} */
+    /** {@inheritDoc PublicWsTypes.PublicChannels.Trade} */
     export type Subscription = BaseSubscription<{
         channel: 'trade';
         snapshot?: boolean;
         symbol: string[];
     }>;
 
-    /** {@inheritDoc Trades} */
+    /** {@inheritDoc PublicWsTypes.PublicChannels.Trade} */
     export type Unsubscription = BaseUnsubscription<{
         channel: 'trade';
         symbol: string[];
     }>;
 
-    /** {@inheritDoc Trades} */
+    /** {@inheritDoc PublicWsTypes.PublicChannels.Trade} */
     export type Update = {
         channel: 'trade';
         type: 'snapshot' | 'update';

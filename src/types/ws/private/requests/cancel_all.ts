@@ -5,9 +5,9 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
  * 
  * @example
  * ```ts 
-    import { PrivateWs } from 'ts-kraken';
+    import { privateWsRequest } from 'ts-kraken';
 
-    PrivateWs.sendPrivateRequest({ method: 'cancel_all' }).then(({ count }) => {
+    privateWsRequest({ method: 'cancel_all' }).then(({ count }) => {
         console.log({ count });
 
     }).catch(error => {

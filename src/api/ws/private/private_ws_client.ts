@@ -3,10 +3,10 @@ import { webSocket } from 'rxjs/webSocket';
 import { Subject } from 'rxjs/internal/Subject';
 import { filter, first, timeout } from 'rxjs/operators';
 import { Observable, lastValueFrom } from 'rxjs';
-import { getWsAuthToken } from '../../rest/private';
-import { Heartbeat, Status } from '../../../types/ws/public/channels';
+import { Heartbeat, Status } from '../../../types/ws';
 import { ApiCredentials, ApiToken } from '../../../types/rest/private';
 import { PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate, PrivateWsRequest, PrivateWsResponse } from '../../../types/ws/private';
+import { getWsAuthToken } from '../../rest/private/helpers';
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
@@ -15,12 +15,12 @@ import { PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionPar
  * ```ts
     import { PrivateWs } from 'ts-kraken';
 
-    PrivateWs.onPrivateWsOpen$.subscribe(() => {
+    PrivateWs.connected$.subscribe(() => {
         console.log('Private WebsocketV2 connected successfully!\n');
     });
 * ```
 */
-export const onPrivateWsOpen$ = new Subject();
+export const connected$ = new Subject();
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
@@ -29,21 +29,21 @@ export const onPrivateWsOpen$ = new Subject();
  * ```ts
     import { PrivateWs } from 'ts-kraken';
 
-    PrivateWs.onPrivateWsClose$.subscribe(() => {
+    PrivateWs.disconnected$.subscribe(() => {
         console.log('Private WebsocketV2 connection closed!\n');
         
         // Code to handle lost connection here...
     });
 * ```
 */
-export const onPrivateWsClose$ = new Subject();
+export const disconnected$ = new Subject();
 
 const privateWsClient = webSocket({
     protocol: 'v1',
     url: 'wss://ws-auth.kraken.com/v2',
     WebSocketCtor,
-    openObserver: onPrivateWsOpen$,
-    closeObserver: onPrivateWsClose$
+    openObserver: connected$,
+    closeObserver: disconnected$
 });
 
 /**
@@ -55,7 +55,7 @@ const privateWsClient = webSocket({
 
     let lastHeartbeatTs: number = null;
     const maxSecondsWithoutHeartbeat = 10;
-    PrivateWs.privateWsHeartbeat$.subscribe(() => {
+    PrivateWs.heartbeat$.subscribe(() => {
         const now = new Date().getTime();
         if (lastHeartbeatTs) {
             const diff = (now - lastHeartbeatTs) / 1000;
@@ -67,7 +67,7 @@ const privateWsClient = webSocket({
     });
 * ```
 */
-export const privateWsHeartbeat$: Observable<Heartbeat.Update> = privateWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
+export const heartbeat$: Observable<Heartbeat.Update> = privateWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}
@@ -76,12 +76,12 @@ export const privateWsHeartbeat$: Observable<Heartbeat.Update> = privateWsClient
  * ```ts
     import { PrivateWs } from 'ts-kraken';
 
-    PrivateWs.privateWsStatus$.subscribe(({ channel, data: [{ api_version, system }] }) => {
+    PrivateWs.status$.subscribe(({ channel, data: [{ api_version, system }] }) => {
         console.log({ channel, api_version, system });
     });
 * ```
 */
-export const privateWsStatus$: Observable<Status.Update> = privateWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
+export const status$: Observable<Status.Update> = privateWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
 
 function isToken(tokenOrKeys: ApiToken | ApiCredentials): tokenOrKeys is ApiToken {
     return typeof tokenOrKeys === 'string';
@@ -92,16 +92,16 @@ function isToken(tokenOrKeys: ApiToken | ApiCredentials): tokenOrKeys is ApiToke
  * 
  * @example
  * ```ts
-    import { PrivateWs } from 'ts-kraken';
+    import { privateWsRequest } from 'ts-kraken';
 
-    PrivateWs.sendPrivateRequest({ method: 'cancel_all' }).then(({ count }) => {
+    privateWsRequest({ method: 'cancel_all' }).then(({ count }) => {
         console.log({ count });
     }).catch(error => {
         console.error({ error });
     });
 * ```
 */
-export async function sendPrivateRequest<R extends PrivateWsRequest>(request: R, tokenOrKeys?: ApiToken | ApiCredentials): Promise<PrivateWsResponse<R>['result']> {
+export async function privateWsRequest<R extends PrivateWsRequest>(request: R, tokenOrKeys?: ApiToken | ApiCredentials): Promise<PrivateWsResponse<R>['result']> {
     const token = isToken(tokenOrKeys) ? tokenOrKeys : await getWsAuthToken(tokenOrKeys);
     const { req_id, method } = request;
 
@@ -137,9 +137,9 @@ export async function sendPrivateRequest<R extends PrivateWsRequest>(request: R,
  * 
  * @example
  * ```ts
-    import { PrivateWs } from 'ts-kraken';
+    import { privateWsSubscription } from 'ts-kraken';
 
-    PrivateWs.getPrivateSubscription({
+    privateWsSubscription({
         channel: 'balances',
         params: { snapshot: true }
 
@@ -150,7 +150,7 @@ export async function sendPrivateRequest<R extends PrivateWsRequest>(request: R,
     });
 * ```
 */
-export async function getPrivateSubscription<C extends PrivateSubscriptionChannel>({
+export async function privateWsSubscription<C extends PrivateSubscriptionChannel>({
     channel, params, req_id
 }: {
     channel: C, req_id?: PrivateSubscription<C>['req_id']

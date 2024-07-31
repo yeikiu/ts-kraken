@@ -5,8 +5,7 @@ import { BaseSubscription, BaseUnsubscription } from '../..';
  * 
  * @example
  * ```ts 
-    import { PrivateWs } from 'ts-kraken';
-    const { getPrivateSubscription } = PrivateWs;
+    import { getPrivateSubscription } from 'ts-kraken';
 
     getPrivateSubscription({ channel: 'level3', params: { symbol: ['BTC/USD'] } })
         .then(balance$ => {

@@ -6,17 +6,18 @@ import { publicRestRequest } from '../public_rest_request';
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { PublicRestHelpers } from 'ts-kraken';
 
-    PublicRest.getTickers('BTCUSD,ETHEUR').then(([btcTicker, ethTicker]) => {
-        const { price: btcUsdPrice } = btcTicker;
-        const { price: ethEurPrice } = ethTicker;
+    PublicRestHelpers.getTickersPrices('BTCUSD,ETHEUR')
+        .then(([btcUsdTicker, ethEurTicker]) => {
+            const { price: btcUsdPrice } = btcUsdTicker;
+            const { price: ethEurPrice } = ethEurTicker;
 
-        console.log({ btcUsdPrice, ethEurPrice });
-    });
+            console.log({ btcUsdPrice, ethEurPrice });
+        });
  * ```
  */
-export const getTickers = async (pair: string) => {
+export const getTickersPrices = async (pair: string) => {
     const result = await publicRestRequest({ url: 'Ticker', params: { pair } });
 
     return Object.keys(result).map(pairKey => {

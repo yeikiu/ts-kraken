@@ -5,9 +5,9 @@ import { BaseSubscription, BaseUnsubscription } from '../../';
  * 
  * @example
  * ```ts 
-    import { PrivateWs } from 'ts-kraken';
+    import { getPrivateSubscription } from 'ts-kraken';
 
-    PrivateWs.getPrivateSubscription({
+    getPrivateSubscription({
         channel: 'balances',
         params: { snapshot: true }
 

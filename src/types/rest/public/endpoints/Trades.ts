@@ -3,16 +3,16 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({
+    publicRestRequest({
         url: 'Trades',
         params: { pair: 'BTCUSD', count: 1 } // Fetch last trade only, default `count` if not passed is 1000.
     }).then(rawData => {
         const [pairKey] = Object.keys(rawData);
-        const [lastTrade] = rawData[pairKey];
+        const [[lastTradePrice]] = rawData[pairKey];
 
-        console.log({ lastTrade })
+        console.log({ [pairKey]: lastTradePrice })
     });
  * ```
  */

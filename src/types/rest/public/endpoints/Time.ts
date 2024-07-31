@@ -5,9 +5,9 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'Time' })
+    publicRestRequest({ url: 'Time' })
         .then(({ unixtime, rfc1123 }) => {
             console.log({ unixtime, rfc1123 })
         })

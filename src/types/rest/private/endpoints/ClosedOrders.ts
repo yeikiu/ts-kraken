@@ -33,14 +33,16 @@ export type RestClosedOrder = {
     reason: string;
 };
 
+export type IRestClosedOrder = RestClosedOrder & { orderid: string; };
+
 /**
  * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | Get Closed Orders}
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'ClosedOrders'
     }).then(({ closed: closedOrders }) => {
         console.log({ closedOrders })
@@ -48,7 +50,7 @@ export type RestClosedOrder = {
  * ```
  *
  * @remarks
- * ℹ️ _Tip:_ This library implements the helper method {@link PrivateRest.getClosedOrders} which outputs a nicer array of closed orders
+ * ℹ️ _Tip:_ This library implements the helper method {@link PrivateRestHelpers.getClosedOrders} which outputs a nicer array of closed orders
  */
 export namespace ClosedOrders {
 

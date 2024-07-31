@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'Depth', params: { pair: 'BTCUSD'}})
+    publicRestRequest({ url: 'Depth', params: { pair: 'BTCUSD'}})
         .then(rawData => {
             const [pairKey] = Object.keys(rawData);
             const { asks, bids } = rawData[pairKey];

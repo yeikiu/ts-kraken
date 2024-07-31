@@ -5,9 +5,9 @@ import { BaseSubscription, BaseUnsubscription } from '../../';
  * 
  * @example
  * ```ts 
-    import { PublicWs } from 'ts-kraken';
+    import { publicWsSubscription } from 'ts-kraken';
 
-    PublicWs.getPublicSubscription({ channel: 'ticker', params: { symbol: ['BTC/USD'] } })
+    publicWsSubscription({ channel: 'ticker', params: { symbol: ['BTC/USD'] } })
         .subscribe(({ data: [{ symbol, last }] }) => {
             console.log({ symbol, last });
         });

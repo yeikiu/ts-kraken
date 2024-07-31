@@ -8,19 +8,17 @@ import repl from 'repl';
 import { parse } from 'qs'; /* https://stackoverflow.com/a/9547490 */
 import { Observable, Subscription } from 'rxjs';
 import { run } from 'node-jq';
-import { publicRestRequest } from '../api/rest/public';
-import { findClosedOrder, privateRestRequest } from '../api/rest/private';
-import { getPublicSubscription } from '../api/ws/public/public_ws_client';
-import { getPrivateSubscription } from '../api/ws/private/private_ws_client';
 import krakenHeader from './kraken_header';
 import { RestClosedOrder } from '../types/rest/private/endpoints';
+import { findClosedOrder } from '../api/rest/private/helpers';
+import { privateRestRequest, privateWsSubscription, publicRestRequest, publicWsSubscription } from '..';
 
 let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env;
 const wsSubscriptions: Map<string, Subscription> = new Map();
 const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/;
 
 // TODO: extract to util imports
-const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(content);
+const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(JSON.stringify(content, null, 4));
 
 // TODO: extract to util imports
 const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: string, jqFilter?: string, asTable?: boolean): Subscription => wsSubscription
@@ -56,7 +54,7 @@ function* iter(obj) {
     }
 }
 
-print(krakenHeader);
+console.log(krakenHeader);
 const myRepl = repl.start('kraken-repl >> ');
 
 // Modify core methods (bit hacky, these are readonly)
@@ -97,8 +95,8 @@ myRepl.defineCommand('get', {
             Usage   >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
             i.e.    >> .get Time .rfc1123
-                    >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,pair_decimals,ordermin}) -table
-                    >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,ordermin,tick_size}
+                    >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table
+                    >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
@@ -116,10 +114,10 @@ myRepl.defineCommand('get', {
             if (jqFilter) {
                 const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' });
                 print(jqResponse, asTable);
-                return print('\nPress return to continue or control+c to exit...');
+                return console.log('\nPress return to continue or control+c to exit...');
             }
             print(response, asTable);
-            print('\nPress return to continue or control+c to exit...');
+            console.log('\nPress return to continue or control+c to exit...');
         } catch (publicRESTerror) {
             console.error({ publicRESTerror });
         }
@@ -155,10 +153,10 @@ myRepl.defineCommand('post', {
             if (jqFilter) {
                 const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' });
                 print(jqResponse, asTable);
-                return print('\nPress return to continue or control+c to exit...');
+                return console.log('\nPress return to continue or control+c to exit...');
             }
             print(response, asTable);
-            print('\nPress return to continue or control+c to exit...');
+            console.log('\nPress return to continue or control+c to exit...');
 
         } catch (privateRESTerror) {
             console.error({ privateRESTerror });
@@ -186,7 +184,7 @@ myRepl.defineCommand('pubsub', {
         if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
 
         print(`Subscribing to PUBLIC WebsocketV2 ${channel} stream...`);
-        const subscription = getPublicSubscription({ channel, params } as any);
+        const subscription = publicWsSubscription({ channel, params } as any);
         const replSubscription = replSubscriptionHandler(subscription, channel, jqFilter, asTable);
         wsSubscriptions.set(channel, replSubscription);
     }
@@ -219,7 +217,7 @@ myRepl.defineCommand('privsub', {
         }
 
         print(`Subscribing to PRIVATE WebsocketV2 ${channel} stream...`);
-        const subscription = await getPrivateSubscription(
+        const subscription = await privateWsSubscription(
             { channel, params } as any,
             { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }
         );
@@ -316,5 +314,4 @@ myRepl.defineCommand('find', {
 
 // Shell entrypoint
 myRepl.write('.help\n');
-myRepl.write('.get Time .rfc1123');
-setTimeout(() => print('\nPress enter to start...'), 10);
+myRepl.write('.get Time .rfc1123\n');

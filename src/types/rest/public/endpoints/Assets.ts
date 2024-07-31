@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'Assets', params: { asset: 'XXBT,XETH' } })
+    publicRestRequest({ url: 'Assets', params: { asset: 'XXBT,XETH' } })
         .then(({ XXBT, XETH }) => {
             console.log({ XXBT, XETH });
         });

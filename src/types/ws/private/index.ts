@@ -54,9 +54,6 @@ export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
     error: string;
 };
 
-/**
- * @ignore 
- */
 export type PrivateWsRequest =
     AddOrder.Request |
     EditOrder.Request |
@@ -66,9 +63,6 @@ export type PrivateWsRequest =
     BatchAdd.Request |
     BatchCancel.Request;
 
-/**
- * @ignore 
- */
 export type PrivateWsResponse<T extends PrivateWsRequest> =
     T extends AddOrder.Request ? AddOrder.Response :
     T extends EditOrder.Request ? EditOrder.Response :

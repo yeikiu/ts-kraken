@@ -26,16 +26,13 @@ export type PublicRestParams<T extends PublicRestEndpoint> =
     T extends 'Ticker' ? Ticker.Params : // all optional
     T extends 'Trades' ? Trades.Params : never;
 
-/**
- * @ignore
- */
 export type PublicRestRequest<T extends PublicRestEndpoint> =
-    T extends 'SystemStatus' |
-    'Time' ? { // no params
+    T extends 'SystemStatus' | // no params
+    'Time' ? {
         url: T;
         params?: never;
-    } : T extends 'AssetPairs' |
-    'Ticker' ? { // all optional
+    } : T extends 'AssetPairs' | // all optional
+    'Ticker' ? {
         url: T;
         params?: PublicRestParams<T>;
     } : { // mandatory params
@@ -43,9 +40,6 @@ export type PublicRestRequest<T extends PublicRestEndpoint> =
         params: PublicRestParams<T>;
     };
 
-/**
- * @ignore
- */
 export type PublicRestResult<T extends PublicRestEndpoint> =
     T extends 'AssetPairs' ? AssetPairs.Result :
     T extends 'Assets' ? Assets.Result :

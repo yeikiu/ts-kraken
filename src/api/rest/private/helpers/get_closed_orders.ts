@@ -1,20 +1,18 @@
 import { lastValueFrom, timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { privateRestRequest } from '../private_rest_request';
-import { ClosedOrders, RestClosedOrder } from '../../../../types/rest/private/endpoints';
+import { ClosedOrders, IRestClosedOrder } from '../../../../types/rest/private/endpoints';
 import { ApiCredentials } from '../../../../types/rest/private';
-
-type IRestClosedOrder = RestClosedOrder & { orderid: string; };
 
 /**
  * Returns a nice array of latest closed orders. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | getClosedOrders}
  * 
  * @example
- * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+ * ```ts
+    import { PrivateRestHelpers } from 'ts-kraken';
 
-    // Fetch latest closed orders (skipping the last 50)
-    PrivateRest.getClosedOrders({
+    // Fetch latest closed orders and logs their IDs (skipping the last 50)
+    PrivateRestHelpers.getClosedOrders({
         ofs: 50
     }).then(lastClosedOrdersArr => {
         const closedOrdersIds = lastClosedOrdersArr.map(({ orderid }) => orderid);
@@ -38,9 +36,9 @@ export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiK
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { PrivateRestHelpers } from 'ts-kraken';
 
-    PrivateRest.findClosedOrder({
+    PrivateRestHelpers.findClosedOrder({
         orderFilter: ({ status }) => status === 'canceled'
     }).then(lastCanceledOrder => {
         console.log({ lastCanceledOrder });

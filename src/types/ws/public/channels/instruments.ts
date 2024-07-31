@@ -5,12 +5,12 @@ import { BaseSubscription, BaseUnsubscription } from '../..';
  * 
  * @example
  * ```ts 
-    import { PublicWs } from 'ts-kraken';
+    import { publicWsSubscription } from 'ts-kraken';
 
-    PublicWs.getPublicSubscription({ channel: 'instrument' })
-    .subscribe(({ data: { assets, pairs } }) => {
-        console.log({ assets: assets.length, pairs: pairs.length });
-    });
+    publicWsSubscription({ channel: 'instrument' })
+        .subscribe(({ data: { assets, pairs } }) => {
+            console.log({ assets: assets.length, pairs: pairs.length });
+        });
  * ```
  */
 export namespace Instruments {

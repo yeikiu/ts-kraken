@@ -12,9 +12,9 @@ publicRestClient.defaults.method = 'GET';
  * 
  * @example
  * ```ts
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'Ticker', params: { pair: 'XBTEUR'}})
+    publicRestRequest({ url: 'Ticker', params: { pair: 'XBTEUR'}})
         .then(data => {
             const [pairKey] = Object.keys(data);
             console.log({ tickerData: data[pairKey]});

@@ -3,23 +3,22 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'Ticker'})
-        .then((allAssetTickers) => {
-            console.log({ allAssetTickers })
-        })
-
-    PublicRest.publicRestRequest({
+    publicRestRequest({
         url: 'Ticker',
-        params: { pair: 'BTCUSD,ETHEUR' }
+        params: { pair: 'ETHEUR,BTCUSD' },
+
     }).then((btcAndEthTickers) => {
         console.log({ btcAndEthTickers });
+
+    }).catch(error => {
+        console.error({ error });
     });
  * ```
-
+ *   
  * @remarks
- * _Tip:_ This library implements the helper method {@link PublicRest.getTickers} which outputs a nicer object format.
+ * _Tip:_ This library implements the helper method {@link PublicRestHelpers.getTickersPrices} which outputs a nicer object format.
  */
 export namespace Ticker {
 

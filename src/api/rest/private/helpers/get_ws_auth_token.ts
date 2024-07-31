@@ -6,10 +6,10 @@ import { privateRestRequest } from '../private_rest_request';
  * Returns a token string required for WebsocketV2 usage. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-websockets-token | Get Websockets Token}
  * 
  * @example
- * ```ts 
-    import { PrivateRest, PrivateWs } from "ts-kraken";
+ * ```ts
+    import { PrivateRestHelpers } from 'ts-kraken';
 
-    PrivateRest.getWsAuthToken().then(async token => {
+    PrivateRestHelpers.getWsAuthToken().then(async token => {
         console.log({ token })
 
         const balances$ = await PrivateWs.getPrivateSubscription({

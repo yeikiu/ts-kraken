@@ -5,9 +5,9 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
  * 
  * @example
  * ```ts 
-    import { PrivateWs } from 'ts-kraken';
+    import { privateWsRequest } from 'ts-kraken';
 
-    PrivateWs.sendPrivateRequest({
+    privateWsRequest({
         method: 'batch_cancel',
         params: { orders: ['YOUR-ORDER-ID1', 'YOUR-ORDER-ID2'] }
 

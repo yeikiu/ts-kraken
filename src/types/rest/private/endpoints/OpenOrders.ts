@@ -31,14 +31,16 @@ export type RestOpenOrder = {
     trades: string[];
 };
 
+export type IRestOpenOrder = RestOpenOrder & { orderid: string; };
+
 /**
  * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-open-orders | Get Open Orders}
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'OpenOrders'
     }).then(({ open: openOrders }) => {
         console.log({ openOrders })
@@ -46,7 +48,7 @@ export type RestOpenOrder = {
  * ```
  *
  * @remarks
- * _Tip:_ This library implements the helper method {@link PrivateRest.getOpenOrders} which outputs a nicer array of open orders
+ * _Tip:_ This library implements the helper method {@link PrivateRestHelpers.getOpenOrders} which outputs a nicer array of open orders
  */
 export namespace OpenOrders {
 

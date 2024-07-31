@@ -3,11 +3,11 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'AssetPairs', params: { pair: 'BTC/USD,ETH/BTC' } })
+    publicRestRequest({ url: 'AssetPairs', params: { pair: 'BTC/USD,ETH/BTC' } })
         .then((assetPairs) => {
-            console.log({ assetPairs })
+            console.log(JSON.stringify({ assetPairs }, null, 4));
         })
  * ```
  */

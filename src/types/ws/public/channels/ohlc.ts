@@ -6,14 +6,14 @@ import { BaseSubscription, BaseUnsubscription } from '../..';
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicWsSubscription } from 'ts-kraken';
 
-    PublicWs.getPublicSubscription({ channel: 'ohlc', params: {
+    publicWsSubscription({ channel: 'ohlc', params: {
         symbol: ['BTC/USD'] ,
         interval: 1,
 
-    } }).subscribe(({ data: [{ symbol, close }] }) => {
-        console.log({ symbol, close });
+    } }).subscribe(({ data: [{ symbol, open, high, low, close }] }) => {
+        console.log({ symbol,  open, high, low, close });
     });
  * ```
  */

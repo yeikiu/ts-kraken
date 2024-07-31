@@ -1,2 +1,9 @@
-export * as PrivateRest from './private';
-export * as PublicRest from './public';
+/**
+ * TODO_DOC
+ */
+export * from './private';
+
+/**
+ * TODO_DOC
+ */
+export * from './public';

@@ -3,16 +3,16 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({
+    publicRestRequest({
         url: 'Spread',
         params: { pair: 'BTCUSD' }
     }).then(rawData => {
         const [pairKey] = Object.keys(rawData);
-        const spreadsArr = rawData[pairKey];
+        const [,lastBid, lastAsk] = rawData[pairKey].pop();
 
-        console.log({ spreadsArr })
+        console.log({ [pairKey]: { lastBid, lastAsk } })
     });
  * ```
  */

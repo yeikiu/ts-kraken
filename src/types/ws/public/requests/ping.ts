@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicWsRequest } from 'ts-kraken';
 
-    PublicWs.sendPublicRequest({ method: 'ping', req_id: 42 })
+    publicWsRequest({ method: 'ping', req_id: 42 })
         .then(({ method, req_id, time_in, time_out }) => {
             console.log({ method, req_id, time_in, time_out });
         });

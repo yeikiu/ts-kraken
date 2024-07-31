@@ -5,9 +5,9 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
  * 
  * @example
  * ```ts 
-    import { PrivateWs } from 'ts-kraken';
+    import { privateWsRequest } from 'ts-kraken';
 
-    PrivateWs.sendPrivateRequest({ method: 'add_order', params: {
+    privateWsRequest({ method: 'add_order', params: {
         order_type: 'limit',
         side: 'buy',
         order_qty: 0.0002,

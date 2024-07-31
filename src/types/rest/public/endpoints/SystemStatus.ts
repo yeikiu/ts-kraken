@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PublicRest } from 'ts-kraken';
+    import { publicRestRequest } from 'ts-kraken';
 
-    PublicRest.publicRestRequest({ url: 'SystemStatus' })
+    publicRestRequest({ url: 'SystemStatus' })
         .then(({ status, timestamp }) => {
             console.log({ status, timestamp })
         })

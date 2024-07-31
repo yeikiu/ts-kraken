@@ -12,14 +12,8 @@ export * as PublicRequests from './requests';
  */
 export type PublicWsMethod = 'ping';
 
-/**
- * @ignore 
- */
 export type PublicWsRequest = Ping.Request
 
-/**
- * @ignore 
- */
 export type PublicWsResponse<T extends PublicWsRequest> =
     T extends Ping.Request ? Ping.Response : never;
 
