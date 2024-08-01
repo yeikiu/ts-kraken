@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'TradeVolume',
         data: { pair: 'ADA/USD,ADA/EUR' }
     }).then(({ fees, fees_maker }) => {

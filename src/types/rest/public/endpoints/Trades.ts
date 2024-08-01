@@ -8,11 +8,12 @@
     publicRestRequest({
         url: 'Trades',
         params: { pair: 'BTCUSD', count: 1 } // Fetch last trade only, default `count` if not passed is 1000.
+
     }).then(rawData => {
         const [pairKey] = Object.keys(rawData);
         const [[lastTradePrice]] = rawData[pairKey];
-
-        console.log({ [pairKey]: lastTradePrice })
+        
+        console.log({ [pairKey]: lastTradePrice });
     });
  * ```
  */

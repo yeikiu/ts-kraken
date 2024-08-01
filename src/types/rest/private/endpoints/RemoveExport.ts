@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'RemoveExport',
         data: { id: 'YOUR_EXPORT_ID', type: 'cancel' }
     }).then(({ cancel }) => {

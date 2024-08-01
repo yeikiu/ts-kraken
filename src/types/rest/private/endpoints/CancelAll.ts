@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'CancelAll'
     }).then(({ count, pending }) => {
         console.log({ count, pending });

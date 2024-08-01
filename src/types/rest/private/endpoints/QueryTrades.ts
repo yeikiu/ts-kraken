@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'QueryTrades',
         data: { trades: true, txid: 'YOUR-TRADE-ID1,YOUR-TRADE-ID2' }
     }).then((tradesInfo) => {

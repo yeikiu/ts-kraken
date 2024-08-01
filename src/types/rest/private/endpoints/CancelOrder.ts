@@ -3,12 +3,12 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'CancelOrder',
         data: {
-            txid: 'OHYO67-6LP66-HMQ437',
+            txid: 'YOUR-ORDER-ID',
         }
     }).then(({ count, pending }) => {
         console.log({ count, pending });

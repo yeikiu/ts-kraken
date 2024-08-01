@@ -2,7 +2,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,import/order */
 
 import { config } from 'dotenv';
-config();
+
+const { parsed, error: loadConfigError } = config();
+
+if (loadConfigError) {
+    console.error(JSON.stringify({ loadConfigError }));
+} else {
+    globalThis.env = {...parsed};
+}
 
 import repl from 'repl';
 import { parse } from 'qs'; /* https://stackoverflow.com/a/9547490 */

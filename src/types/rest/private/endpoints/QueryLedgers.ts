@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'QueryLedgers',
         data: { id: 'YOUR-LEDGER-ID1,YOUR-LEDGER-ID2' }
     }).then((ledgersData) => {

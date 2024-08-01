@@ -3,9 +3,9 @@
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'Balance'
     }).then(({ XXBT: btcBalance, ADA: adaBalance }) => {
         console.log({ btcBalance, adaBalance })

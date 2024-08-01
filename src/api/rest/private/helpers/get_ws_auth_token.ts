@@ -7,12 +7,12 @@ import { privateRestRequest } from '../private_rest_request';
  * 
  * @example
  * ```ts
-    import { PrivateRestHelpers } from 'ts-kraken';
+    import { PrivateRestHelpers, privateWsSubscription } from 'ts-kraken';
 
     PrivateRestHelpers.getWsAuthToken().then(async token => {
         console.log({ token })
 
-        const balances$ = await PrivateWs.getPrivateSubscription({
+        const balances$ = await privateWsSubscription({
             channel: 'balances',
             params: { snapshot: true }
         }, token) // Pass token here to save time as the method won't need to fetch one internally!

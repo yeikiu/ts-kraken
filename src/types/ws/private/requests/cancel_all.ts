@@ -7,12 +7,13 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
  * ```ts 
     import { privateWsRequest } from 'ts-kraken';
 
-    privateWsRequest({ method: 'cancel_all' }).then(({ count }) => {
-        console.log({ count });
+    privateWsRequest({ method: 'cancel_all' })
+        .then(({ count }) => {
+            console.log({ count });
 
-    }).catch(error => {
-        console.error({ error });
-    });
+        }).catch(error => {
+            console.error({ error });
+        });
  * ```
  */
 export namespace CancelAll {

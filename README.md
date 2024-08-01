@@ -10,6 +10,7 @@
 <h4 align="center">A <i>strongly typed library</i> to operate with the <a href="https://kraken.com">Kraken Crypto Exchange</a></h4>
 <br />
 <p align="center">
+  <a href="#quick-start">Quick-Start</a> •
   <a href="#about-this-project">About</a> •
   <a href="#tldr-get-started">Use the library</a> •
   <a href="#installation">Use the REPL-cli</a> •
@@ -17,9 +18,16 @@
   <a href="#acknowledgments">Acknowledgments</a>
 </p>
 
-<br />
----
-<br />
+## Quick-Start
+
+1.- Add the dependency to your js/ts project
+
+- `npm i ts-kraken`
+
+2.- _Optionally_ add `KRAKEN_API_KEY` and `KRAKEN_API_SECRET` to your .env (only if you intend to use private methods, i.e. add orders or fetch balances)
+
+3.- Find examples for the methods you need [in the documentation]()
+
 
 ## About this project
   

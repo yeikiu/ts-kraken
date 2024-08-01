@@ -1,9 +1,18 @@
-import { PublicRestHelpers } from '.';
+import { PrivateRestHelpers, privateWsSubscription } from '.';
 
-PublicRestHelpers.getTickersPrices('BTCUSD,ETHEUR')
-    .then(([btcUsdTicker, ethEurTicker]) => {
-        const { price: btcUsdPrice } = btcUsdTicker;
-        const { price: ethEurPrice } = ethEurTicker;
+PrivateRestHelpers.getWsAuthToken().then(async token => {
+    console.log({ token });
 
-        console.log({ btcUsdPrice, ethEurPrice });
+    const balances$ = await privateWsSubscription({
+        channel: 'balances',
+        params: { snapshot: true }
+    }, token); // Pass token here to save time as the method won't need to fetch one internally!
+
+    balances$.subscribe(({data}) => {
+        console.table(data);
     });
+
+}).catch(error => {
+    console.log({ error });
+});
+   

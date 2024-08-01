@@ -32,7 +32,7 @@ export const connected$ = new Subject();
     PublicWs.disconnected$.subscribe(() => {
         console.log('Public WebsocketV2 connection closed!\n');
         
-        // Code to handle lost connection here...
+        // Code to handle connection lost here...
     });
 * ```
 */

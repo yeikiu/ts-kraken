@@ -5,9 +5,9 @@ import { QueryTrades } from '.';
  * 
  * @example
  * ```ts 
-    import { PrivateRest } from 'ts-kraken';
+    import { privateRestRequest } from 'ts-kraken';
 
-    PrivateRest.privateRestRequest({
+    privateRestRequest({
         url: 'TradesHistory',
         data: { trades: true, type: 'closed position' }
     }).then(({ trades, count }) => {
