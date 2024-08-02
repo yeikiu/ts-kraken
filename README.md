@@ -154,7 +154,11 @@ Open a PR with any addition/change proposal you have!
 <br />
 
 #### REPL commands
-<details><summary>The following list is just a subset sample of all possible commands you could generate (click to extend 👇)</summary>
+<details><summary>(click to extend 👇)</summary>
+
+> The following list includes only a subset sample of all possible commands you could generate for the .get and .post methods:
+
+<br />
 
 ```
 .exit       👉 Exit the REPL
