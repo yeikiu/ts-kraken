@@ -229,6 +229,7 @@ Open a PR with any addition/change proposal you have!
             i.e.    >> .unsuball
 ```
 </details>
+</details>
 
 <br /><br />
 
