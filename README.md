@@ -89,9 +89,10 @@
 
 
 ### Use the library in your TypeScript/JS project:
-<details>
 
-<summary>Get _IDE code-suggestions_ for any REST or WS request you need</summary>
+<details><summary>(Click to extend content)</summary>
+
+> Get _IDE code-suggestions_ for any REST or WS request you need
 
 `cd dependant/project/path && npm i ts-kraken`
 
@@ -102,10 +103,11 @@
 
 <br />
 
-### Use the REPL-cli
-<details>
+<details><summary>(Click to extend content)</summary>
 
-<summary>You can create a `.env` file that the repl-cli will try to read from `cwd` (current working directory):</summary>
+### Use the REPL-cli
+
+> You can create a `.env` file that the repl-cli will try to read from `cwd` (current working directory):
 
 - `touch .env`
 
