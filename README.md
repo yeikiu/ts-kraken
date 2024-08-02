@@ -49,7 +49,7 @@
             params: { symbol: ['BTC/USD'], interval: 5, snapshot: false }
         });
 
-        // Track 5m candle updates
+        // Track 5m candles updates
         fiveMinsBtcUsdCandles$.subscribe(({ data: [{ open, high, low, close }] }) => {
             console.log({ open, high, low, close });
         });
@@ -90,7 +90,7 @@
 
 ### Use the library in your TypeScript/JS project:
 
-<details><summary>(Click to extend content)</summary>
+<details><summary>(click to extend 👇)</summary>
 
 > Get _IDE code-suggestions_ for any REST or WS request you need
 
@@ -103,9 +103,10 @@
 
 <br />
 
-<details><summary>(Click to extend content)</summary>
 
 ### Use the REPL-cli
+
+<details><summary>(click to extend 👇)</summary>
 
 > You can create a `.env` file that the repl-cli will try to read from `cwd` (current working directory):
 
@@ -153,9 +154,7 @@ Open a PR with any addition/change proposal you have!
 <br />
 
 #### REPL commands
-<details>
-
-<summary>The following list is just a subset sample of all possible commands you could generate:</summary>
+<details><summary>The following list is just a subset sample of all possible commands you could generate (click to extend 👇)</summary>
 
 ```
 .exit       👉 Exit the REPL
