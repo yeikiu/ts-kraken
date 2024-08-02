@@ -9,17 +9,19 @@
 
 <h4 align="center">A <i>strongly typed library</i> to operate with the <a href="https://kraken.com">Kraken Crypto Exchange</a></h4>
 <br />
+
 <p align="center">
-  <a href="#quick-start">Quick-Start</a> •
-  <a href="#about-this-project">About</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#resources">Resources</a> •
-  <a href="#acknowledgments">Acknowledgments</a>
+  <a href="#-quick-start">Quick-Start</a> •
+  <a href="#ℹ%EF%B8%8F-about-this-project">About</a> •
+  <a href="#%EF%B8%8F-usage">Usage</a> •
+  <a href="#-resources">Resources</a> •
+  <a href="#-acknowledgments">Acknowledgments</a>
 </p>
 
 
 
 
+<br /><br />
 ## 🚀 Quick-Start
 
   1.- Add the dependency to your js/ts project: `npm i ts-kraken`
@@ -31,6 +33,7 @@
 
 
 
+<br /><br />
 ## ℹ️ About this project
   
 > **ts-kraken** is a **strongly-typed** _Typescript Library_ 
@@ -55,6 +58,7 @@
 
 
 
+<br /><br />
 ## 🛠️ Usage
 
 
@@ -121,6 +125,7 @@ npm run kraken-repl
 
 
 
+<br /><br />
 ## 🔖 Resources
 
 * [Kraken REST API docs](https://docs.kraken.com/api/docs/rest-api/add-order)
@@ -131,6 +136,7 @@ npm run kraken-repl
 
 
 
+<br /><br />
 ## 🙏 Acknowledgments 
 
-- 
+- [@trasherdk](https://github.com/trasherdk) | Contributor

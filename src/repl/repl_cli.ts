@@ -6,26 +6,26 @@ import { config } from 'dotenv';
 const { parsed, error: loadConfigError } = config();
 
 if (loadConfigError) {
-    console.error(JSON.stringify({ loadConfigError }));
+    console.error({ loadConfigError });
 } else {
-    globalThis.env = {...parsed};
+    globalThis.env = { ...parsed };
 }
 
 import repl from 'repl';
 import { parse } from 'qs'; /* https://stackoverflow.com/a/9547490 */
 import { Observable, Subscription } from 'rxjs';
 import { run } from 'node-jq';
-import krakenHeader from './kraken_header';
+import { krakenHeader, purpleText } from './kraken_header';
 import { RestClosedOrder } from '../types/rest/private/endpoints';
 import { findClosedOrder } from '../api/rest/private/helpers';
 import { privateRestRequest, privateWsSubscription, publicRestRequest, publicWsSubscription } from '..';
 
-let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = process.env;
+let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = globalThis.env;
 const wsSubscriptions: Map<string, Subscription> = new Map();
 const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/;
 
 // TODO: extract to util imports
-const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(JSON.stringify(content, null, 4));
+const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(purpleText(JSON.stringify(content, null, 4)));
 
 // TODO: extract to util imports
 const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: string, jqFilter?: string, asTable?: boolean): Subscription => wsSubscription
@@ -43,7 +43,7 @@ const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: s
             console.error({ subscriptionError });
             wsSubscriptions.get(channelName)?.unsubscribe();
             if (wsSubscriptions.delete(channelName)) {
-                print(`${channelName} unsubscribed! Re-attempting subscription in 5 seconds...`);
+                console.error(`\n${channelName} unsubscribed! Re-attempting subscription in 5 seconds...`);
             }
 
             setTimeout(() => {
@@ -61,8 +61,8 @@ function* iter(obj) {
     }
 }
 
-console.log(krakenHeader);
-const myRepl = repl.start('kraken-repl >> ');
+console.log(purpleText(krakenHeader));
+const myRepl = repl.start(purpleText('kraken-repl >> '));
 
 // Modify core methods (bit hacky, these are readonly)
 ['save', 'load', 'editor', 'clear', 'break'].forEach(c => delete (myRepl.commands as any)[c]);
@@ -101,9 +101,9 @@ myRepl.defineCommand('get', {
                     
             Usage   >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-            i.e.    >> .get Time .rfc1123
-                    >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table
-                    >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}
+            i.e.    >> ${purpleText('.get Time .rfc1123')}
+                    >> ${purpleText('.get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table')}
+                    >> ${purpleText('.get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}')}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
@@ -113,18 +113,18 @@ myRepl.defineCommand('get', {
 
         const [fullMatch, endpoint, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const params = parse(rawParams);
-        print({ endpoint, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
-        if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
+        console.log({ endpoint, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
+        if (!fullMatch) { return console.error('\nParse error. Please verify params and jqFilterExpr format.'); }
 
         try {
-            const response = await publicRestRequest({ url: endpoint, params } as any);
+            const response = await publicRestRequest<any>({ url: endpoint, params });
             if (jqFilter) {
                 const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' });
                 print(jqResponse, asTable);
-                return console.log('\nPress return to continue or control+c to exit...');
+                return console.log('\nPress Return to continue or Control+C to exit...');
             }
             print(response, asTable);
-            console.log('\nPress return to continue or control+c to exit...');
+            console.log('\nPress Return to continue or Control+C to exit...');
         } catch (publicRESTerror) {
             console.error({ publicRESTerror });
         }
@@ -136,10 +136,10 @@ myRepl.defineCommand('post', {
                     
             Usage   >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-            i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
-                    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
-                    >> .post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR
-                    >> .post CancelAll
+            i.e.    >> ${purpleText('.post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)')}
+                    >> ${purpleText('.post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table')}
+                    >> ${purpleText('.post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR')}
+                    >> ${purpleText('.post CancelAll')}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
@@ -152,18 +152,18 @@ myRepl.defineCommand('post', {
 
         const [fullMatch, endpoint, rawData, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const data = parse(rawData);
-        print({ endpoint, ...Object.keys(data).length ? { data } : {}, ...jqFilter ? { jqFilter } : {} });
-        if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
+        console.log({ endpoint, ...Object.keys(data).length ? { data } : {}, ...jqFilter ? { jqFilter } : {} });
+        if (!fullMatch) { return console.error('\nParse error. Please verify params and jqFilterExpr format.'); }
 
         try {
             const response = await privateRestRequest({ url: endpoint, data } as any, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET });
             if (jqFilter) {
                 const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' });
                 print(jqResponse, asTable);
-                return console.log('\nPress return to continue or control+c to exit...');
+                return console.log('\nPress Return to continue or Control+C to exit...');
             }
             print(response, asTable);
-            console.log('\nPress return to continue or control+c to exit...');
+            console.log('\nPress Return to continue or Control+C to exit...');
 
         } catch (privateRESTerror) {
             console.error({ privateRESTerror });
@@ -176,8 +176,8 @@ myRepl.defineCommand('pubsub', {
                     
             Usage   >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-            i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
-                    >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
+            i.e.    >> ${purpleText('.pubsub ticker symbol[]=BTC/EUR .data[0].last')}
+                    >> ${purpleText('.pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table')}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
@@ -187,10 +187,10 @@ myRepl.defineCommand('pubsub', {
 
         const [fullMatch, channel, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const params = parse(rawParams);
-        print({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
-        if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
+        console.log({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
+        if (!fullMatch) { return console.error('\nParse error. Please verify params and jqFilterExpr format.'); }
 
-        print(`Subscribing to PUBLIC WebsocketV2 ${channel} stream...`);
+        print(`\nSubscribing to PUBLIC WebsocketV2 ${channel} stream...`);
         const subscription = publicWsSubscription({ channel, params } as any);
         const replSubscription = replSubscriptionHandler(subscription, channel, jqFilter, asTable);
         wsSubscriptions.set(channel, replSubscription);
@@ -202,8 +202,8 @@ myRepl.defineCommand('privsub', {
                     
             Usage   >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-            i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
-                    >> .privsub executions snap_orders=true .data|map({order_id,side,order_qty,symbol,order_type,limit_price}) -table
+            i.e.    >> ${purpleText('.privsub balances snap_orders=true .data|map({ asset, balance }) -table')}
+                    >> ${purpleText('.privsub executions snap_orders=true .data|map({order_id,side,order_qty,symbol,order_type,limit_price}) -table')}
 `,
 
     action: async (cmdArgs: string) => {
@@ -215,15 +215,15 @@ myRepl.defineCommand('privsub', {
 
         const [fullMatch, channel, rawParams, jqFilter] = paramsStr.match(cmdRegExp) ?? [];
         const params = parse(rawParams);
-        print({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
-        if (!fullMatch) { return console.error('Parse error. Please verify params and jqFilterExpr format.'); }
+        console.log({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
+        if (!fullMatch) { return console.error('\nParse error. Please verify params and jqFilterExpr format.'); }
 
         for (const [obj, key, value] of iter(params)) {
             if (value?.trim().toLowerCase() === 'true') obj[key] = true;
             else if (value?.trim().toLowerCase() === 'false') obj[key] = false;
         }
 
-        print(`Subscribing to PRIVATE WebsocketV2 ${channel} stream...`);
+        print(`\nSubscribing to PRIVATE WebsocketV2 ${channel} stream...`);
         const subscription = await privateWsSubscription(
             { channel, params } as any,
             { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }
@@ -236,18 +236,18 @@ myRepl.defineCommand('privsub', {
 myRepl.defineCommand('unsub', {
     help: `👉 Closes WebSocket stream for GIVEN subscriptionName.
 
-            i.e.    >> .unsub ticker
-                    >> .unsub executions
+            i.e.    >> ${purpleText('.unsub ticker')}
+                    >> ${purpleText('.unsub executions')}
 `,
 
     action: (subscriptionName: string) => {
         if (!wsSubscriptions.get(subscriptionName)) {
-            return print(`No subscription available for ${subscriptionName} channel`);
+            return console.error(`\nNo subscription available for ${subscriptionName} channel`);
         }
 
         wsSubscriptions.get(subscriptionName)?.unsubscribe();
         if (wsSubscriptions.delete(subscriptionName)) {
-            print(`${subscriptionName} unsubscribed!`);
+            console.log(`\n${subscriptionName} unsubscribed!`);
         }
     }
 });
@@ -255,19 +255,19 @@ myRepl.defineCommand('unsub', {
 myRepl.defineCommand('unsuball', {
     help: `👉 Closes WebSocket stream for ALL subscriptions.
 
-            i.e.    >> .unsuball
+            i.e.    >> ${purpleText('.unsuball')}
 `,
 
     action: () => {
         const subsArr = Array.from(wsSubscriptions);
         if (subsArr.length < 1) {
-            print('Not subscribed to any channel yet...');
+            console.error('\nNot subscribed to any channel yet...');
         }
 
         subsArr.forEach(([subscriptionName, sub]) => {
             sub.unsubscribe();
             if (wsSubscriptions.delete(subscriptionName)) {
-                print(`${subscriptionName} unsubscribed!`);
+                console.log(`\n${subscriptionName} unsubscribed!`);
             }
         });
     }
@@ -278,8 +278,8 @@ myRepl.defineCommand('find', {
                     
             Usage   >> .find <pair>! <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory!)
 
-            i.e.    >> .find ADAETH descr[type]=buy 500 .descr.order
-                    >> .find BTCUSD descr[type]=sell 500 .descr.order
+            i.e.    >> ${purpleText('.find ADAETH descr[type]=buy 500 .descr.order')}
+                    >> ${purpleText('.find BTCUSD descr[type]=sell 500 .descr.order')}
 `,
 
     action: async (orderPairAndFilterStr: string) => {
@@ -303,7 +303,7 @@ myRepl.defineCommand('find', {
             ...parsedFilter,
             descr: { ...parsedFilter?.descr ?? {}, pair }
         };
-        console.log({ orderFilter });
+        print({ orderFilter });
         const matchingOrder = await findClosedOrder({
             orderFilter: (o: Partial<RestClosedOrder>) => isSubset(o, orderFilter),
             maxOffset: Number(maxOffset),
@@ -315,7 +315,7 @@ myRepl.defineCommand('find', {
             are printed as text to console by default even with `output: 'json'` */
             return print(jqPayload);
         }
-        print(matchingOrder);
+        print({ matchingOrder });
     }
 });
 

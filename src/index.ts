@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 const { parsed, error: loadConfigError } = config();
 
 if (loadConfigError) {
-    console.error(JSON.stringify({ loadConfigError }));
+    console.error({ loadConfigError });
 } else {
     globalThis.env = {...parsed};
 }
