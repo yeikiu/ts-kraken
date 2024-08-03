@@ -14,7 +14,7 @@
   <a href="#-quick-start">Quick-Start</a> •
   <a href="#ℹ%EF%B8%8F-about-this-project">About</a> •
   <a href="#%EF%B8%8F-usage">Usage</a> •
-  <a href="#-resources">Resources</a> •
+  <a href="#-documentation">Documentation</a> •
   <a href="#-acknowledgments">Acknowledgments</a>
 </p>
 
@@ -233,10 +233,13 @@ Open a PR with any addition/change proposal you have!
 
 <br /><br />
 
-## 🔖 Resources
+## 🔖 Documentation
+
+* [ts-kraken Documentation](https://yeikiu.github.io/ts-kraken)
 
 * [Kraken REST API docs](https://docs.kraken.com/api/docs/rest-api/add-order)
 * [Kraken WebSocketsV2 API docs](https://docs.kraken.com/api/docs/websocket-v2/add_order)
+
 * [jq Manual](https://stedolan.github.io/jq/manual)
 * [jq Playground](https://jqkungfu.com/)
 
