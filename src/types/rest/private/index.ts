@@ -3,14 +3,8 @@ import { AddExport, AddOrder, AddOrderBatch, Balance, BalanceEx, CancelAll, Canc
 
 export * as PrivateEndpoints from './endpoints';
 
-/**
- * TODO_DOC
- */
 export type ApiToken = string;
 
-/**
- * TODO_DOC
- */
 export type ApiCredentials = {
     apiKey: string;
     apiSecret: string;
