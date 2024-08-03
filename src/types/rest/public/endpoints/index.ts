@@ -1,9 +1,9 @@
-export * as AssetPairs from './AssetPairs'
-export * as Assets from './Assets'
-export * as Depth from './Depth'
-export * as OHLC from './OHLC'
-export * as Spread from './Spread'
-export * as SystemStatus from './SystemStatus'
-export * as Ticker from './Ticker'
-export * as Time from './Time'
-export * as Trades from './Trades'
+export * from './AssetPairs';
+export * from './Assets';
+export * from './Depth';
+export * from './OHLC';
+export * from './Spread';
+export * from './SystemStatus';
+export * from './Ticker';
+export * from './Time';
+export * from './Trades';

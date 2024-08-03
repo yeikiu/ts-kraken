@@ -1,15 +1,63 @@
-import type { ticker, ohlc, book, trade, spread } from './channels'
+import { Book, Instruments, Ohlc, Ticker, Trade } from './channels';
+import { Ping } from './requests/ping';
 
-export * as Channels from './channels'
-export * as Helpers from './helpers'
+export * as PublicChannels from './channels';
+export * as PublicRequests from './requests';
 
-export type Channel = 'ticker' | 'ohlc' | 'trade' | 'spread' | 'book'
 
-export type BaseSubscription = {
-    channelName: Channel;
-    pair: string[];
-}
+/* REQUESTS */
 
-export type Subscription = ticker.Subscription | ohlc.Subscription | book.Subscription | trade.Subscription | spread.Subscription;
+/**
+ * @ignore 
+ */
+export type PublicWsMethod = 'ping';
 
-export type Payload = ticker.Payload | ohlc.Payload | book.Payload | trade.Payload | spread.Payload;
+export type PublicWsRequest = Ping.Request
+
+export type PublicWsResponse<T extends PublicWsRequest> =
+    T extends Ping.Request ? Ping.Response : never;
+
+
+/* CHANNELS */
+
+export type PublicSubscriptionChannel =
+    'ticker' |
+    'book' |
+    'ohlc' |
+    'trade' |
+    'instrument';
+
+/**
+ * @ignore 
+ */
+export type PublicSubscription<T extends PublicSubscriptionChannel> =
+    T extends 'ticker' ? Ticker.Subscription :
+    T extends 'book' ? Book.Subscription :
+    T extends 'ohlc' ? Ohlc.Subscription :
+    T extends 'trade' ? Trade.Subscription :
+    T extends 'instrument' ? Instruments.Subscription : never;
+
+/**
+ * @ignore 
+ */
+export type PublicSubscriptionUpdate<T extends PublicSubscriptionChannel> =
+    T extends 'ticker' ? Ticker.Update :
+    T extends 'book' ? Book.Update :
+    T extends 'ohlc' ? Ohlc.Update :
+    T extends 'trade' ? Trade.Update :
+    T extends 'instrument' ? Instruments.Update : never;
+
+/**
+ * @ignore 
+ */
+type OmitChannel<T extends PublicSubscriptionChannel> = Omit<PublicSubscription<T>['params'], 'channel'>;
+
+/**
+ * @ignore 
+ */
+export type PublicSubscriptionParams<T extends PublicSubscriptionChannel> =
+    T extends 'ticker' ? { params: OmitChannel<T> } :
+    T extends 'book' ? { params: OmitChannel<T> } :
+    T extends 'ohlc' ? { params: OmitChannel<T> } :
+    T extends 'trade' ? { params: OmitChannel<T> } :
+    T extends 'instrument' ? { params?: OmitChannel<T> } : never;

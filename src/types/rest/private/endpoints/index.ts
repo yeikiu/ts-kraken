@@ -1,29 +1,25 @@
-export * as AddExport from './AddExport'
-export * as AddOrder from './AddOrder'
-export * as EditOrder from './EditOrder'
-export * as Balance from './Balance'
-export * as CancelAll from './CancelAll'
-export * as CancelAllOrdersAfter from './CancelAllOrdersAfter'
-export * as CancelOrder from './CancelOrder'
-export * as ClosedOrders from './ClosedOrders'
-export * as DepositAddresses from './DepositAddresses'
-export * as DepositMethods from './DepositMethods'
-export * as DepositStatus from './DepositStatus'
-export * as ExportStatus from './ExportStatus'
-export * as GetWebSocketsToken from './GetWebSocketsToken'
-export * as Ledgers from './Ledgers'
-export * as OpenOrders from './OpenOrders'
-export * as OpenPositions from './OpenPositions'
-export * as QueryLedgers from './QueryLedgers'
-export * as QueryOrders from './QueryOrders'
-export * as QueryTrades from './QueryTrades'
-export * as RemoveExport from './RemoveExport'
-export * as RetrieveExport from './RetrieveExport'
-export * as TradeBalance from './TradeBalance'
-export * as TradeVolume from './TradeVolume'
-export * as TradesHistory from './TradesHistory'
-export * as WalletTransfer from './WalletTransfer'
-export * as Withdraw from './Withdraw'
-export * as WithdrawCancel from './WithdrawCancel'
-export * as WithdrawInfo from './WithdrawInfo'
-export * as WithdrawStatus from './WithdrawStatus'
+
+export * from './AddExport';
+export * from './AddOrder';
+export * from './AddOrderBatch';
+export * from './EditOrder';
+export * from './Balance';
+export * from './BalanceEx';
+export * from './CancelAll';
+export * from './CancelAllOrdersAfter';
+export * from './CancelOrder';
+export * from './CancelOrderBatch';
+export * from './ClosedOrders';
+export * from './ExportStatus';
+export * from './GetWebSocketsToken';
+export * from './Ledgers';
+export * from './OpenOrders';
+export * from './OpenPositions';
+export * from './QueryLedgers';
+export * from './QueryOrders';
+export * from './QueryTrades';
+export * from './RemoveExport';
+export * from './RetrieveExport';
+export * from './TradeBalance';
+export * from './TradeVolume';
+export * from './TradesHistory';

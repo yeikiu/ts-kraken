@@ -1,21 +1,54 @@
-import type { BaseSubscription } from '..'
+import { BaseSubscription, BaseUnsubscription } from '../../';
 
-export type ValidDepth = 10 | 25 | 100 | 500 | 1000
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/websocket-v2/book | Book (Level 2)}
+ * 
+ * @example
+ * ```ts 
+    import { publicWsSubscription } from 'ts-kraken';
 
-export type Subscription = BaseSubscription & {
-    channelName: 'book';
-    depth?: ValidDepth
+    publicWsSubscription({ channel: 'book', params: {
+        symbol: ['BTC/USD'] ,
+        depth: 10,
+
+    } }).subscribe(({ data: [{ symbol, bids, asks }] }) => {
+        console.log({ symbol, lastBid: bids[0]?.price, lastAsk: asks[0]?.price });
+    });
+ * ```
+ */
+export namespace Book {
+    
+    /** {@inheritDoc Book} */
+    export type Subscription = BaseSubscription<{
+        channel: 'book';
+        snapshot?: boolean;
+        symbol: string[];
+        depth?: 10 | 25 | 100 | 500 | 1000;
+    }>;
+
+    /** {@inheritDoc Book} */
+    export type Unsubscription = BaseUnsubscription<{
+        channel: 'book';
+        symbol: string[];
+        depth?: 10 | 25 | 100 | 500 | 1000;
+    }>;
+
+    /** {@inheritDoc Book} */
+    export type Update = {
+        channel: 'book';
+        type: 'snapshot' | 'update';
+        data: [{
+            symbol: string;
+            bids: {
+                price: number;
+                qty: number;
+            }[];
+            asks: {
+                price: number;
+                qty: number;
+            }[];
+            checksum: number;
+            timestamp: string; // TODO: report missing in docs
+        }];
+    };
 }
-
-export type Payload = [
-    number,
-    {
-        a: string[][],
-        b: string[][],
-        as: string[][],
-        bs: string[][],
-        c: string,
-    },
-    string,
-    string
-]

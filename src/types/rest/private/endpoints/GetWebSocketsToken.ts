@@ -1,8 +1,27 @@
-/* https://docs.kraken.com/rest/#operation/getWebsocketsToken */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-websockets-token | Get Websockets Token}
+ * 
+ * @example
+ * ```ts 
+    import { privateRestRequest } from 'ts-kraken';
 
-export type Endpoint = 'GetWebSocketsToken';
+    privateRestRequest({
+        url: 'GetWebSocketsToken'
+    }).then(({ token, expires }) => {
+        console.log({  token, expires });
+    });
+ * ```
+ */
+export namespace GetWebSocketsToken {
 
-export type Result = {
-    token: string;
-    expire: number;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'GetWebSocketsToken';
+
+    /** {@inheritDoc GetWebSocketsToken} */
+    export type Result = {
+        token: string;
+        expires: number;
+    }
 }

@@ -1,101 +1,115 @@
-import { RESTResponse } from '../responses_rest';
-import { AddExport, AddOrder, Balance, CancelAll, CancelAllOrdersAfter, CancelOrder, ClosedOrders, DepositAddresses, DepositMethods, DepositStatus, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradesHistory, TradeVolume, WalletTransfer, Withdraw, WithdrawCancel, WithdrawInfo, WithdrawStatus } from './endpoints';
+import { RestResponse } from '..';
+import { AddExport, AddOrder, AddOrderBatch, Balance, BalanceEx, CancelAll, CancelAllOrdersAfter, CancelOrder, CancelOrderBatch, ClosedOrders, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory } from './endpoints';
 
-export type Endpoint =
-    AddExport.Endpoint |
-    AddOrder.Endpoint |
-    Balance.Endpoint |
-    CancelAll.Endpoint |
-    CancelAllOrdersAfter.Endpoint |
-    CancelOrder.Endpoint |
-    ClosedOrders.Endpoint |
-    DepositAddresses.Endpoint |
-    DepositMethods.Endpoint |
-    DepositStatus.Endpoint |
-    EditOrder.Endpoint |
-    ExportStatus.Endpoint |
-    GetWebSocketsToken.Endpoint |
-    Ledgers.Endpoint |
-    OpenOrders.Endpoint |
-    OpenPositions.Endpoint |
-    QueryLedgers.Endpoint |
-    QueryOrders.Endpoint |
-    QueryTrades.Endpoint |
-    RemoveExport.Endpoint |
-    RetrieveExport.Endpoint |
-    TradeBalance.Endpoint |
-    TradesHistory.Endpoint |
-    TradeVolume.Endpoint |
-    WalletTransfer.Endpoint |
-    Withdraw.Endpoint |
-    WithdrawCancel.Endpoint |
-    WithdrawInfo.Endpoint |
-    WithdrawStatus.Endpoint;
+export * as PrivateEndpoints from './endpoints';
 
-export type Params<T extends Endpoint> =
-    T extends AddExport.Endpoint ? AddExport.Params :
-    T extends AddOrder.Endpoint ? AddOrder.Params : 
-    T extends CancelAllOrdersAfter.Endpoint ? CancelAllOrdersAfter.Params :
-    T extends CancelOrder.Endpoint ? CancelOrder.Params :
-    T extends ClosedOrders.Endpoint ? ClosedOrders.Params :
-    T extends DepositAddresses.Endpoint ? DepositAddresses.Params :
-    T extends DepositMethods.Endpoint ? DepositMethods.Params :
-    T extends DepositStatus.Endpoint ? DepositStatus.Params :
-    T extends EditOrder.Endpoint ? EditOrder.Params :
-    T extends ExportStatus.Endpoint ? ExportStatus.Params :
-    T extends Ledgers.Endpoint ? Ledgers.Params :
-    T extends OpenOrders.Endpoint ? OpenOrders.Params :
-    T extends OpenPositions.Endpoint ? OpenPositions.Params :
-    T extends QueryLedgers.Endpoint ? QueryLedgers.Params :
-    T extends QueryOrders.Endpoint ? QueryOrders.Params :
-    T extends QueryTrades.Endpoint ? QueryTrades.Params :
-    T extends RemoveExport.Endpoint ? RemoveExport.Params :
-    T extends RetrieveExport.Endpoint ? RetrieveExport.Params :
-    T extends TradeBalance.Endpoint ? TradeBalance.Params :
-    T extends TradesHistory.Endpoint ? TradesHistory.Params :
-    T extends TradeVolume.Endpoint ? TradeVolume.Params :
-    T extends WalletTransfer.Endpoint ? WalletTransfer.Params :
-    T extends Withdraw.Endpoint ? Withdraw.Params :
-    T extends WithdrawCancel.Endpoint ? WithdrawCancel.Params :
-    T extends WithdrawInfo.Endpoint ? WithdrawInfo.Params :
-    T extends WithdrawStatus.Endpoint ? WithdrawStatus.Params : never;
+export type ApiToken = string;
 
+export type ApiCredentials = {
+    apiKey: string;
+    apiSecret: string;
+};
 
-export type Request<T extends Endpoint> = {
-    url: T;
-    method?: 'POST' | 'post';
-    data?: Params<T>;
-}
-    
-export type Result<T extends Endpoint> =
-    T extends AddExport.Endpoint ? AddExport.Result :
-    T extends AddOrder.Endpoint ? AddOrder.Result :
-    T extends Balance.Endpoint ? Balance.Result :
-    T extends CancelAll.Endpoint ? CancelAll.Result :
-    T extends CancelAllOrdersAfter.Endpoint ? CancelAllOrdersAfter.Result :
-    T extends CancelOrder.Endpoint ? CancelOrder.Result :
-    T extends ClosedOrders.Endpoint ? ClosedOrders.Result :
-    T extends DepositAddresses.Endpoint ? DepositAddresses.Result :
-    T extends DepositMethods.Endpoint ? DepositMethods.Result :
-    T extends DepositStatus.Endpoint ? DepositStatus.Result :
-    T extends EditOrder.Endpoint ? EditOrder.Result :
-    T extends ExportStatus.Endpoint ? ExportStatus.Result :
-    T extends GetWebSocketsToken.Endpoint ? GetWebSocketsToken.Result :
-    T extends Ledgers.Endpoint ? Ledgers.Result : 
-    T extends OpenOrders.Endpoint ? OpenOrders.Result :
-    T extends OpenPositions.Endpoint ? OpenPositions.Result :
-    T extends QueryLedgers.Endpoint ? QueryLedgers.Result :
-    T extends QueryOrders.Endpoint ? QueryOrders.Result :
-    T extends QueryTrades.Endpoint ? QueryTrades.Result :
-    T extends RemoveExport.Endpoint ? RemoveExport.Result<RemoveExport.CancelParams | RemoveExport.DeleteParams> :
-    T extends RetrieveExport.Endpoint ? RetrieveExport.Result :
-    T extends TradeBalance.Endpoint ? TradeBalance.Result :
-    T extends TradesHistory.Endpoint ? TradesHistory.Result :
-    T extends TradeVolume.Endpoint ? TradeVolume.Result :
-    T extends WalletTransfer.Endpoint ? WalletTransfer.Result :
-    T extends Withdraw.Endpoint ? Withdraw.Result :
-    T extends WithdrawCancel.Endpoint ? WithdrawCancel.Result :
-    T extends WithdrawInfo.Endpoint ? WithdrawInfo.Result :
-    T extends WithdrawStatus.Endpoint ? WithdrawStatus.Result : never;
+export type PrivateRestEndpoint =
+    'AddExport' |
+    'AddOrder' |
+    'AddOrderBatch' |
+    'Balance' | // no params
+    'BalanceEx' | // no params
+    'CancelAll' | // no params
+    'CancelAllOrdersAfter' |
+    'CancelOrder' |
+    'CancelOrderBatch' |
+    'ClosedOrders' |
+    'EditOrder' |
+    'ExportStatus' |
+    'GetWebSocketsToken' | // no params
+    'Ledgers' |
+    'OpenOrders' |
+    'OpenPositions' |
+    'QueryLedgers' |
+    'QueryOrders' |
+    'QueryTrades' |
+    'RemoveExport' |
+    'RetrieveExport' |
+    'TradeBalance' |
+    'TradesHistory' |
+    'TradeVolume';
 
-export type Response<T extends Endpoint> = RESTResponse<Result<T>>;
+/**
+ * @ignore
+ */
+export type PrivateRestParams<T extends PrivateRestEndpoint> =
+    T extends 'AddExport' ? AddExport.Params :
+    T extends 'AddOrder' ? AddOrder.Params :
+    T extends 'AddOrderBatch' ? AddOrderBatch.Params :
+    T extends 'CancelAllOrdersAfter' ? CancelAllOrdersAfter.Params :
+    T extends 'CancelOrder' ? CancelOrder.Params :
+    T extends 'CancelOrderBatch' ? CancelOrderBatch.Params :
+    T extends 'ClosedOrders' ? ClosedOrders.Params : // all optional
+    T extends 'EditOrder' ? EditOrder.Params :
+    T extends 'ExportStatus' ? ExportStatus.Params :
+    T extends 'Ledgers' ? Ledgers.Params : // all optional
+    T extends 'OpenOrders' ? OpenOrders.Params : // all optional
+    T extends 'OpenPositions' ? OpenPositions.Params : // all optional
+    T extends 'QueryLedgers' ? QueryLedgers.Params :
+    T extends 'QueryOrders' ? QueryOrders.Params :
+    T extends 'QueryTrades' ? QueryTrades.Params :
+    T extends 'RemoveExport' ? RemoveExport.Params :
+    T extends 'RetrieveExport' ? RetrieveExport.Params :
+    T extends 'TradeBalance' ? TradeBalance.Params : // all optional
+    T extends 'TradesHistory' ? TradesHistory.Params : // all optional
+    T extends 'TradeVolume' ? TradeVolume.Params : // all optional
+    never;
+
+export type PrivateRestRequest<T extends PrivateRestEndpoint> =
+    T extends 'Balance' |
+    'BalanceEx' |
+    'CancelAll' |
+    'GetWebSocketsToken' ? { // no params
+        url: T;
+        data?: never;
+    } : T extends 'ClosedOrders' |
+    'Ledgers' |
+    'OpenOrders' |
+    'OpenPositions' |
+    'TradeBalance' |
+    'TradesHistory' |
+    'TradeVolume' ? { // all optional
+        url: T;
+        data?: PrivateRestParams<T>;
+    } : { // mandatory params
+        url: T;
+        data: PrivateRestParams<T>;
+    };
+
+export type PrivateRestResult<T extends PrivateRestEndpoint> =
+    T extends 'AddExport' ? AddExport.Result :
+    T extends 'AddOrder' ? AddOrder.Result :
+    T extends 'AddOrderBatch' ? AddOrderBatch.Result :
+    T extends 'Balance' ? Balance.Result :
+    T extends 'BalanceEx' ? BalanceEx.Result :
+    T extends 'CancelAll' ? CancelAll.Result :
+    T extends 'CancelAllOrdersAfter' ? CancelAllOrdersAfter.Result :
+    T extends 'CancelOrder' ? CancelOrder.Result :
+    T extends 'CancelOrderBatch' ? CancelOrderBatch.Result :
+    T extends 'ClosedOrders' ? ClosedOrders.Result :
+    T extends 'EditOrder' ? EditOrder.Result :
+    T extends 'ExportStatus' ? ExportStatus.Result :
+    T extends 'GetWebSocketsToken' ? GetWebSocketsToken.Result :
+    T extends 'Ledgers' ? Ledgers.Result :
+    T extends 'OpenOrders' ? OpenOrders.Result :
+    T extends 'OpenPositions' ? OpenPositions.Result :
+    T extends 'QueryLedgers' ? QueryLedgers.Result :
+    T extends 'QueryOrders' ? QueryOrders.Result :
+    T extends 'QueryTrades' ? QueryTrades.Result :
+    T extends 'RemoveExport' ? RemoveExport.Result :
+    T extends 'RetrieveExport' ? RetrieveExport.Result :
+    T extends 'TradeBalance' ? TradeBalance.Result :
+    T extends 'TradesHistory' ? TradesHistory.Result :
+    T extends 'TradeVolume' ? TradeVolume.Result : never;
+
+/**
+ * @ignore
+ */
+export type PrivateRestResponse<T extends PrivateRestEndpoint> = RestResponse<PrivateRestResult<T>>;

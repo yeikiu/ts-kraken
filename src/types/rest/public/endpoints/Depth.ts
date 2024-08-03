@@ -1,15 +1,37 @@
-/* https://docs.kraken.com/rest/#operation/getOrderBook */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-order-book | Get Order Book}
+ * 
+ * @example
+ * ```ts 
+    import { publicRestRequest } from 'ts-kraken';
 
-export type Endpoint = 'Depth';
+    publicRestRequest({ url: 'Depth', params: { pair: 'BTCUSD'}})
+        .then(rawData => {
+            const [pairKey] = Object.keys(rawData);
+            const { asks, bids } = rawData[pairKey];
 
-export type Params = {
-    pair: string;
-    count?: number; // maximum number of asks/bids: 1 .. 500
-}
+            console.log({ asks, bids })
+        });
+ * ```
+ */
+export namespace Depth {
 
-export type Result = {
-    [pair: string]: {
-        asks: [string, string, number];
-        bids: [string, string, number];
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Depth';
+
+    /** {@inheritDoc Depth} */
+    export type Params = {
+        pair: string;
+        count?: number; // maximum number of asks/bids: 1 .. 500
+    }
+
+    /** {@inheritDoc Depth} */
+    export type Result = {
+        [pair: string]: {
+            asks: [string, string, number];
+            bids: [string, string, number];
+        }
     }
 }

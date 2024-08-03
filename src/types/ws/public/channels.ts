@@ -1,5 +1,0 @@
-export * as book from './channels/book'
-export * as ohlc from './channels/ohlc'
-export * as spread from './channels/spread'
-export * as ticker from './channels/ticker'
-export * as trade from './channels/trade'
