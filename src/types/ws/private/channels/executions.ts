@@ -51,6 +51,8 @@ export namespace Executions {
             cum_qty: number;
             effective_time: string;
             exec_id: string;
+            ext_ord_id: string;
+            ext_exec_id: string;
             exec_type: 'pending_new' | 'new' | 'trade' | 'filled' | 'canceled' | 'expired' | 'restated' | 'status';
             expire_time: string;
             fee_usd_equiv: number;
@@ -62,6 +64,8 @@ export namespace Executions {
             last_price: number;
             last_qty: number;
             limit_price: number;
+            margin: boolean;
+            margin_borrow: boolean;
             liquidity_ind: 'm' | 't';
             order_id: string;
             order_qty: number;
