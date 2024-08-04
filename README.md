@@ -90,7 +90,7 @@
 
 ### Use the library in your TypeScript/JS project:
 
-<details><summary>(click to extend 👇)</summary>
+<details open><summary>(click to extend 👇)</summary>
 
 > Get _IDE code-suggestions_ for any REST or WS request you need
 
