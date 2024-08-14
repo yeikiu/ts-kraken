@@ -190,7 +190,7 @@ myRepl.defineCommand('pubsub', {
         console.log({ channelName: channel, ...Object.keys(params).length ? { params } : {}, ...jqFilter ? { jqFilter } : {} });
         if (!fullMatch) { return console.error('\nParse error. Please verify params and jqFilterExpr format.'); }
 
-        print(`\nSubscribing to PUBLIC WebsocketV2 ${channel} stream...`);
+        print(`Subscribing to PUBLIC WebsocketV2 ${channel} stream...`);
         const subscription = publicWsSubscription({ channel, params } as any);
         const replSubscription = replSubscriptionHandler(subscription, channel, jqFilter, asTable);
         wsSubscriptions.set(channel, replSubscription);
@@ -223,7 +223,7 @@ myRepl.defineCommand('privsub', {
             else if (value?.trim().toLowerCase() === 'false') obj[key] = false;
         }
 
-        print(`\nSubscribing to PRIVATE WebsocketV2 ${channel} stream...`);
+        print(`Subscribing to PRIVATE WebsocketV2 ${channel} stream...`);
         const subscription = await privateWsSubscription(
             { channel, params } as any,
             { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET }
