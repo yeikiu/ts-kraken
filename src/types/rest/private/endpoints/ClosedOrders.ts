@@ -22,7 +22,7 @@ export type IRestClosedOrder = RestClosedOrder & { orderid: string; };
  * ```
  *
  * @remarks
- * ℹ️ _Tip:_ This library implements the helper method {@link PrivateRestHelpers.getClosedOrders} which outputs a nicer array of closed orders
+ * ℹ️ _Tip:_ This library implements the helper method {@link getClosedOrders} which outputs a nicer array of closed orders
  */
 export namespace ClosedOrders {
 

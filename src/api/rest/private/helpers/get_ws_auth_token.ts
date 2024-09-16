@@ -7,9 +7,9 @@ import { privateRestRequest } from '../private_rest_request';
  * 
  * @example
  * ```ts
-    import { PrivateRestHelpers, privateWsSubscription } from 'ts-kraken';
+    import { getWsAuthToken, privateWsSubscription } from 'ts-kraken';
 
-    PrivateRestHelpers.getWsAuthToken().then(async token => {
+    getWsAuthToken().then(async token => {
         console.log({ token })
 
         const balances$ = await privateWsSubscription({

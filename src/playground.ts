@@ -1,6 +1,6 @@
-import { PrivateRestHelpers, privateWsSubscription, publicWsSubscription } from '.';
+import { getWsAuthToken, privateWsSubscription, publicWsSubscription } from '.';
 
-PrivateRestHelpers.getWsAuthToken().then(async token => {
+getWsAuthToken().then(async token => {
     console.log({ token });
 
     const balances$ = await privateWsSubscription({

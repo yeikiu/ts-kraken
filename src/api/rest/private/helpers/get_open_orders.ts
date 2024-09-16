@@ -7,16 +7,16 @@ import { IRestOpenOrder, OpenOrders } from '../../../../types/rest/private/endpo
  * 
  * @example
  * ```ts
-    import { PrivateRestHelpers } from 'ts-kraken';
+    import { getOpenOrders } from 'ts-kraken';
 
-    PrivateRestHelpers.getOpenOrders()
+    getOpenOrders()
         .then(openOrdersArr => {
             const openOrdersIds = openOrdersArr.map(({ orderid }) => orderid);
             console.log({ openOrdersIds });
         });
  * ```
  */
-export const getOpenOrders = async (params?: OpenOrders.Params, injectedApiKeys?: ApiCredentials): Promise<IRestOpenOrder[]> => {
+export const getOpenOrders = async (params: OpenOrders.Params = {}, injectedApiKeys?: ApiCredentials): Promise<IRestOpenOrder[]> => {
     const { open } = await privateRestRequest({ url: 'OpenOrders', data: params }, injectedApiKeys);
     const openOrdersIds = Object.keys(open);
 

@@ -18,7 +18,7 @@
  * ```
  *   
  * @remarks
- * _Tip:_ This library implements the helper method {@link PublicRestHelpers.getTickersPrices} which outputs a nicer object format.
+ * _Tip:_ This library implements the helper method {@link getTickersPrices} which outputs a nicer object format.
  */
 export namespace Ticker {
 

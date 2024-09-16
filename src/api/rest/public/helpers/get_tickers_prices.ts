@@ -6,9 +6,9 @@ import { publicRestRequest } from '../public_rest_request';
  * 
  * @example
  * ```ts 
-    import { PublicRestHelpers } from 'ts-kraken';
+    import { getTickersPrices } from 'ts-kraken';
 
-    PublicRestHelpers.getTickersPrices('BTCUSD,ETHEUR')
+    getTickersPrices('BTCUSD,ETHEUR')
         .then(([btcUsdTicker, ethEurTicker]) => {
             const { price: btcUsdPrice } = btcUsdTicker;
             const { price: ethEurPrice } = ethEurTicker;

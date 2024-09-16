@@ -48,7 +48,7 @@ export type IRestOpenOrder = RestOpenOrder & { orderid: string; };
  * ```
  *
  * @remarks
- * _Tip:_ This library implements the helper method {@link PrivateRestHelpers.getOpenOrders} which outputs a nicer array of open orders
+ * _Tip:_ This library implements the helper method {@link getOpenOrders} which outputs a nicer array of open orders
  */
 export namespace OpenOrders {
 

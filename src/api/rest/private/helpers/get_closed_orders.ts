@@ -9,10 +9,10 @@ import { ApiCredentials } from '../../../../types/rest/private';
  * 
  * @example
  * ```ts
-    import { PrivateRestHelpers } from 'ts-kraken';
+    import { getClosedOrders } from 'ts-kraken';
 
     // Fetch latest closed orders and logs their IDs (skipping the last 50)
-    PrivateRestHelpers.getClosedOrders({
+    getClosedOrders({
         ofs: 50
     }).then(lastClosedOrdersArr => {
         const closedOrdersIds = lastClosedOrdersArr.map(({ orderid }) => orderid);
@@ -20,7 +20,7 @@ import { ApiCredentials } from '../../../../types/rest/private';
     });
  * ```
  */
-export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder[]> => {
+export const getClosedOrders = async (params: ClosedOrders.Params = {}, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder[]> => {
     const { closed } = await privateRestRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys);
     const closedOrdersIds = Object.keys(closed);
 
@@ -36,9 +36,9 @@ export const getClosedOrders = async (params?: ClosedOrders.Params, injectedApiK
  * 
  * @example
  * ```ts 
-    import { PrivateRestHelpers } from 'ts-kraken';
+    import { findClosedOrder } from 'ts-kraken';
 
-    PrivateRestHelpers.findClosedOrder({
+    findClosedOrder({
         orderFilter: ({ status }) => status === 'canceled'
     }).then(lastCanceledOrder => {
         console.log({ lastCanceledOrder });
