@@ -52,6 +52,8 @@ export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
     success: boolean;
     result: R;
     error: string;
+    // TODO: report M=`batch_cancel` is missing the `result` field in the response
+    orders_cancelled: any;
 };
 
 export type PrivateWsRequest =
