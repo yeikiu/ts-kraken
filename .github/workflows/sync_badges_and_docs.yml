@@ -15,7 +15,6 @@ jobs:
       - uses: actions/setup-node@v4
       
       - run: |
-          git pull -ff
           rm -rf .ci_badges
           npx setup-gh-badges
           npm i
@@ -29,7 +28,7 @@ jobs:
 
       - uses: ad-m/github-push-action@master
         with:
-          branch: master
+          branch: ${{ github.ref }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
       # - uses: actions/upload-artifact@v2
