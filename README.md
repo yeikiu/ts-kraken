@@ -67,7 +67,7 @@
 
   - Easily operate with Kraken [REST](https://docs.kraken.com/api/docs/category/rest-api/market-data) and [WebSocketV2](https://docs.kraken.com/websockets/) APIs
 
-  - Use [`ts-kraken` helper methods](https://yeikiu.github.io/ts-kraken/docs/functions/getClosedOrders.html) to build your own trading bots
+  - Use [`ts-kraken` helper methods](https://yeikiu.github.io/ts-kraken/functions/getClosedOrders.html) to build your own trading bots
 
   - Subscribe to custom streams of data combining the RxJS Observables returned by the WebsocketV2 methods
 
