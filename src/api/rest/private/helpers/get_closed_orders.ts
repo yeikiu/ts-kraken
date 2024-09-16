@@ -11,13 +11,14 @@ import { ApiCredentials } from '../../../../types/rest/private';
  * ```ts
     import { getClosedOrders } from 'ts-kraken';
 
-    // Fetch latest closed orders and logs their IDs (skipping the last 50)
-    getClosedOrders({
-        ofs: 50
-    }).then(lastClosedOrdersArr => {
-        const closedOrdersIds = lastClosedOrdersArr.map(({ orderid }) => orderid);
-        console.log({ closedOrdersIds });
-    });
+    // Fetch latest closed orders and logs them
+    getClosedOrders()
+        .then(lastClosedOrdersArr => {
+            const closedOrders = lastClosedOrdersArr
+                .map(({ orderid, descr: { order } }) => ({ orderid, order }));
+                
+            console.table(closedOrders);
+        });
  * ```
  */
 export const getClosedOrders = async (params: ClosedOrders.Params = {}, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder[]> => {
@@ -65,7 +66,7 @@ export const findClosedOrder = async ({
     const lastSuccessfullyClosedOrder = closedOrders
         .slice(0, maxOffset)
         .find(orderFilter);
-        
+
     if (lastSuccessfullyClosedOrder) {
         return lastSuccessfullyClosedOrder;
     }

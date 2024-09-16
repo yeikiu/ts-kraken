@@ -1,24 +1,34 @@
-import { getWsAuthToken, privateWsSubscription, publicWsSubscription } from '.';
+import { getWsAuthToken, getClosedOrders, privateWsSubscription, publicWsSubscription } from '.';
 
 getWsAuthToken().then(async token => {
     console.log({ token });
 
+    /* Fetch latest 50 closed orders and logs them */
+    getClosedOrders()
+        .then(lastClosedOrdersArr => {
+            const closedOrders = lastClosedOrdersArr
+                .map(({ orderid, descr: { order } }) => ({ orderid, order }));
+
+            console.table(closedOrders);
+        });
+
+
+    /* Print any updates in the private `balances` channel */
     const balances$ = await privateWsSubscription({
         channel: 'balances',
         params: { snapshot: true }
     }, token); // Pass token here to save time as the library won't need to fetch one internally!
 
-    // Print any updates in the private `balances` channel
     balances$.subscribe(({ data }) => {
         console.table(data);
     });
 
+    /* Track 5m candles updates */
     const fiveMinsBtcUsdCandles$ = publicWsSubscription({
         channel: 'ohlc',
         params: { symbol: ['BTC/USD'], interval: 5, snapshot: false }
     });
 
-    // Track 5m candles updates
     fiveMinsBtcUsdCandles$.subscribe(({ data: [{ open, high, low, close }] }) => {
         console.log({ open, high, low, close });
     });
