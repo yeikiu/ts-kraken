@@ -1,4 +1,4 @@
-import { getClosedOrders, getWsAuthToken, privateWsSubscription, publicWsSubscription } from '..';
+import { getClosedOrders, getWsAuthToken, privateWsSubscription } from '..';
 
 getWsAuthToken().then(async token => {
     console.log({ token });

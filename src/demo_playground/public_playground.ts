@@ -10,6 +10,6 @@ const runAsync = async () => {
     fiveMinsBtcUsdCandles$.subscribe(({ data: [{ open, high, low, close }] }) => {
         console.log({ open, high, low, close });
     });
-}
+};
 
 runAsync();
