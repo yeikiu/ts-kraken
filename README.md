@@ -29,8 +29,8 @@
 2.- _Optionally_ add `KRAKEN_API_KEY` and `KRAKEN_API_SECRET` to your .env (only
 if you intend to use private methods, i.e. add orders or fetch balances)
 
-3.- Find examples for the methods you need in
-[the documentation](https://yeikiu.github.io/ts-kraken)
+3.- Test the repl-cli with `npx ts-kraken` or find code-snippets examples for the methods you want to import in
+[the documentation](https://yeikiu.github.io/ts-kraken).
 
 ```ts
 import {
@@ -152,15 +152,10 @@ KRAKEN_API_SECRET=yourApiSecret
 #### Launch the REPL directly on your terminal with `npx`:
 
 > Quickest way to test it! 🚀 (will automatically download the library as a
-> global npm package)
+> global npm package if you don't run `npm i ts-kraken` first)
 
-`npx ts-kraken`
+- `npx ts-kraken`
 
-<br />
-
-#### Invoke the repl-cli after installing the dependency to your project's `node_modules`:
-
-`npx kraken-repl`
 
 <br />
 
@@ -168,13 +163,15 @@ KRAKEN_API_SECRET=yourApiSecret
 
 > Recommended if planning to use regularly and/or modify core functionality
 
-```
-git clone https://github.com/yeikiu/ts-kraken && cd ts-kraken && npm i
+- `git clone https://github.com/yeikiu/ts-kraken`
 
-npm run kraken-repl
-```
+- `cd ts-kraken`
 
-Open a PR with any addition/change proposal you have!
+- `npm i`
+
+- `npm run kraken-repl`
+
+> Open a PR with any addition/change proposal you have!
 
 ![ts_kraken_demo](.github/ts_kraken_demo.gif)
 
