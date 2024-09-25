@@ -2,6 +2,18 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v4.0.0
+
+    - #### features:
+        - Full support of WebsocketsV2
+        - Internal rewrite of core functions and types
+        - TypeDoc integration
+
+- ### v3.1.0
+
+    - #### features:
+        - Major refactor of private and public Rest methods
+
 - ### v3.0.24
 
     - #### features:

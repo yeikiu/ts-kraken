@@ -1,22 +1,51 @@
-import type { BaseSubscription } from '..'
+import { BaseSubscription, BaseUnsubscription } from '../../';
 
-export type Subscription = BaseSubscription & {
-    channelName: 'ticker';
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/websocket-v2/ticker | Ticker (Level 1)}
+ * 
+ * @example
+ * ```ts 
+    import { publicWsSubscription } from 'ts-kraken';
+
+    publicWsSubscription({ channel: 'ticker', params: { symbol: ['BTC/USD'] } })
+        .subscribe(({ data: [{ symbol, last }] }) => {
+            console.log({ symbol, last });
+        });
+ * ```
+ */
+export namespace Ticker {
+
+    /** {@inheritDoc Ticker} */
+    export type Subscription = BaseSubscription<{
+        channel: 'ticker';
+        snapshot?: boolean;
+        symbol: string[];
+        event_trigger?: 'bbo' | 'trades';
+    }>;
+
+    /** {@inheritDoc Ticker} */
+    export type Unsubscription = BaseUnsubscription<{
+        channel: 'ticker';
+        symbol: string[];
+    }>;
+
+    /** {@inheritDoc Ticker} */
+    export type Update = {
+        channel: 'ticker';
+        type: 'snapshot' | 'update';
+        data: [{
+            symbol: string;
+            ask: number;
+            ask_qty: number;
+            bid: number;
+            bid_qty: number;
+            change: number;
+            change_pct: number;
+            high: number;
+            last: number;
+            low: number;
+            volume: number;
+            vwap: number;
+        }];
+    };
 }
-
-export type Payload = [
-    number,
-    {
-        a: [string, number, string],
-        b: [string, number, string],
-        c: [string, string],
-        v: [string, string],
-        p: [string, string],
-        t: [number, number],
-        l: [string, string],
-        h: [string, string],
-        o: [string, string]
-    },
-    string,
-    string
-]

@@ -1,17 +1,53 @@
-import { RESTFeeTierInfo } from '../../responses_rest'
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-trade-volume | Get Trade Volume}
+ * 
+ * @example
+ * ```ts 
+    import { privateRestRequest } from 'ts-kraken';
 
-/* https://docs.kraken.com/rest/#operation/getTradeVolume */
+    privateRestRequest({
+        url: 'TradeVolume',
+        data: { pair: 'ADA/USD,ADA/EUR' }
+    }).then(({ fees, fees_maker }) => {
+        console.log({ fees, fees_maker });
+    });
+ * ```
+ */
+export namespace TradeVolume {
 
-export type Endpoint = 'TradeVolume';
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'TradeVolume';
 
-export type Params = {
-    pair?: string; //Comma delimited list of asset pairs to get fee info on (optional)
-    'fee-info'?: boolean;
-}
+    /** {@inheritDoc TradeVolume} */
+    export type Params = {
+        pair?: string; //Comma delimited list of asset pairs to get fee info on (optional)
+    }
 
-export type Result = {
-    currency: string;
-    volume: string;
-    fees: { [pair: string]: RESTFeeTierInfo };
-    fees_maker: { [pair: string]: RESTFeeTierInfo };
+    /** {@inheritDoc TradeVolume} */
+    export type Result = {
+        currency: string;
+        volume: string;
+        fees: {
+            [pair: string]: {
+                fee: string;
+                minfee: string;
+                maxfee: string;
+                nextfee: string;
+                nextvolume: string;
+                tiervolume: string;
+            }
+        };
+        fees_maker: {
+            [pair: string]: {
+                fee: string;
+                minfee: string;
+                maxfee: string;
+                nextfee: string;
+                nextvolume: string;
+                tiervolume: string;
+            }
+        };
+    }
 }

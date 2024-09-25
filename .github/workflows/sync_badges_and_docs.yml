@@ -1,0 +1,32 @@
+name: sync_badges_and_docs
+on:
+  push:
+    branches:
+     - master
+     - develop
+
+jobs:
+
+  sync_badges_and_docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+      
+      - run: |
+          rm -rf .ci_badges
+          npx setup-gh-badges
+          npm i
+          npx typedoc
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .ci_badges
+          git add docs
+          touch docs/.nojekyll
+          git commit -m "[CI:deploy] sync_badges_and_docs job"
+
+      - uses: ad-m/github-push-action@master
+        with:
+          branch: ${{ github.ref }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}

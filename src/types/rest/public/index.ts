@@ -1,41 +1,57 @@
-import { RESTResponse } from '../responses_rest';
+import { RestResponse } from '..';
 import { AssetPairs, Assets, Depth, OHLC, Spread, SystemStatus, Ticker, Time, Trades } from './endpoints';
 
-export type Endpoint = 
-    AssetPairs.Endpoint | 
-    Assets.Endpoint |
-    Depth.Endpoint | 
-    OHLC.Endpoint |
-    Spread.Endpoint |
-    SystemStatus.Endpoint |
-    Ticker.Endpoint | 
-    Time.Endpoint |
-    Trades.Endpoint;
+export * as PublicRestEndpoints from './endpoints';
 
-export type Params<T extends Endpoint> =
-    T extends AssetPairs.Endpoint ? AssetPairs.Params :
-    T extends Assets.Endpoint ? Assets.Params :
-    T extends Depth.Endpoint ? Depth.Params :
-    T extends OHLC.Endpoint ? OHLC.Params :
-    T extends Spread.Endpoint ? Spread.Params :
-    T extends Ticker.Endpoint ? Ticker.Params :
-    T extends Trades.Endpoint ? Trades.Params : never;
+export type PublicRestEndpoint =
+    'AssetPairs' |
+    'Assets' |
+    'Depth' |
+    'OHLC' |
+    'Spread' |
+    'SystemStatus' | // no params
+    'Ticker' |
+    'Time' | // no params
+    'Trades';
 
-export type Request<T extends Endpoint> = {
-    url: T;
-    method?: 'GET' | 'get';
-    params?: Params<T>;
-}
+/**
+ * @ignore
+ */
+export type PublicRestParams<T extends PublicRestEndpoint> =
+    T extends 'AssetPairs' ? AssetPairs.Params : // all optional
+    T extends 'Assets' ? Assets.Params :
+    T extends 'Depth' ? Depth.Params :
+    T extends 'OHLC' ? OHLC.Params :
+    T extends 'Spread' ? Spread.Params :
+    T extends 'Ticker' ? Ticker.Params : // all optional
+    T extends 'Trades' ? Trades.Params : never;
 
-export type Result<T extends Endpoint> =
-    T extends AssetPairs.Endpoint ? AssetPairs.Result : 
-    T extends Assets.Endpoint ? Assets.Result :
-    T extends Depth.Endpoint ? Depth.Result :
-    T extends OHLC.Endpoint ? OHLC.Result :
-    T extends Spread.Endpoint ? Spread.Result :
-    T extends SystemStatus.Endpoint ? SystemStatus.Result :
-    T extends Ticker.Endpoint ? Ticker.Result :
-    T extends Time.Endpoint ? Time.Result :
-    T extends Trades.Endpoint ? Trades.Result : never;
+export type PublicRestRequest<T extends PublicRestEndpoint> =
+    T extends 'SystemStatus' | // no params
+    'Time' ? {
+        url: T;
+        params?: never;
+    } : T extends 'AssetPairs' | // all optional
+    'Ticker' ? {
+        url: T;
+        params?: PublicRestParams<T>;
+    } : { // mandatory params
+        url: T;
+        params: PublicRestParams<T>;
+    };
 
-export type Response<T extends Endpoint> = RESTResponse<Result<T>>;
+export type PublicRestResult<T extends PublicRestEndpoint> =
+    T extends 'AssetPairs' ? AssetPairs.Result :
+    T extends 'Assets' ? Assets.Result :
+    T extends 'Depth' ? Depth.Result :
+    T extends 'OHLC' ? OHLC.Result :
+    T extends 'Spread' ? Spread.Result :
+    T extends 'SystemStatus' ? SystemStatus.Result :
+    T extends 'Ticker' ? Ticker.Result :
+    T extends 'Time' ? Time.Result :
+    T extends 'Trades' ? Trades.Result : never;
+
+/**
+ * @ignore
+ */
+export type PublicRestResponse<T extends PublicRestEndpoint> = RestResponse<PublicRestResult<T>>;

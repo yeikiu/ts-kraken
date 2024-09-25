@@ -1,9 +1,30 @@
-/* https://docs.kraken.com/rest/#operation/retrieveExport */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/retrieve-export | Retrieve Data Export}
+ * 
+ * @example
+ * ```ts 
+    import { privateRestRequest } from 'ts-kraken';
 
-export type Endpoint = 'RetrieveExport';
+    privateRestRequest({
+        url: 'RetrieveExport',
+        data: { id: 'YOUR_EXPORT_ID' }
+    }).then((binaryDataZip) => {
+        writeFileSync('export.zip',  binaryDataZip);
+    });
+ * ```
+ */
+export namespace RetrieveExport {
 
-export type Params = {
-    id: string;
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'RetrieveExport';
+
+    /** {@inheritDoc RetrieveExport} */
+    export type Params = {
+        id: string;
+    }
+
+    /** {@inheritDoc RetrieveExport} */
+    export type Result = DataView;
 }
-
-export type Result = BinaryData;

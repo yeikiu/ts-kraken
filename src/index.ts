@@ -1,28 +1,23 @@
-import { config } from 'dotenv'
-config()
+import { config } from 'dotenv';
 
-/* PUBLIC WS */
-export { getPublicSubscription, onPublicWSClosed, WSPublicHeartbeat$ } from './ws/public/public_ws_client'
+const { parsed, error: loadConfigError } = config();
 
-/* PUBLIC WS HELPERS */
-export { getSpreadStream, getTickerStream, getTradesStream, getBookStream, watchPairPrice } from './ws/public/helpers'
+if (loadConfigError) {
+    console.error({ loadConfigError });
+} else {
+    globalThis.env = {...parsed};
+}
 
-/* PRIVATE WS */
-export { getPrivateSubscription, onPrivateWSClosed, sendPrivateEvent, WSPrivateHeartbeat$ } from './ws/private/private_ws_client'
+/* Root named exports */
+export * from './api';
+export * from './types';
 
-/* PRIVATE WS HELPERS */
-export { getOpenOrdersStream } from './ws/private/helpers/get_open_orders_stream'
+/* Cherry-picked exports for most common methods */
+export { publicRestRequest } from './api/rest/public';
+export { privateRestRequest } from './api/rest/private';
 
-/* PUBLIC REST */
-export { publicRESTRequest } from './rest/public/public_rest_request'
+export { publicWsSubscription, publicWsRequest } from './api/ws/public/public_ws_client';
+export { privateWsSubscription, privateWsRequest } from './api/ws/private/private_ws_client';
 
-/* PUBLIC REST HELPERS */
-export { getTicker } from './rest/public/helpers/get_ticker'
-
-/* PRIVATE REST */
-export { privateRESTRequest } from './rest/private/private_rest_request'
-
-/* PRIVATE REST HELPERS */
-export { getClosedOrders, findClosedOrder, getOpenOrders, getPairBalances, getWsAuthToken } from './rest/private/helpers'
-
-export * from './types'
+export { getTickersPrices } from './api/rest/public/helpers/get_tickers_prices';
+export { getOpenOrders, getClosedOrders, findClosedOrder, getWsAuthToken } from './api/rest/private/helpers';

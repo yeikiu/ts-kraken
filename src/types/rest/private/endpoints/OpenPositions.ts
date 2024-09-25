@@ -1,31 +1,49 @@
-import type { IOrderSide, IOrderType } from '../../..'
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-open-positions | Get Open Positions}
+ * 
+ * @example
+ * ```ts 
+    import { privateRestRequest } from 'ts-kraken';
 
-/* https://docs.kraken.com/rest/#operation/getOpenPositions */
+    privateRestRequest({
+        url: 'OpenPositions',
+    }).then((openPositions) => {
+        console.log({ openPositions });
+    });
+ * ```
+ */
+export namespace OpenPositions {
 
-export type Endpoint = 'OpenPositions';
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'OpenPositions';
 
-export type Params = {
-    txid?: string;
-    docalcs?: boolean;
-    consolidation?: 'market'
+    /** {@inheritDoc OpenPositions} */
+    export type Params = {
+        txid?: string;
+        docalcs?: boolean;
+        consolidation?: 'market'
+    };
+
+    /** {@inheritDoc OpenPositions} */
+    export type Result = Record<string, {
+        ordertxid: string;
+        posstatus: 'open';
+        pair: string;
+        time: number;
+        type: 'buy' | 'sell';
+        ordertype: 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
+        cost: string;
+        fee: string;
+        vol: string;
+        vol_closed: string;
+        margin: string;
+        value: string; // Current value of remaining position (if docalcs requested)
+        net: string;
+        terms: string;
+        rollovertm: string;
+        misc: string;
+        oflags: string;
+    }>;
 }
-
-export type Result = {[txid: string]: {
-    ordertxid: string;
-    posstatus: 'open';
-    pair: string;
-    time: number;
-    type: IOrderSide;
-    ordertype: IOrderType;
-    cost: string;
-    fee: string; 
-    vol: string;
-    vol_closed: string;
-    margin: string;
-    value?: string; // Current value of remaining position (if docalcs requested)
-    net?: string;
-    terms?: string;
-    rollovertm: string;
-    misc?: string;
-    oflags?: string;
-}}

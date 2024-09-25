@@ -2,5 +2,5 @@
     "watch": ["src"],
     "ext": "ts",
     "ignore": [],
-    "exec": "ts-node src/test.ts"
+    "exec": "ts-node src/demo_playground/public_playground.ts"
 }

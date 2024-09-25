@@ -1,13 +1,39 @@
-/* https://docs.kraken.com/rest/#tag/Spot-Market-Data/operation/getTickerInformation */
+/**
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-ticker-information | Get Ticker Information}
+ * 
+ * @example
+ * ```ts 
+    import { publicRestRequest } from 'ts-kraken';
 
-export type Endpoint = 'Ticker';
+    publicRestRequest({
+        url: 'Ticker',
+        params: { pair: 'ETHEUR,BTCUSD' },
 
-export type Params = {
-    pair: string;
-}
+    }).then((btcAndEthTickers) => {
+        console.log({ btcAndEthTickers });
 
-export type Result = {
-    [pair: string]: {
+    }).catch(error => {
+        console.error({ error });
+    });
+ * ```
+ *   
+ * @remarks
+ * _Tip:_ This library implements the helper method {@link getTickersPrices} which outputs a nicer object format.
+ */
+export namespace Ticker {
+
+    /**
+     * @ignore
+     */
+    export type Endpoint = 'Ticker';
+
+    /** {@inheritDoc Ticker} */
+    export type Params = {
+        pair?: string;
+    }
+
+    /** {@inheritDoc Ticker} */
+    export type Result = Record<string, {
         a: string[];
         b: string[];
         c: string[];
@@ -17,5 +43,5 @@ export type Result = {
         l: string[];
         h: string[];
         o: string;
-    }
+    }>;
 }
