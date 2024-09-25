@@ -2,13 +2,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any,import/order */
 
 import { config } from 'dotenv';
-
-const { parsed, error: loadConfigError } = config();
-
-if (loadConfigError) {
-    console.error({ loadConfigError });
-} else {
-    globalThis.env = { ...parsed };
+try {
+    const { parsed, error: loadConfigError } = config();
+    
+    if (loadConfigError) {
+        console.warn('Remember you can set and .env file setting KRAKEN_API_KEY & KRAKEN_API_SECRET values in order to authenticate private requests');
+        globalThis.env = {};
+    } else {
+        globalThis.env = { ...parsed };
+    }    
+} catch {
+    globalThis.env = {};
 }
 
 import repl from 'repl';
@@ -20,7 +24,7 @@ import { RestClosedOrder } from '../types/rest/private/endpoints';
 import { findClosedOrder } from '../api/rest/private/helpers';
 import { privateRestRequest, privateWsSubscription, publicRestRequest, publicWsSubscription } from '..';
 
-let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = globalThis.env;
+let { KRAKEN_API_KEY = null, KRAKEN_API_SECRET = null } = globalThis.env;
 const wsSubscriptions: Map<string, Subscription> = new Map();
 const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/;
 
