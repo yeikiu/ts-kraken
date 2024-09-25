@@ -29,7 +29,7 @@ export namespace BatchCancel {
 
     /** {@inheritDoc BatchCancel} */
     export type Response = BasePrivateWsResponse<'batch_cancel', {
-        orders_cancelled: number; // TODO: reported this is documented as `count`
+        orders_cancelled: number; // TODO: report this is documented as `count`
         // warnings: string[];
     }>;
 }

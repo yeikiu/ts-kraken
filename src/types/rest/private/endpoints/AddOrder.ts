@@ -49,10 +49,7 @@ export namespace AddOrder {
             ordertype?: 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'trailing-stop' | 'trailing-stop-limit';
             price?: string;
             price2?: string;
-        } // TODO: review this: https://github.com/jpcx/node-kraken-api/blob/93c309c68ef6965de22f2ce7fae756f7b8abf709/index.ts#L1437
-        // 'close[ordertype]'?: 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'trailing-stop' | 'trailing-stop-limit';
-        // 'close[price]'?: string;
-        // 'close[price2]'?: string;
+        };
         deadline?: string;
         validate?: boolean;
     }

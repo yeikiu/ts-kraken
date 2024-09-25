@@ -24,10 +24,8 @@ let { KRAKEN_API_KEY, KRAKEN_API_SECRET } = globalThis.env;
 const wsSubscriptions: Map<string, Subscription> = new Map();
 const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/;
 
-// TODO: extract to util imports
 const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(purpleText(JSON.stringify(content, null, 4)));
 
-// TODO: extract to util imports
 const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: string, jqFilter?: string, asTable?: boolean): Subscription => wsSubscription
     .subscribe({
         next: async payload => {
