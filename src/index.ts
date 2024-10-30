@@ -8,11 +8,10 @@ if (loadConfigError) {
     globalThis.env = {...parsed};
 }
 
-/* Root named exports */
-export * from './api';
-export * from './types';
+/* Types exports */
+export type { PublicRestTypes, PrivateRestTypes, PublicWsTypes, PrivateWsTypes } from './types';
 
-/* Cherry-picked exports for most common methods */
+/* Cherry-picked exports for consumer methods */
 export { publicRestRequest } from './api/rest/public';
 export { privateRestRequest } from './api/rest/private';
 

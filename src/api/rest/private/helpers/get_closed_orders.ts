@@ -4,6 +4,17 @@ import { privateRestRequest } from '../private_rest_request';
 import { ClosedOrders, IRestClosedOrder } from '../../../../types/rest/private/endpoints';
 import { ApiCredentials } from '../../../../types/rest/private';
 
+const REST_ORDERS_LIMIT = 50;
+
+type IRestClosedOrdersParams = {
+    data?: ClosedOrders.Params;
+    extra?: {
+        closedBuffer?: ClosedOrders.Result['closed'];
+        numOrders?: number;
+    };
+    injectedApiKeys?: ApiCredentials
+};
+
 /**
  * Returns a nice array of latest closed orders. Helper method for: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | getClosedOrders}
  * 
@@ -21,12 +32,50 @@ import { ApiCredentials } from '../../../../types/rest/private';
         });
  * ```
  */
-export const getClosedOrders = async (params: ClosedOrders.Params = {}, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder[]> => {
-    const { closed } = await privateRestRequest({ url: 'ClosedOrders', data: params }, injectedApiKeys);
+export const getClosedOrders = async ({
+    data = {},
+    extra = {
+        numOrders: REST_ORDERS_LIMIT
+    },
+    injectedApiKeys,
+}: IRestClosedOrdersParams = {}): Promise<IRestClosedOrder[]> => {
+    const { closed = {} } = await privateRestRequest({ url: 'ClosedOrders', data }, injectedApiKeys);
+
     const closedOrdersIds = Object.keys(closed);
 
-    return closedOrdersIds.map(orderid => ({
-        ...closed[orderid],
+    const closedBufferOrdersIds = Object.keys(extra?.closedBuffer ?? {});
+    const mergedClosedOrdersIds = [...closedBufferOrdersIds, ...closedOrdersIds];
+
+    const mergedClosedOrders = {
+        ...extra?.closedBuffer ?? {},
+        ...closed
+    };
+
+    const ordersLimit = extra?.numOrders ?? REST_ORDERS_LIMIT;
+
+    if (
+        mergedClosedOrdersIds.length < ordersLimit &&
+        closedOrdersIds.length === REST_ORDERS_LIMIT
+    ) {
+        // Delay exec. 1.5 seconds to avoid rate limits
+        await lastValueFrom(timer(1500).pipe(take(1)));
+        const { ofs: lastOffset = 0 } = data ?? {};
+
+        return getClosedOrders({
+            data: {
+                ...data,
+                ofs: lastOffset + REST_ORDERS_LIMIT,
+            },
+            extra: {
+                ...extra,
+                closedBuffer: mergedClosedOrders,
+            },
+            injectedApiKeys
+        });
+    }
+
+    return mergedClosedOrdersIds.slice(0, ordersLimit).map(orderid => ({
+        ...mergedClosedOrders[orderid],
         orderid, // injected for improved response usability
     }));
 };
@@ -40,7 +89,8 @@ export const getClosedOrders = async (params: ClosedOrders.Params = {}, injected
     import { findClosedOrder } from 'ts-kraken';
 
     findClosedOrder({
-        orderFilter: ({ status }) => status === 'canceled'
+        restData: { extra: { numOrders: 50 } },
+        orderFilter: ({ userref }) => (userref?.toString() ?? '').startsWith('100033')
     }).then(lastCanceledOrder => {
         console.log({ lastCanceledOrder });
     });
@@ -50,34 +100,24 @@ export const getClosedOrders = async (params: ClosedOrders.Params = {}, injected
  * This method might run **extremely slow** for accounts with many past orders
  */
 export const findClosedOrder = async ({
-    orderFilter, maxOffset = 1000, data = {}
+    orderFilter,
+    restData = {
+        data: {},
+        extra: {},
+    }
 }: {
     orderFilter: (filterFields: Partial<IRestClosedOrder>) => boolean;
-    maxOffset?: number;
-    data?: ClosedOrders.Params
+    restData?: IRestClosedOrdersParams
+}): Promise<IRestClosedOrder> => {
 
-}, injectedApiKeys?: ApiCredentials): Promise<IRestClosedOrder> => {
-    if (data?.ofs >= maxOffset) {
-        console.error(`Order not found within the first ${maxOffset} results...`);
-        return null;
-    }
-
-    const closedOrders = await getClosedOrders(data);
+    const closedOrders = await getClosedOrders(restData);
     const lastSuccessfullyClosedOrder = closedOrders
-        .slice(0, maxOffset)
         .find(orderFilter);
 
     if (lastSuccessfullyClosedOrder) {
         return lastSuccessfullyClosedOrder;
     }
 
-    // Delay exec. 1.5 seconds to avoid rate limits
-    await lastValueFrom(timer(1500).pipe(take(1)));
-    const { ofs: lastOffset = 0 } = data ?? {};
-
-    return await findClosedOrder({
-        orderFilter,
-        maxOffset,
-        data: { ...data, ofs: closedOrders.length + lastOffset }
-    }, injectedApiKeys);
+    console.error(`Order not found within the first ${restData?.extra?.numOrders ?? REST_ORDERS_LIMIT} results...`);
+    return null;
 };

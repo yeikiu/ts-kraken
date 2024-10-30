@@ -20,8 +20,6 @@ import { parse } from 'qs'; /* https://stackoverflow.com/a/9547490 */
 import { Observable, Subscription } from 'rxjs';
 import { run } from 'node-jq';
 import { krakenHeader, purpleText } from './kraken_header';
-import { RestClosedOrder } from '../types/rest/private/endpoints';
-import { findClosedOrder } from '../api/rest/private/helpers';
 import { privateRestRequest, privateWsSubscription, publicRestRequest, publicWsSubscription } from '..';
 
 let { KRAKEN_API_KEY = null, KRAKEN_API_SECRET = null } = globalThis.env;
@@ -272,52 +270,6 @@ myRepl.defineCommand('unsuball', {
                 console.log(`\n${subscriptionName} unsubscribed!`);
             }
         });
-    }
-});
-
-myRepl.defineCommand('find', {
-    help: `👉 Finds the most recent closed order satisfying the filter within maxOffset range for given pair.
-                    
-            Usage   >> .find <pair>! <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory!)
-
-            i.e.    >> ${purpleText('.find ADAETH descr[type]=buy 500 .descr.order')}
-                    >> ${purpleText('.find BTCUSD descr[type]=sell 500 .descr.order')}
-`,
-
-    action: async (orderPairAndFilterStr: string) => {
-        const isSubset = (superObj, subObj) => {
-            return Object.keys(subObj).every(ele => {
-                if (typeof subObj[ele] === 'object') {
-                    return isSubset(superObj[ele], subObj[ele]);
-                }
-                return subObj[ele] === superObj[ele];
-            });
-        };
-
-        if (!KRAKEN_API_KEY || !KRAKEN_API_SECRET) {
-            return console.error('No API key/secret loaded!');
-        }
-
-        const [pairStr, orderFilterStr = '', maxOffset = 1000, jqFilter = ''] = orderPairAndFilterStr.split(' ').map((str) => str.trim());
-        const pair = pairStr.toUpperCase().replace('/', '');
-        const parsedFilter = parse(orderFilterStr ?? {});
-        const orderFilter: Partial<RestClosedOrder> = {
-            ...parsedFilter,
-            descr: { ...parsedFilter?.descr ?? {}, pair }
-        };
-        print({ orderFilter });
-        const matchingOrder = await findClosedOrder({
-            orderFilter: (o: Partial<RestClosedOrder>) => isSubset(o, orderFilter),
-            maxOffset: Number(maxOffset),
-        });
-
-        if (jqFilter) {
-            const jqPayload = await run(jqFilter, matchingOrder, { input: 'json', output: 'json' });
-            /* The `.payload|` jq prefix helps with a strange node-jq bug where arrays
-            are printed as text to console by default even with `output: 'json'` */
-            return print(jqPayload);
-        }
-        print({ matchingOrder });
     }
 });
 
