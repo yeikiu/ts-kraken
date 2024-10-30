@@ -191,12 +191,9 @@ KRAKEN_API_SECRET=yourApiSecret
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-.find       👉 Finds the most recent closed order satisfying the filter within maxOffset range for given pair.
+.help       👉 Print this help message
 
-            Usage   >> .find <pair>! <orderMatchFilter>! <maxOffset>! <jqFilter>! (all params are mandatory!)
-
-            i.e.    >> .find ADAETH descr[type]=buy 500 .descr.order
-                    >> .find BTCUSD descr[type]=sell 500 .descr.order
+-----------------------------------------------------------------------------------------------------------------------------------------------------
 
 .get        👉 Fetch PUBLIC REST data.
 
@@ -205,10 +202,6 @@ KRAKEN_API_SECRET=yourApiSecret
             i.e.    >> .get Time .rfc1123
                     >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table
                     >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}
-
------------------------------------------------------------------------------------------------------------------------------------------------------
-
-.help       👉 Print this help message
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------
 

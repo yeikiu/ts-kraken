@@ -1,17 +1,15 @@
-import { getClosedOrders, getWsAuthToken, privateWsSubscription } from '..';
+import { findClosedOrder, getWsAuthToken, privateWsSubscription } from '..';
 
 getWsAuthToken().then(async token => {
     console.log({ token });
 
-    /* Fetch latest 50 closed orders and logs them */
-    getClosedOrders()
-        .then(lastClosedOrdersArr => {
-            const closedOrders = lastClosedOrdersArr
-                .map(({ orderid, descr: { order } }) => ({ orderid, order }));
-
-            console.table(closedOrders);
-        });
-
+    /* Find the latest cancelled order */
+    findClosedOrder({
+        restData: { extra: { numOrders: 50 } },
+        orderFilter: ({ userref }) => (userref?.toString() ?? '').startsWith('100033')
+    }).then(lastCanceledOrder => {
+        console.log({ lastCanceledOrder });
+    });
 
     /* Print any updates in the private `balances` channel */
     const balances$ = await privateWsSubscription({
