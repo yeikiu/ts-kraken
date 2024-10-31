@@ -1,26 +1,31 @@
-import { findClosedOrder, getWsAuthToken, privateWsSubscription } from '..';
+import {
+  getClosedOrders,
+  getWsAuthToken,
+  privateWsSubscription,
+} from "..";
 
-getWsAuthToken().then(async token => {
-    console.log({ token });
+getWsAuthToken().then(async (token) => {
+  console.log({ token });
 
-    /* Find the latest cancelled order */
-    findClosedOrder({
-        restData: { extra: { numOrders: 50 } },
-        orderFilter: ({ userref }) => (userref?.toString() ?? '').startsWith('100033')
-    }).then(lastCanceledOrder => {
-        console.log({ lastCanceledOrder });
+  /* Fetch latest 50 closed orders and logs them */
+  getClosedOrders()
+    .then((lastClosedOrdersArr) => {
+      const closedOrders = lastClosedOrdersArr
+        .map(({ orderid, descr: { order } }) => ({ orderid, order }));
+
+      console.table(closedOrders);
     });
 
-    /* Print any updates in the private `balances` channel */
-    const balances$ = await privateWsSubscription({
-        channel: 'balances',
-        params: { snapshot: true }
-    }, token); // Pass token here to save time as the library won't need to fetch one internally!
+  /* Print any updates in the private `balances` channel */
+  const balances$ = await privateWsSubscription({
+    channel: "balances",
+    params: { snapshot: true },
+  }, token); // Pass token here to save time as the library won't need to fetch one internally!
 
-    balances$.subscribe(({ data }) => {
-        console.table(data);
-    });
+  balances$.subscribe(({ data }) => {
+    console.table(data);
+  });
 
-}).catch(error => {
-    console.log({ error });
+}).catch((error) => {
+  console.log({ error });
 });

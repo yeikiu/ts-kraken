@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "4.0.2",
+	"version": "4.0.3",
 	"description": "A strongly typed library to operate with the Kraken Crypto Exchange",
 	"keywords": [
 		"kraken",
