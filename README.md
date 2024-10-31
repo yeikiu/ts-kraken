@@ -130,7 +130,7 @@ getWsAuthToken()
 
 <img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
 
-<br />
+<br /><br />
 
 > Get _IDE code-suggestions_ for any REST or WS request you need
 
