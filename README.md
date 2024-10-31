@@ -126,13 +126,16 @@ getWsAuthToken()
 
 <details open><summary>(click to extend 👇)</summary>
 
-> Get _IDE code-suggestions_ for any REST or WS request you need
+- `cd dependant/project/path && npm i ts-kraken`
 
-`cd dependant/project/path && npm i ts-kraken`
+<img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
 
 <br />
 
-<video src=".github/ts_kraken_ide.mp4" style="width: 100%;" alt="ts_kraken_ide"></video>
+> Get _IDE code-suggestions_ for any REST or WS request you need
+
+<img src=".github/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
+
 </details>
 
 <br />
