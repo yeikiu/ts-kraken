@@ -1,6 +1,8 @@
-<img src=".ci_badges/npm-version-badge.svg" />
-<img src=".ci_badges/npm-dependencies-badge.svg" />
-<img src=".ci_badges/npm-devdependencies-badge.svg" />
+<div style="display: flex; justify-content: space-between;">
+  <img src=".ci_badges/npm-version-badge.svg" />
+  <img src=".ci_badges/npm-dependencies-badge.svg" />
+  <img src=".ci_badges/npm-devdependencies-badge.svg" />
+</div>
 
 <h1 align="center">
   <br>
@@ -24,55 +26,61 @@
 
 ## 🚀 Quick-Start
 
-1.- Add the dependency to your js/ts project: `npm i ts-kraken`
+- Add the dependency to your js/ts project: `npm i ts-kraken`
 
-2.- _Optionally_ add `KRAKEN_API_KEY` and `KRAKEN_API_SECRET` to your .env (only
-if you intend to use private methods, i.e. add orders or fetch balances)
+- _Optionally_ add `KRAKEN_API_KEY` and `KRAKEN_API_SECRET` to your .env (only if you intend to use private methods, i.e. add orders or fetch balances)
 
-3.- Test the repl-cli with `npx ts-kraken` or find code-snippets examples for the methods you want to import in
-[the documentation](https://yeikiu.github.io/ts-kraken).
+- Test the repl-cli with `npx ts-kraken` or find code-snippets examples for the methods you want to import in [the documentation](https://yeikiu.github.io/ts-kraken).
 
 ```ts
 import {
+  getClosedOrders,
   getWsAuthToken,
   privateWsSubscription,
-  publicWsSubscription,
-} from "ts-kraken";
+  publicWsSubscription
+} from 'ts-kraken'
 
-getWsAuthToken().then(async (token) => {
-  console.log({ token });
+getWsAuthToken()
+  .then(async token => {
+    console.log({ token })
 
-  /* Fetch latest 50 closed orders and logs them */
-  getClosedOrders()
-    .then((lastClosedOrdersArr) => {
-      const closedOrders = lastClosedOrdersArr
-        .map(({ orderid, descr: { order } }) => ({ orderid, order }));
+    /* Fetch latest 50 closed orders and logs them */
+    getClosedOrders().then(lastClosedOrdersArr => {
+      const closedOrders = lastClosedOrdersArr.map(
+        ({ orderid, descr: { order } }) => ({ orderid, order })
+      )
 
-      console.table(closedOrders);
-    });
+      console.table(closedOrders)
+    })
 
-  /* Print any updates in the private `balances` channel */
-  const balances$ = await privateWsSubscription({
-    channel: "balances",
-    params: { snapshot: true },
-  }, token); // Pass token here to save time as the library won't need to fetch one internally!
+    /* Print any updates in the private `balances` channel */
+    const balances$ = await privateWsSubscription(
+      {
+        channel: 'balances',
+        params: { snapshot: true }
+      },
+      token
+    ) // Pass token here to save time as the library won't need to fetch one internally!
 
-  balances$.subscribe(({ data }) => {
-    console.table(data);
-  });
+    balances$.subscribe(({ data }) => {
+      console.table(data)
+    })
 
-  /* Track 5m candles updates */
-  const fiveMinsBtcUsdCandles$ = publicWsSubscription({
-    channel: "ohlc",
-    params: { symbol: ["BTC/USD"], interval: 5, snapshot: false },
-  });
+    /* Track 5m candles updates */
+    const fiveMinsBtcUsdCandles$ = publicWsSubscription({
+      channel: 'ohlc',
+      params: { symbol: ['BTC/USD'], interval: 5, snapshot: false }
+    })
 
-  fiveMinsBtcUsdCandles$.subscribe(({ data: [{ open, high, low, close }] }) => {
-    console.log({ open, high, low, close });
-  });
-}).catch((error) => {
-  console.log({ error });
-});
+    fiveMinsBtcUsdCandles$.subscribe(
+      ({ data: [{ open, high, low, close }] }) => {
+        console.log({ open, high, low, close })
+      }
+    )
+  })
+  .catch(error => {
+    console.log({ error })
+  })
 ```
 
 <br /><br />
@@ -124,7 +132,7 @@ getWsAuthToken().then(async (token) => {
 
 <br />
 
-<img src=".github/ts_kraken_ide.gif" width="640px" alt="ts_kraken_ide" />
+<video src=".github/ts_kraken_ide.mp4" style="width: 100%;" alt="ts_kraken_ide"></video>
 </details>
 
 <br />
@@ -155,7 +163,6 @@ KRAKEN_API_SECRET=yourApiSecret
 > global npm package if you don't run `npm i ts-kraken` first)
 
 - `npx ts-kraken`
-
 
 <br />
 
