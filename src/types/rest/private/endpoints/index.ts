@@ -2,6 +2,7 @@
 export * from './AddExport';
 export * from './AddOrder';
 export * from './AddOrderBatch';
+export * from './AmendOrder';
 export * from './EditOrder';
 export * from './Balance';
 export * from './BalanceEx';
