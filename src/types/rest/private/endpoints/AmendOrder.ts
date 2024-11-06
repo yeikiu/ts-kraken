@@ -8,10 +8,11 @@
     privateRestRequest({
         url: 'AmendOrder',
         data: { 
-            ...// TODO demo
+            txid: 'YOUR-ORDER-ID',
+            limit_price: '670000'
         }
-    }).then(({ txid, descr: { order }}) => {
-        console.log({ txid, order });
+    }).then(({ amend_id }) => {
+        console.log({ amend_id });
     });
  * ```
  */
@@ -34,7 +35,7 @@ export namespace AmendOrder {
         deadline?: string;
     }
 
-    /** {@inheritDoc AddOrder} */
+    /** {@inheritDoc AmendOrder} */
     export type Result = {
         amend_id: string;
     }
