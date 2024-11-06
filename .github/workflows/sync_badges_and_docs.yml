@@ -22,7 +22,7 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add .ci_badges
-          git add docs
+          git add docs --gitRevision ${{ github.ref }}
           touch docs/.nojekyll
           git commit -m "[CI:deploy] sync_badges_and_docs job"
 
