@@ -1,5 +1,6 @@
 import { RestResponse } from '..';
 import { AddExport, AddOrder, AddOrderBatch, Balance, BalanceEx, CancelAll, CancelAllOrdersAfter, CancelOrder, CancelOrderBatch, ClosedOrders, EditOrder, ExportStatus, GetWebSocketsToken, Ledgers, OpenOrders, OpenPositions, QueryLedgers, QueryOrders, QueryTrades, RemoveExport, RetrieveExport, TradeBalance, TradeVolume, TradesHistory } from './endpoints';
+import { AmendOrder } from './endpoints/AmendOrder';
 
 export * as PrivateEndpoints from './endpoints';
 
@@ -14,6 +15,7 @@ export type PrivateRestEndpoint =
     'AddExport' |
     'AddOrder' |
     'AddOrderBatch' |
+    'AmendOrder' |
     'Balance' | // no params
     'BalanceEx' | // no params
     'CancelAll' | // no params
@@ -43,6 +45,7 @@ export type PrivateRestParams<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Params :
     T extends 'AddOrder' ? AddOrder.Params :
     T extends 'AddOrderBatch' ? AddOrderBatch.Params :
+    T extends 'AmendOrder' ? AmendOrder.Params :
     T extends 'CancelAllOrdersAfter' ? CancelAllOrdersAfter.Params :
     T extends 'CancelOrder' ? CancelOrder.Params :
     T extends 'CancelOrderBatch' ? CancelOrderBatch.Params :
@@ -69,7 +72,8 @@ export type PrivateRestRequest<T extends PrivateRestEndpoint> =
     'GetWebSocketsToken' ? { // no params
         url: T;
         data?: never;
-    } : T extends 'ClosedOrders' |
+    } : T extends 'AmendOrder' |
+    'ClosedOrders' |
     'Ledgers' |
     'OpenOrders' |
     'OpenPositions' |
@@ -87,6 +91,7 @@ export type PrivateRestResult<T extends PrivateRestEndpoint> =
     T extends 'AddExport' ? AddExport.Result :
     T extends 'AddOrder' ? AddOrder.Result :
     T extends 'AddOrderBatch' ? AddOrderBatch.Result :
+    T extends 'AmendOrder' ? AmendOrder.Result :
     T extends 'Balance' ? Balance.Result :
     T extends 'BalanceEx' ? BalanceEx.Result :
     T extends 'CancelAll' ? CancelAll.Result :

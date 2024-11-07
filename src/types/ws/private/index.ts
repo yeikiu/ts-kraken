@@ -2,6 +2,7 @@ import { Balances } from './channels/balances';
 import { Executions } from './channels/executions';
 import { Orders } from './channels/orders';
 import { AddOrder } from './requests/add_order';
+import { AmendOrder } from './requests/amend_order';
 import { BatchAdd } from './requests/batch_add';
 import { BatchCancel } from './requests/batch_cancel';
 import { CancelAll } from './requests/cancel_all';
@@ -20,6 +21,7 @@ export * as PrivateRequests from './requests';
  */
 export type PrivateWsMethod =
     'add_order' |
+    'amend_order' |
     'batch_add' |
     'batch_cancel' |
     'cancel_all_orders_after' | 
@@ -58,6 +60,7 @@ export type BasePrivateWsResponse<M extends PrivateWsMethod, R> = {
 
 export type PrivateWsRequest =
     AddOrder.Request |
+    AmendOrder.Request |
     EditOrder.Request |
     CancelOrder.Request |
     CancelAll.Request |
@@ -67,6 +70,7 @@ export type PrivateWsRequest =
 
 export type PrivateWsResponse<T extends PrivateWsRequest> =
     T extends AddOrder.Request ? AddOrder.Response :
+    T extends AmendOrder.Request ? AmendOrder.Response :
     T extends EditOrder.Request ? EditOrder.Response :
     T extends CancelOrder.Request ? CancelOrder.Response :
     T extends CancelAll.Request ? CancelAll.Response :

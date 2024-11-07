@@ -8,7 +8,7 @@ const runAsync = async () => {
     console.table(pairKeys.map(pair => {
         const { wsname, tick_size, pair_decimals, ordermin } = assets[pair];
         return { wsname, tick_size, pair_decimals, ordermin };
-    }))
+    }));
 
     /* Track 5m candles updates */
     const fiveMinsBtcUsdCandles$ = publicWsSubscription({
