@@ -9,7 +9,7 @@
         url: 'AmendOrder',
         data: { 
             txid: 'YOUR-ORDER-ID',
-            limit_price: '670000'
+            order_qty: '0.14499992'
         }
     }).then(({ amend_id }) => {
         console.log({ amend_id });

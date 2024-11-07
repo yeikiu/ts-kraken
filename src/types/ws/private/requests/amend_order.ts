@@ -11,7 +11,7 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
         method: 'amend_order',
         params: {
             order_id: 'YOUR-ORDER-ID',
-            limit_price: 50500,
+            order_qty: '0.14499992'
         }
 
     }).then(({ amend_id, order_id, warnings }) => {
