@@ -15,10 +15,15 @@ import { publicRestRequest } from '../public_rest_request';
 
             console.log({ btcUsdPrice, ethEurPrice });
         });
+
+    getTickersPrices()
+        .then(allPairsTickers => {
+            console.table(allPairsTickers);
+        });
  * ```
  */
-export const getTickersPrices = async (pair: string) => {
-    const result = await publicRestRequest({ url: 'Ticker', params: { pair } });
+export const getTickersPrices = async (pairs?: string) => {
+    const result = await publicRestRequest({ url: 'Ticker', params: { pair: pairs } });
 
     return Object.keys(result).map(pairKey => {
         const rawKrakenPayload = result[pairKey];
