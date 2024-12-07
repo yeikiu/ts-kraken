@@ -103,7 +103,7 @@ myRepl.defineCommand('get', {
 
             i.e.    >> ${purpleText('.get Time .rfc1123')}
                     >> ${purpleText('.get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table')}
-                    >> ${purpleText('.get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}')}
+                    >> ${purpleText('.get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,lot_decimals,pair_decimals,cost_decimals,ordermin}')}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
 
