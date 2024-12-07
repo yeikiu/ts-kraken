@@ -1,4 +1,4 @@
-import { publicRestRequest, publicWsSubscription } from '..';
+import { getTickersPrices, publicRestRequest, publicWsSubscription } from '..';
 
 const runAsync = async () => {
 
@@ -19,6 +19,12 @@ const runAsync = async () => {
     fiveMinsBtcUsdCandles$.subscribe(({ data: [{ open, high, low, close }] }) => {
         console.log({ open, high, low, close });
     });
+
+    const [{ price: btcUsdPrice }, { price: ethEurPrice }] = await getTickersPrices('BTCUSD,ETHEUR');
+    console.log({ btcUsdPrice, ethEurPrice });
+
+    const allPairsTickers = await getTickersPrices();
+    console.table(allPairsTickers);
 };
 
 runAsync();

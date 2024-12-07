@@ -2,6 +2,16 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v4.0.5
+
+    - #### hotfix:
+        - Fixed `getTickersPrices` helper method: The `pairs` param is optional now. Not passing it will default to all pairs available. 
+
+- ### v4.0.4
+
+    - #### features:
+        - Added support for `AmendOrder` under REST and WS2 apis.
+
 - ### v4.0.0
 
     - #### features:
