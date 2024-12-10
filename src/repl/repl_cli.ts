@@ -19,8 +19,9 @@ import repl from 'repl';
 import { parse } from 'qs'; /* https://stackoverflow.com/a/9547490 */
 import { Observable, Subscription } from 'rxjs';
 import { run } from 'node-jq';
-import { krakenHeader, purpleText } from './kraken_header';
+import { JsonInput } from 'node-jq/lib/options';
 import { privateRestRequest, privateWsSubscription, publicRestRequest, publicWsSubscription } from '..';
+import { krakenHeader, purpleText } from './kraken_header';
 
 let { KRAKEN_API_KEY = null, KRAKEN_API_SECRET = null } = globalThis.env;
 const wsSubscriptions: Map<string, Subscription> = new Map();
@@ -28,11 +29,11 @@ const cmdRegExp = /\s*?(\S+)(?:\s+?(&?\S+=\S+)+)?(?:\s+(.+))?/;
 
 const print = (content: unknown, asTable = false): void => asTable ? console.table(content) : console.log(purpleText(JSON.stringify(content, null, 4)));
 
-const replSubscriptionHandler = (wsSubscription: Observable<any>, channelName: string, jqFilter?: string, asTable?: boolean): Subscription => wsSubscription
+const replSubscriptionHandler = (wsSubscription: Observable<unknown>, channelName: string, jqFilter?: string, asTable?: boolean): Subscription => wsSubscription
     .subscribe({
         next: async payload => {
             if (jqFilter) {
-                const jqPayload = await run(`.payload|${jqFilter}`, { payload }, { input: 'json', output: 'json' });
+                const jqPayload = await run(`.payload|${jqFilter}`, { payload } as JsonInput, { input: 'json', output: 'json' });
                 /* The `.payload|` jq prefix helps with a strange node-jq bug where arrays
                 are printed as text to console by default even with `output: 'json'` */
                 return print(jqPayload, asTable);
@@ -65,7 +66,7 @@ console.log(purpleText(krakenHeader));
 const myRepl = repl.start(purpleText('kraken-repl >> '));
 
 // Modify core methods (bit hacky, these are readonly)
-['save', 'load', 'editor', 'clear', 'break'].forEach(c => delete (myRepl.commands as any)[c]);
+['save', 'load', 'editor', 'clear', 'break'].forEach(c => delete (myRepl.commands as unknown)[c]);
 const coreMethods = Object.keys(myRepl.commands);
 const editedCoreMethods = coreMethods.reduce((p, c) => ({
     ...p,
@@ -158,7 +159,7 @@ myRepl.defineCommand('post', {
         try {
             const response = await privateRestRequest({ url: endpoint, data } as any, { apiKey: KRAKEN_API_KEY, apiSecret: KRAKEN_API_SECRET });
             if (jqFilter) {
-                const jqResponse = await run(jqFilter, response, { input: 'json', output: 'json' });
+                const jqResponse = await run(jqFilter, response as JsonInput, { input: 'json', output: 'json' });
                 print(jqResponse, asTable);
                 return console.log('\nPress Return to continue or Control+C to exit...');
             }

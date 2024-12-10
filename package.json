@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "4.0.6",
+	"version": "4.0.7",
 	"description": "A strongly typed library to operate with the Kraken Crypto Exchange",
 	"keywords": [
 		"kraken",
@@ -55,7 +55,7 @@
 		"axios": "^1.1.3",
 		"chalk": "^4.1.2",
 		"dotenv": "^16.0.3",
-		"node-jq": "^4.2.2",
+		"node-jq": "^6.0.1",
 		"qs": "^6.11.0",
 		"rxjs": "^7.8.1",
 		"ws": "^8.10.0"
