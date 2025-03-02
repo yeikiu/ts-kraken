@@ -51,20 +51,21 @@ const publicWsClient = webSocket({
  * 
  * @example
  * ```ts
-    import { PublicWs } from 'ts-kraken';
+    import { publicWsHeartbeat$ } from 'ts-kraken';
 
-    let lastHeartbeatTs: number = null;
-    const maxSecondsWithoutHeartbeat = 10;
-    PublicWs.heartbeat$.subscribe(() => {
-        const now = new Date().getTime();
-        if (lastHeartbeatTs) {
-            const diff = (now - lastHeartbeatTs) / 1000;
-            if (diff > maxSecondsWithoutHeartbeat) {
-                throw `heartbeat timed out after ${maxSecondsWithoutHeartbeat} seconds`;
-            }
-        }
-        lastHeartbeatTs = now;
+    let lastHeartbeatTs = new Date().getTime();
+    publicWsHeartbeat$.subscribe(() => {
+        lastHeartbeatTs = new Date().getTime();
     });
+
+    const maxSecondsWithoutHeartbeat = 30;
+    setInterval(() => {
+        const now = new Date().getTime();
+        const diff = Math.ceil((now - lastHeartbeatTs) / 1000);
+        if (diff >= maxSecondsWithoutHeartbeat) {
+            throw `Error: No heartbeat in the last ${diff} seconds`;
+        }
+    }, maxSecondsWithoutHeartbeat * 1000);
 * ```
 */
 export const heartbeat$: Observable<Heartbeat.Update> = publicWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
