@@ -86,7 +86,7 @@ getWsAuthToken()
 
 </details>
 
-<br />
+<br /><br />
 
 ## ℹ️ About this project 
 <details><summary>(click to extend 👇)</summary>
@@ -123,9 +123,29 @@ getWsAuthToken()
   subscriptions
 </details>
 
-<br />
+<br /><br />
 
 ## 🛠️ Usage 
+<details><summary>(click to extend 👇)</summary>
+
+### Use the library in your TypeScript/JS project:
+<details open><summary>(click to extend 👇)</summary>
+
+- `cd dependant/project/path && npm i ts-kraken`
+
+<img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
+
+<br /><br />
+
+> Get _IDE code-suggestions_ for any REST or WS request you need
+
+<img src=".github/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
+
+</details>
+
+<br />
+
+### Use the REPL-cli
 <details><summary>(click to extend 👇)</summary>
 
   <br />
@@ -175,9 +195,8 @@ getWsAuthToken()
 
   <br />
 
-  ##### Set it up in a standalone directory:
-
-  > Recommended if planning to use regularly and/or modify core functionality
+#### REPL commands
+<details><summary>(click to extend 👇)</summary>
 
   - `git clone https://github.com/yeikiu/ts-kraken`
 
@@ -267,7 +286,9 @@ getWsAuthToken()
 </details>
 </details>
 
-<br />
+</details>
+
+<br /><br />
 
 ## 🔖 Documentation
 
