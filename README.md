@@ -128,7 +128,7 @@ getWsAuthToken()
 ## 🛠️ Usage 
 <details><summary>(click to extend 👇)</summary>
 
-### Use the library in your TypeScript/JS project:
+#### Use the library in your TypeScript/JS project:
 <details open><summary>(click to extend 👇)</summary>
 
 - `cd dependant/project/path && npm i ts-kraken`
@@ -145,7 +145,7 @@ getWsAuthToken()
 
 <br />
 
-### Use the REPL-cli
+#### Use the REPL-cli
 <details><summary>(click to extend 👇)</summary>
 
 > You can create a `.env` file that the repl-cli will try to read from `cwd`
