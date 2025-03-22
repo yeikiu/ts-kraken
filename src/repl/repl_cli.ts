@@ -140,6 +140,7 @@ myRepl.defineCommand('post', {
             i.e.    >> ${purpleText('.post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)')}
                     >> ${purpleText('.post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table')}
                     >> ${purpleText('.post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR')}
+                    >> ${purpleText('.post BalanceEx [.ZEUR.balance,.ZEUR.hold_trade]|map_values(tonumber)|.[0]-.[1]')}
                     >> ${purpleText('.post CancelAll')}
 
 -----------------------------------------------------------------------------------------------------------------------------------------------------\n`,
