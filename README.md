@@ -22,7 +22,7 @@
   <a href="#-acknowledgments">Acknowledgments</a>
 </p>
 
-<br /><br />
+<br />
 
 ## 🚀 Quick-Start
 <details><summary>(click to extend 👇)</summary>
@@ -86,7 +86,7 @@ getWsAuthToken()
 
 </details>
 
-<br /><br />
+<br />
 
 ## ℹ️ About this project 
 <details><summary>(click to extend 👇)</summary>
@@ -123,7 +123,7 @@ getWsAuthToken()
   subscriptions
 </details>
 
-<br /><br />
+<br />
 
 ## 🛠️ Usage 
 <details><summary>(click to extend 👇)</summary>
@@ -135,7 +135,7 @@ getWsAuthToken()
 
 <img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
 
-<br /><br />
+<br />
 
 > Get _IDE code-suggestions_ for any REST or WS request you need
 
@@ -266,7 +266,7 @@ KRAKEN_API_SECRET=yourApiSecret
 
 </details>
 
-<br /><br />
+<br />
 
 ## 🔖 Documentation
 
@@ -278,7 +278,7 @@ KRAKEN_API_SECRET=yourApiSecret
 - [jq Manual](https://stedolan.github.io/jq/manual)
 - [jq Playground](https://jqkungfu.com/)
 
-<br /><br />
+<br />
 
 ## 🙏 Acknowledgments
 
