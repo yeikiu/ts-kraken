@@ -128,6 +128,8 @@ getWsAuthToken()
 ## 🛠️ Usage 
 <details><summary>(click to extend 👇)</summary>
 
+  <br />
+
   #### Use the library in your TypeScript/JS project:
   <details open><summary>(click to extend 👇)</summary>
 
@@ -141,8 +143,10 @@ getWsAuthToken()
 
   <img src=".github/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
 
-</details>
+  </details>
 
+  <br />
+  
   #### Use the REPL-cli
   <details><summary>(click to extend 👇)</summary>
 
