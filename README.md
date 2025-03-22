@@ -25,6 +25,7 @@
 <br /><br />
 
 ## 🚀 Quick-Start
+<details><summary>(click to extend 👇)</summary>
 
 - Add the dependency to your js/ts project: `npm i ts-kraken`
 
@@ -83,9 +84,12 @@ getWsAuthToken()
   })
 ```
 
+</details>
+
 <br /><br />
 
-## ℹ️ About this project
+## ℹ️ About this project 
+<details><summary>(click to extend 👇)</summary>
 
 > **ts-kraken** is a **strongly-typed** _Typescript Library_ that will help you
 > operating via code or shell with
@@ -117,13 +121,14 @@ getWsAuthToken()
 
 - Print nicely formatted data updates coming directly from WebsocketV2
   subscriptions
+</details>
 
 <br /><br />
 
-## 🛠️ Usage
+## 🛠️ Usage 
+<details><summary>(click to extend 👇)</summary>
 
 ### Use the library in your TypeScript/JS project:
-
 <details open><summary>(click to extend 👇)</summary>
 
 - `cd dependant/project/path && npm i ts-kraken`
@@ -141,7 +146,6 @@ getWsAuthToken()
 <br />
 
 ### Use the REPL-cli
-
 <details><summary>(click to extend 👇)</summary>
 
 > You can create a `.env` file that the repl-cli will try to read from `cwd`
@@ -188,7 +192,6 @@ KRAKEN_API_SECRET=yourApiSecret
 <br />
 
 #### REPL commands
-
 <details><summary>(click to extend 👇)</summary>
 
 > The following list includes only a subset sample of all possible commands you
@@ -259,6 +262,8 @@ KRAKEN_API_SECRET=yourApiSecret
 ```
 
 </details>
+</details>
+
 </details>
 
 <br /><br />
