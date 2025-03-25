@@ -22,9 +22,10 @@
   <a href="#-acknowledgments">Acknowledgments</a>
 </p>
 
-<br /><br />
+<br />
 
 ## 🚀 Quick-Start
+<details><summary>(click to extend 👇)</summary>
 
 - Add the dependency to your js/ts project: `npm i ts-kraken`
 
@@ -83,9 +84,12 @@ getWsAuthToken()
   })
 ```
 
-<br /><br />
+</details>
 
-## ℹ️ About this project
+<br />
+
+## ℹ️ About this project 
+<details><summary>(click to extend 👇)</summary>
 
 > **ts-kraken** is a **strongly-typed** _Typescript Library_ that will help you
 > operating via code or shell with
@@ -117,151 +121,153 @@ getWsAuthToken()
 
 - Print nicely formatted data updates coming directly from WebsocketV2
   subscriptions
-
-<br /><br />
-
-## 🛠️ Usage
-
-### Use the library in your TypeScript/JS project:
-
-<details open><summary>(click to extend 👇)</summary>
-
-- `cd dependant/project/path && npm i ts-kraken`
-
-<img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
-
-<br /><br />
-
-> Get _IDE code-suggestions_ for any REST or WS request you need
-
-<img src=".github/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
-
 </details>
 
 <br />
 
-### Use the REPL-cli
-
+## 🛠️ Usage 
 <details><summary>(click to extend 👇)</summary>
 
-> You can create a `.env` file that the repl-cli will try to read from `cwd`
-> (current working directory):
+  <br />
 
-- `touch .env`
+  #### Use the library in your TypeScript/JS project:
+  <details open><summary>(click to extend 👇)</summary>
 
-Use the following format:
+  - `cd dependant/project/path && npm i ts-kraken`
 
-```
-# .env's file content holding your API key/secret
+  <img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
 
-KRAKEN_API_KEY=yourApiKey
-KRAKEN_API_SECRET=yourApiSecret
-```
+  <br />
 
-<br />
+  > Get _IDE code-suggestions_ for any REST or WS request you need
 
-#### Launch the REPL directly on your terminal with `npx`:
+  <img src=".github/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
 
-> Quickest way to test it! 🚀 (will automatically download the library as a
-> global npm package if you don't run `npm i ts-kraken` first)
+  </details>
 
-- `npx ts-kraken`
+  <br />
+  
+  #### Use the REPL-cli
+  <details><summary>(click to extend 👇)</summary>
 
-<br />
+  > You can create a `.env` file that the repl-cli will try to read from `cwd`
+  > (current working directory):
 
-#### Set it up in a standalone directory:
+  - `touch .env`
 
-> Recommended if planning to use regularly and/or modify core functionality
+  Use the following format:
 
-- `git clone https://github.com/yeikiu/ts-kraken`
+  ```
+  # .env's file content holding your API key/secret
 
-- `cd ts-kraken`
+  KRAKEN_API_KEY=yourApiKey
+  KRAKEN_API_SECRET=yourApiSecret
+  ```
 
-- `npm i`
+  <br />
 
-- `npm run kraken-repl`
+  ##### Launch the REPL directly on your terminal with `npx`:
 
-> Open a PR with any addition/change proposal you have!
+  > Quickest way to test it! 🚀 (will automatically download the library as a
+  > global npm package if you don't run `npm i ts-kraken` first)
 
-![ts_kraken_demo](.github/ts_kraken_demo.gif)
+  - `npx ts-kraken`
 
-<br />
+  <br />
 
-#### REPL commands
+  ##### Set it up in a standalone directory:
 
-<details><summary>(click to extend 👇)</summary>
+  > Recommended if planning to use regularly and/or modify core functionality
 
-> The following list includes only a subset sample of all possible commands you
-> could generate for the .get and .post methods:
+  - `git clone https://github.com/yeikiu/ts-kraken`
 
-<br />
+  - `cd ts-kraken`
 
-```
-.exit       👉 Exit the REPL
+  - `npm i`
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+  - `npm run kraken-repl`
 
-.help       👉 Print this help message
+  > Open a PR with any addition/change proposal you have!
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+  ![ts_kraken_demo](.github/ts_kraken_demo.gif)
 
-.get        👉 Fetch PUBLIC REST data.
+  <br />
 
-            Usage   >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+  ##### REPL commands
+  <details><summary>(click to extend 👇)</summary>
 
-            i.e.    >> .get Time .rfc1123
-                    >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table
-                    >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}
+  > The following list includes only a subset sample of all possible commands you
+  > could generate for the .get and .post methods:
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+  <br />
 
-.post       👉 Fetch PRIVATE REST data.
+  ```
+  .exit       👉 Exit the REPL
 
-            Usage   >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+  -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-            i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
-                    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
-                    >> .post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR
-                    >> .post CancelAll
+  .help       👉 Print this help message
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+  -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-.privsub    👉 Subscribe to PRIVATE WS stream.
+  .get        👉 Fetch PUBLIC REST data.
 
-            Usage   >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+              Usage   >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-            i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
-                    >> .privsub executions snap_orders=true .data|map({order_id,side,order_qty,symbol,order_type,limit_price}) -table
+              i.e.    >> .get Time .rfc1123
+                      >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table
+                      >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}
 
-.pubsub     👉 Subscribe to PUBLIC WS stream.
+  -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-            Usage   >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
+  .post       👉 Fetch PRIVATE REST data.
 
-            i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
-                    >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
+              Usage   >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+              i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
+                      >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
+                      >> .post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR
+                      >> .post CancelAll
 
-.setkeys    👉 Load API key/secret (non-persistent, use a .env file to reuse persistent keys)
+  -----------------------------------------------------------------------------------------------------------------------------------------------------
 
-.showkeys   👉 Display current API key/secret in use
+  .privsub    👉 Subscribe to PRIVATE WS stream.
 
------------------------------------------------------------------------------------------------------------------------------------------------------
+              Usage   >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-.unsub      👉 Closes WebSocket stream for GIVEN subscriptionName.
+              i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
+                      >> .privsub executions snap_orders=true .data|map({order_id,side,order_qty,symbol,order_type,limit_price}) -table
 
-            i.e.    >> .unsub ticker
-                    >> .unsub executions
+  .pubsub     👉 Subscribe to PUBLIC WS stream.
 
-.unsuball   👉 Closes WebSocket stream for ALL subscriptions.
+              Usage   >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
 
-            i.e.    >> .unsuball
-```
+              i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
+                      >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
 
+  -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+  .setkeys    👉 Load API key/secret (non-persistent, use a .env file to reuse persistent keys)
+
+  .showkeys   👉 Display current API key/secret in use
+
+  -----------------------------------------------------------------------------------------------------------------------------------------------------
+
+  .unsub      👉 Closes WebSocket stream for GIVEN subscriptionName.
+
+              i.e.    >> .unsub ticker
+                      >> .unsub executions
+
+  .unsuball   👉 Closes WebSocket stream for ALL subscriptions.
+
+              i.e.    >> .unsuball
+  ```
+
+  </details>
 </details>
 </details>
 
-<br /><br />
+<br />
 
 ## 🔖 Documentation
 
@@ -273,7 +279,7 @@ KRAKEN_API_SECRET=yourApiSecret
 - [jq Manual](https://stedolan.github.io/jq/manual)
 - [jq Playground](https://jqkungfu.com/)
 
-<br /><br />
+<br />
 
 ## 🙏 Acknowledgments
 
