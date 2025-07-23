@@ -185,7 +185,7 @@ getWsAuthToken()
 
   - `npm i`
 
-  - `npm run kraken-repl`
+  - `npm run repl`
 
   > Open a PR with any addition/change proposal you have!
 
