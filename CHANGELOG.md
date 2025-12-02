@@ -2,6 +2,28 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v5.0.0
+
+    - #### features:
+        - **Browser Support**: Full browser compatibility with automatic environment detection
+            - Uses Web Crypto API (`crypto.subtle`) in browsers
+            - Uses native `crypto` module in Node.js
+            - Zero configuration required - works seamlessly in both environments
+        - **Web Playground**: New browser-based API testing interface
+            - Interactive UI for testing all REST & WebSocket endpoints
+            - Quick Actions for common operations
+            - Live terminal output with formatted responses
+            - Session-only credential storage for security
+            - Accessible via `npm run watch:web-ui`
+
+    - #### technical:
+        - New files:
+            - `src/api/rest/private/message_signature_browser.ts` - Browser-compatible HMAC implementation
+            - `src/util/is_browser.ts` - Runtime environment detection
+            - Complete `playground_web-ui/` directory with Svelte + Vite stack
+        - Modified core files for async signature generation (Web Crypto requirement)
+        - Updated axios interceptors to handle async message signing
+
 - ### v4.0.5
 
     - #### hotfix:

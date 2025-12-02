@@ -1,4 +1,3 @@
-import WebSocketCtor from 'ws';
 import { webSocket } from 'rxjs/webSocket';
 import { Subject } from 'rxjs/internal/Subject';
 import { filter, first, timeout } from 'rxjs/operators';
@@ -7,10 +6,22 @@ import { Heartbeat, Status } from '../../../types/ws';
 import { ApiCredentials, ApiToken } from '../../../types/rest/private';
 import { PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate, PrivateWsRequest, PrivateWsResponse } from '../../../types/ws/private';
 import { getWsAuthToken } from '../../rest/private/helpers';
+import { isBrowser } from '../../../util/is_browser';
+
+// Use native WebSocket in browser, ws package in Node.js
+let WebSocketCtor: typeof WebSocket;
+if (isBrowser()) {
+    // Browser environment - use native WebSocket
+    WebSocketCtor = WebSocket;
+} else {
+    // Node.js environment - use ws package
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    WebSocketCtor = require('ws');
+}
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
- * 
+ *
  * @example
  * ```ts
     import { PrivateWs } from 'ts-kraken';
@@ -24,23 +35,28 @@ export const connected$ = new Subject();
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
- * 
+ *
  * @example
  * ```ts
     import { PrivateWs } from 'ts-kraken';
 
     PrivateWs.disconnected$.subscribe(() => {
         console.log('Private WebsocketV2 connection closed!\n');
-        
+
         // Code to handle connection lost here...
     });
 * ```
 */
 export const disconnected$ = new Subject();
 
+// WebSockets don't have CORS restrictions, so we can connect directly in both environments
+const getWsURL = () => {
+    return 'wss://ws-auth.kraken.com/v2';
+};
+
 const privateWsClient = webSocket({
     protocol: 'v1',
-    url: 'wss://ws-auth.kraken.com/v2',
+    url: getWsURL(),
     WebSocketCtor,
     openObserver: connected$,
     closeObserver: disconnected$
@@ -69,20 +85,6 @@ const privateWsClient = webSocket({
 * ```
 */
 export const heartbeat$: Observable<Heartbeat.Update> = privateWsClient.pipe(filter(({ channel }) => channel === 'heartbeat'));
-
-/**
- * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}
- * 
- * @example
- * ```ts
-    import { PrivateWs } from 'ts-kraken';
-
-    PrivateWs.status$.subscribe(({ channel, data: [{ api_version, system }] }) => {
-        console.log({ channel, api_version, system });
-    });
-* ```
-*/
-export const status$: Observable<Status.Update> = privateWsClient.pipe(filter(({ channel, type, data }) => data && type && channel === 'status'));
 
 function isToken(tokenOrKeys: ApiToken | ApiCredentials): tokenOrKeys is ApiToken {
     return typeof tokenOrKeys === 'string';

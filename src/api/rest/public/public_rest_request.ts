@@ -1,11 +1,20 @@
 import axios, { AxiosInstance } from 'axios';
-import { krakenAxiosConfig } from '../axios_config';
+import { getBaseURL, krakenAxiosBrowserConfig, krakenAxiosNodeConfig } from '../axios_config';
 import { PublicRestEndpoint } from '../../../types/rest/public';
 import { PublicRestTypes } from '../../..';
+import { isBrowser } from '../../../util/is_browser';
 
-const publicRestClient: AxiosInstance = axios.create(krakenAxiosConfig);
-publicRestClient.defaults.baseURL = `${publicRestClient.defaults.baseURL}/public`;
-publicRestClient.defaults.method = 'GET';
+// Lazy initialization to evaluate baseURL at runtime
+let publicRestClient: AxiosInstance | null = null;
+const getPublicRestClient = (): AxiosInstance => {
+    const krakenAxiosConfig = isBrowser() ? krakenAxiosBrowserConfig : krakenAxiosNodeConfig;
+    if (!publicRestClient) {
+        publicRestClient = axios.create(krakenAxiosConfig);
+        publicRestClient.defaults.baseURL = `${getBaseURL()}/public`;
+        publicRestClient.defaults.method = 'GET';
+    }
+    return publicRestClient;
+};
 
 /**
  * Sends a Rest request to a public Endpoint @ `https://api.kraken.com/0/public/<Endpoint>`
@@ -22,7 +31,7 @@ publicRestClient.defaults.method = 'GET';
  * ```
  */
 export async function publicRestRequest<E extends PublicRestEndpoint>(publicRequest: PublicRestTypes.PublicRestRequest<E>): Promise<PublicRestTypes.PublicRestResult<E>> {
-    const { data: { result, error } } = await publicRestClient.request<PublicRestTypes.PublicRestResponse<E>>(publicRequest);
+    const { data: { result, error } } = await getPublicRestClient().request<PublicRestTypes.PublicRestResponse<E>>(publicRequest);
     if (error?.length > 0) {
         throw new Error(error?.join(' '));
     }

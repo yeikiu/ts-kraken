@@ -25,8 +25,18 @@ import { BasePrivateWsRequest, BasePrivateWsResponse } from '..';
 export namespace AmendOrder {
 
     /** {@inheritDoc AmendOrder} */
-    export type Request = BasePrivateWsRequest<'amend_order', {
+    export type Request = BasePrivateWsRequest<'amend_order', ({
         order_id: string;
+        order_qty?: number;
+        display_qty?: number;
+        limit_price?: number;
+        limit_price_type?: 'static' | 'pct' | 'quote';
+        post_only?: boolean;
+        trigger_price?: number;
+        trigger_price_type?: 'static' | 'pct' | 'quote';
+        deadline?: string;
+        symbol?: string;
+    } | {
         cl_order_id: string;
         order_qty?: number;
         display_qty?: number;
@@ -36,7 +46,8 @@ export namespace AmendOrder {
         trigger_price?: number;
         trigger_price_type?: 'static' | 'pct' | 'quote';
         deadline?: string;
-    }>;
+        symbol?: string;
+    })>;
 
     /** {@inheritDoc AmendOrder} */
     export type Response = BasePrivateWsResponse<'amend_order', {

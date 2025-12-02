@@ -1,4 +1,4 @@
-import { getTickersPrices, publicRestRequest, publicWsSubscription } from '..';
+import { getTickersPrices, publicRestRequest, publicWsSubscription } from '../src';
 
 const runAsync = async () => {
 
