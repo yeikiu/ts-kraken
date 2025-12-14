@@ -5,171 +5,233 @@
 </div>
 <h1 align="center">
   <br>
-  <img src="media/ts_kraken_logo.png" width="640px" alt="ts-ts_kraken_logo" />
+  <img src="media/ts_kraken_logo.png" width="640px" alt="ts-kraken logo" />
 </h1>
-<p><br /><br /></p>
-<h4 align="center">A <i>strongly typed library</i> to operate with the <a href="https://kraken.com">Kraken Crypto Exchange</a></h4>
-<br />
+<h3 align="center">🦑 Strongly-Typed TypeScript SDK for Kraken Exchange</h3>
 <p align="center">
-  <a href="#-quick-start">Quick-Start</a> •
-  <a href="#ℹ%EF%B8%8F-about-this-project">About</a> •
-  <a href="#%EF%B8%8F-usage">Usage</a> •
-  <a href="#-documentation">Documentation</a> •
-  <a href="#-acknowledgments">Acknowledgments</a>
+  <strong>REST & WebSocket v2 APIs</strong> • <strong>Node.js & Browser</strong> • <strong>Full Type Safety</strong>
+</p>
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-interactive-playground">Playground</a> •
+  <a href="#-browser--nodejs-support">Browser Support</a> •
+  <a href="#-documentation">Documentation</a>
 </p>
 <br />
-<a id="md:🚀-quick-start" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🚀 Quick-Start<a href="#md:🚀-quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><details><summary>(click to extend 👇)</summary>
-<ul>
-<li>
-<p>Add the dependency to your js/ts project: <code>npm i ts-kraken</code></p>
-</li>
-<li>
-<p><em>Optionally</em> add <code>KRAKEN_API_KEY</code> and <code>KRAKEN_API_SECRET</code> to your .env (only if you intend to use private methods, i.e. add orders or fetch balances)</p>
-</li>
-<li>
-<p>Test the repl-cli with <code>npx ts-kraken</code> or find code-snippets examples for the methods you want to import in <a href="https://yeikiu.github.io/ts-kraken" target="_blank" class="external">the documentation</a>.</p>
-</li>
+<hr>
+<a id="md:✨-features" class="tsd-anchor"></a><h2 class="tsd-anchor-link">✨ Features<a href="#md:✨-features" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:🔧-typescript-library" class="tsd-anchor"></a><h3 class="tsd-anchor-link">🔧 <strong>TypeScript Library</strong><a href="#md:🔧-typescript-library" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>✅ <strong>Full type safety</strong> with IntelliSense autocomplete</li>
+<li>✅ <strong>REST &amp; WebSocket v2</strong> API support</li>
+<li>✅ <strong>RxJS observables</strong> for real-time data streams</li>
+<li>✅ <strong>Helper methods</strong> for common operations (orders, balances, tickers)</li>
+<li>✅ <strong>Works in Node.js &amp; browsers</strong> (no code changes needed)</li>
 </ul>
-<pre><code class="ts"><span class="hl-0">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-2">getClosedOrders</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">getWsAuthToken</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">privateWsSubscription</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-2">publicWsSubscription</span><br/><span class="hl-1">} </span><span class="hl-0">from</span><span class="hl-1"> </span><span class="hl-3">&#39;ts-kraken&#39;</span><br/><br/><span class="hl-4">getWsAuthToken</span><span class="hl-1">()</span><br/><span class="hl-1">  .</span><span class="hl-4">then</span><span class="hl-1">(</span><span class="hl-5">async</span><span class="hl-1"> </span><span class="hl-2">token</span><span class="hl-1"> </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-4">log</span><span class="hl-1">({ </span><span class="hl-2">token</span><span class="hl-1"> })</span><br/><br/><span class="hl-1">    </span><span class="hl-6">/* Fetch latest 50 closed orders and logs them */</span><br/><span class="hl-1">    </span><span class="hl-4">getClosedOrders</span><span class="hl-1">().</span><span class="hl-4">then</span><span class="hl-1">(</span><span class="hl-2">lastClosedOrdersArr</span><span class="hl-1"> </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-7">closedOrders</span><span class="hl-1"> = </span><span class="hl-2">lastClosedOrdersArr</span><span class="hl-1">.</span><span class="hl-4">map</span><span class="hl-1">(</span><br/><span class="hl-1">        ({ </span><span class="hl-2">orderid</span><span class="hl-1">, </span><span class="hl-2">descr</span><span class="hl-1">: { </span><span class="hl-2">order</span><span class="hl-1"> } }) </span><span class="hl-5">=&gt;</span><span class="hl-1"> ({ </span><span class="hl-2">orderid</span><span class="hl-1">, </span><span class="hl-2">order</span><span class="hl-1"> })</span><br/><span class="hl-1">      )</span><br/><br/><span class="hl-1">      </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-4">table</span><span class="hl-1">(</span><span class="hl-2">closedOrders</span><span class="hl-1">)</span><br/><span class="hl-1">    })</span><br/><br/><span class="hl-1">    </span><span class="hl-6">/* Print any updates in the private `balances` channel */</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-7">balances$</span><span class="hl-1"> = </span><span class="hl-0">await</span><span class="hl-1"> </span><span class="hl-4">privateWsSubscription</span><span class="hl-1">(</span><br/><span class="hl-1">      {</span><br/><span class="hl-1">        </span><span class="hl-2">channel:</span><span class="hl-1"> </span><span class="hl-3">&#39;balances&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-2">params:</span><span class="hl-1"> { </span><span class="hl-2">snapshot:</span><span class="hl-1"> </span><span class="hl-5">true</span><span class="hl-1"> }</span><br/><span class="hl-1">      },</span><br/><span class="hl-1">      </span><span class="hl-2">token</span><br/><span class="hl-1">    ) </span><span class="hl-6">// Pass token here to save time as the library won&#39;t need to fetch one internally!</span><br/><br/><span class="hl-1">    </span><span class="hl-2">balances$</span><span class="hl-1">.</span><span class="hl-4">subscribe</span><span class="hl-1">(({ </span><span class="hl-2">data</span><span class="hl-1"> }) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-4">table</span><span class="hl-1">(</span><span class="hl-2">data</span><span class="hl-1">)</span><br/><span class="hl-1">    })</span><br/><br/><span class="hl-1">    </span><span class="hl-6">/* Track 5m candles updates */</span><br/><span class="hl-1">    </span><span class="hl-5">const</span><span class="hl-1"> </span><span class="hl-7">fiveMinsBtcUsdCandles$</span><span class="hl-1"> = </span><span class="hl-4">publicWsSubscription</span><span class="hl-1">({</span><br/><span class="hl-1">      </span><span class="hl-2">channel:</span><span class="hl-1"> </span><span class="hl-3">&#39;ohlc&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">      </span><span class="hl-2">params:</span><span class="hl-1"> { </span><span class="hl-2">symbol:</span><span class="hl-1"> [</span><span class="hl-3">&#39;BTC/USD&#39;</span><span class="hl-1">], </span><span class="hl-2">interval:</span><span class="hl-1"> </span><span class="hl-8">5</span><span class="hl-1">, </span><span class="hl-2">snapshot:</span><span class="hl-1"> </span><span class="hl-5">false</span><span class="hl-1"> }</span><br/><span class="hl-1">    })</span><br/><br/><span class="hl-1">    </span><span class="hl-2">fiveMinsBtcUsdCandles$</span><span class="hl-1">.</span><span class="hl-4">subscribe</span><span class="hl-1">(</span><br/><span class="hl-1">      ({ </span><span class="hl-2">data</span><span class="hl-1">: [{ </span><span class="hl-2">open</span><span class="hl-1">, </span><span class="hl-2">high</span><span class="hl-1">, </span><span class="hl-2">low</span><span class="hl-1">, </span><span class="hl-2">close</span><span class="hl-1"> }] }) </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">        </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-4">log</span><span class="hl-1">({ </span><span class="hl-2">open</span><span class="hl-1">, </span><span class="hl-2">high</span><span class="hl-1">, </span><span class="hl-2">low</span><span class="hl-1">, </span><span class="hl-2">close</span><span class="hl-1"> })</span><br/><span class="hl-1">      }</span><br/><span class="hl-1">    )</span><br/><span class="hl-1">  })</span><br/><span class="hl-1">  .</span><span class="hl-4">catch</span><span class="hl-1">(</span><span class="hl-2">error</span><span class="hl-1"> </span><span class="hl-5">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-2">console</span><span class="hl-1">.</span><span class="hl-4">log</span><span class="hl-1">({ </span><span class="hl-2">error</span><span class="hl-1"> })</span><br/><span class="hl-1">  })</span>
+<a id="md:💻-interactive-repl-cli" class="tsd-anchor"></a><h3 class="tsd-anchor-link">💻 <strong>Interactive REPL CLI</strong><a href="#md:💻-interactive-repl-cli" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>🚀 Instant access via <code>npx ts-kraken</code></li>
+<li>🎨 Beautiful terminal output with <code>jq</code> formatting</li>
+<li>🔌 Subscribe to WebSocket streams directly from your shell</li>
+<li>🔑 Load credentials from <code>.env</code> or set interactively</li>
+</ul>
+<a id="md:🎮-web-playground" class="tsd-anchor"></a><h3 class="tsd-anchor-link">🎮 <strong>Web Playground</strong><a href="#md:🎮-web-playground" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>🌐 <strong>Browser-based API testing interface</strong></li>
+<li>📊 Execute REST &amp; WebSocket requests visually</li>
+<li>⚡ Quick actions for common operations</li>
+<li>💾 Session-only credential storage (secure)</li>
+<li>🎯 Perfect when Kraken UI is down or slow!</li>
+</ul>
+<p><img src="media/ts_kraken_playground.png" alt="Web Playground"></p>
+<hr>
+<a id="md:🚀-quick-start" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🚀 Quick Start<a href="#md:🚀-quick-start" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:📦-install" class="tsd-anchor"></a><h3 class="tsd-anchor-link">📦 Install<a href="#md:📦-install" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">ts-kraken</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Optional:</strong> Set up API credentials for private methods (trading, balances, orders):</p>
+<p><strong>Option 1:</strong> Use environment variables in your npm scripts (Node.js only)</p>
+<pre><code class="json"><span class="hl-1">{</span><br/><span class="hl-1">  </span><span class="hl-3">&quot;scripts&quot;</span><span class="hl-1">: {</span><br/><span class="hl-1">    </span><span class="hl-3">&quot;start&quot;</span><span class="hl-1">: </span><span class="hl-2">&quot;KRAKEN_API_KEY=xxx KRAKEN_API_SECRET=yyy node app.js&quot;</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Option 2:</strong> Use a library like <code>dotenv</code> (Node.js only)</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">install</span><span class="hl-1"> </span><span class="hl-2">dotenv</span>
+</code><button type="button">Copy</button></pre>
+
+<pre><code class="env"># .env
+KRAKEN_API_KEY=your-api-key-here
+KRAKEN_API_SECRET=your-api-secret-here
+</code><button type="button">Copy</button></pre>
+
+<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-1"> </span><span class="hl-2">&#39;dotenv/config&#39;</span><span class="hl-1">;</span><br/><span class="hl-5">// Now process.env.KRAKEN_API_KEY is available</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Option 3:</strong> Pass credentials directly in code (works in browser &amp; Node.js)</p>
+<pre><code class="typescript"><span class="hl-5">// See examples below - credentials passed as second parameter</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:🎯-use-in-your-code" class="tsd-anchor"></a><h3 class="tsd-anchor-link">🎯 Use in Your Code<a href="#md:🎯-use-in-your-code" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><blockquote>
+<p>💡 <strong>Note:</strong> Examples use top-level <code>await</code> - requires ES2022+ or async context</p>
+</blockquote>
+<pre><code class="typescript"><span class="hl-4">import</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">publicRestRequest</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">privateRestRequest</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">publicWsSubscription</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">privateWsSubscription</span><br/><span class="hl-1">} </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;ts-kraken&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">KRAKEN_API_KEY</span><span class="hl-1"> = </span><span class="hl-2">&#39;your-api-key-here&#39;</span><span class="hl-1">;</span><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">KRAKEN_API_SECRET</span><span class="hl-1"> = </span><span class="hl-2">&#39;your-api-secret-here&#39;</span><span class="hl-1">;</span><br/><br/><span class="hl-5">// 📈 Get BTC/USD ticker (public)</span><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">ticker</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">publicRestRequest</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">url:</span><span class="hl-1"> </span><span class="hl-2">&#39;Ticker&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">params:</span><span class="hl-1"> { </span><span class="hl-6">pair:</span><span class="hl-1"> </span><span class="hl-2">&#39;XBTUSD&#39;</span><span class="hl-1"> }</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">// 💰 Get account balance (private)</span><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">balance</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">privateRestRequest</span><span class="hl-1">(</span><br/><span class="hl-1">  { </span><span class="hl-6">url:</span><span class="hl-1"> </span><span class="hl-2">&#39;Balance&#39;</span><span class="hl-1"> },</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-6">apiKey:</span><span class="hl-1"> </span><span class="hl-8">KRAKEN_API_KEY</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-6">apiSecret:</span><span class="hl-1"> </span><span class="hl-8">KRAKEN_API_SECRET</span><br/><span class="hl-1">  } </span><span class="hl-5">/* Optional runtime override. In NodeJS, process.env values are used if not passed */</span><br/><span class="hl-1">);</span><br/><br/><span class="hl-5">// 📡 Subscribe to live ticker updates</span><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">ticker$</span><span class="hl-1"> = </span><span class="hl-0">publicWsSubscription</span><span class="hl-1">({</span><br/><span class="hl-1">  </span><span class="hl-6">channel:</span><span class="hl-1"> </span><span class="hl-2">&#39;ticker&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">  </span><span class="hl-6">params:</span><span class="hl-1"> { </span><span class="hl-6">symbol:</span><span class="hl-1"> [</span><span class="hl-2">&#39;BTC/USD&#39;</span><span class="hl-1">] }</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-6">ticker$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">(({ </span><span class="hl-6">data</span><span class="hl-1"> }) </span><span class="hl-7">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&#39;Latest price:&#39;</span><span class="hl-1">, </span><span class="hl-6">data</span><span class="hl-1">[</span><span class="hl-9">0</span><span class="hl-1">].</span><span class="hl-6">last</span><span class="hl-1">);</span><br/><span class="hl-1">});</span><br/><br/><span class="hl-5">// 🔒 Subscribe to private executions feed</span><br/><span class="hl-7">const</span><span class="hl-1"> </span><span class="hl-8">executions$</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">privateWsSubscription</span><span class="hl-1">(</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-6">channel:</span><span class="hl-1"> </span><span class="hl-2">&#39;executions&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-6">params:</span><span class="hl-1"> { </span><span class="hl-6">snapshot:</span><span class="hl-1"> </span><span class="hl-7">true</span><span class="hl-1"> }</span><br/><span class="hl-1">  },</span><br/><span class="hl-1">  {</span><br/><span class="hl-1">    </span><span class="hl-6">apiKey:</span><span class="hl-1"> </span><span class="hl-8">KRAKEN_API_KEY</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-6">apiSecret:</span><span class="hl-1"> </span><span class="hl-8">KRAKEN_API_SECRET</span><br/><span class="hl-1">  } </span><span class="hl-5">/* Optional runtime override. In NodeJS, process.env values are used if not passed */</span><br/><span class="hl-1">);</span><br/><br/><span class="hl-6">executions$</span><span class="hl-1">.</span><span class="hl-0">subscribe</span><span class="hl-1">(({ </span><span class="hl-6">data</span><span class="hl-1"> }) </span><span class="hl-7">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-2">&#39;Trade executed:&#39;</span><span class="hl-1">, </span><span class="hl-6">data</span><span class="hl-1">);</span><br/><span class="hl-1">});</span>
+</code><button type="button">Copy</button></pre>
+
+<img src="media/ts_kraken_IDE_2.png" width="640px" alt="IDE autocomplete" />
+<blockquote>
+<p>💡 <strong>Full IDE support</strong> with autocomplete for all endpoints, parameters, and response types</p>
+</blockquote>
+<img src="media/ts_kraken_IDE.png" width="640px" alt="IDE type hints" />
+<hr>
+<a id="md:🎮-interactive-playground" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🎮 Interactive Playground<a href="#md:🎮-interactive-playground" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Launch the <strong>browser-based API playground</strong> to test endpoints visually:</p>
+<pre><code class="bash"><span class="hl-0">npm</span><span class="hl-1"> </span><span class="hl-2">run</span><span class="hl-1"> </span><span class="hl-2">watch:web-ui</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Perfect for:</strong></p>
+<ul>
+<li>🔍 Testing API endpoints without writing code</li>
+<li>📊 Exploring available methods and parameters</li>
+<li>🚨 Trading when Kraken's official UI is down</li>
+<li>🎓 Learning the API structure</li>
+</ul>
+<p>The playground features:</p>
+<ul>
+<li><strong>Quick Actions</strong> - Common operations with one click</li>
+<li><strong>Method Browser</strong> - All REST &amp; WebSocket endpoints organized by category</li>
+<li><strong>Live Terminal</strong> - See real-time responses</li>
+<li><strong>Smart Forms</strong> - Auto-generated parameter inputs with validation</li>
+</ul>
+<hr>
+<a id="md:💻-repl-cli" class="tsd-anchor"></a><h2 class="tsd-anchor-link">💻 REPL CLI<a href="#md:💻-repl-cli" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:launch-instantly" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Launch Instantly<a href="#md:launch-instantly" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><pre><code class="bash"><span class="hl-0">npx</span><span class="hl-1"> </span><span class="hl-2">ts-kraken</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:quick-examples" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Quick Examples<a href="#md:quick-examples" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><pre><code class="bash"><span class="hl-5"># 📊 Get current server time</span><br/><span class="hl-0">.get</span><span class="hl-1"> </span><span class="hl-2">Time</span><br/><br/><span class="hl-5"># 💱 Get BTC/EUR trading pair info</span><br/><span class="hl-0">.get</span><span class="hl-1"> </span><span class="hl-2">AssetPairs</span><span class="hl-1"> </span><span class="hl-2">pair=BTC/EUR</span><br/><br/><span class="hl-5"># 💰 Check your balances (requires API keys)</span><br/><span class="hl-0">.post</span><span class="hl-1"> </span><span class="hl-2">Balance</span><br/><br/><span class="hl-5"># 📈 Subscribe to live BTC/USD ticker</span><br/><span class="hl-0">.pubsub</span><span class="hl-1"> </span><span class="hl-2">ticker</span><span class="hl-1"> </span><span class="hl-2">symbol[]=BTC/USD</span><br/><br/><span class="hl-5"># 🔒 Subscribe to your trade executions</span><br/><span class="hl-0">.privsub</span><span class="hl-1"> </span><span class="hl-2">executions</span><span class="hl-1"> </span><span class="hl-2">snap_orders=</span><span class="hl-7">true</span><br/><br/><span class="hl-5"># 🛑 Unsubscribe from all streams</span><br/><span class="hl-0">.unsuball</span>
+</code><button type="button">Copy</button></pre>
+
+<p><img src="media/ts_kraken_demo.gif" alt="REPL Demo"></p>
+<a id="md:repl-commands-reference" class="tsd-anchor"></a><h3 class="tsd-anchor-link">REPL Commands Reference<a href="#md:repl-commands-reference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>.get</code></td>
+<td>Fetch public REST data</td>
+<td><code>.get Ticker pair=BTC/USD</code></td>
+</tr>
+<tr>
+<td><code>.post</code></td>
+<td>Fetch private REST data</td>
+<td><code>.post OpenOrders</code></td>
+</tr>
+<tr>
+<td><code>.pubsub</code></td>
+<td>Subscribe to public WebSocket</td>
+<td><code>.pubsub ticker symbol[]=BTC/USD</code></td>
+</tr>
+<tr>
+<td><code>.privsub</code></td>
+<td>Subscribe to private WebSocket</td>
+<td><code>.privsub balances</code></td>
+</tr>
+<tr>
+<td><code>.unsub</code></td>
+<td>Unsubscribe from specific channel</td>
+<td><code>.unsub ticker</code></td>
+</tr>
+<tr>
+<td><code>.unsuball</code></td>
+<td>Unsubscribe from all channels</td>
+<td><code>.unsuball</code></td>
+</tr>
+<tr>
+<td><code>.setkeys</code></td>
+<td>Set API credentials (session only)</td>
+<td><code>.setkeys</code></td>
+</tr>
+<tr>
+<td><code>.showkeys</code></td>
+<td>Display current credentials</td>
+<td><code>.showkeys</code></td>
+</tr>
+<tr>
+<td><code>.help</code></td>
+<td>Show all commands</td>
+<td><code>.help</code></td>
+</tr>
+<tr>
+<td><code>.exit</code></td>
+<td>Exit the REPL</td>
+<td><code>.exit</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>💡 Pro tip:</strong> Use <code>jq</code> filters and <code>-table</code> flag for formatted output:</p>
+<pre><code class="bash"><span class="hl-0">.get</span><span class="hl-1"> </span><span class="hl-2">AssetPairs</span><span class="hl-1"> </span><span class="hl-2">.</span><span class="hl-1"> </span><span class="hl-2">as</span><span class="hl-1"> </span><span class="hl-6">$base</span><span class="hl-1">|</span><span class="hl-0">keys</span><span class="hl-1">|</span><span class="hl-0">map($base[.]</span><span class="hl-1">)|</span><span class="hl-0">map(</span><span class="hl-2">{wsname,tick_size}</span><span class="hl-1">) -table</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:set-up-api-keys" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Set Up API Keys<a href="#md:set-up-api-keys" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Create a <code>.env</code> file in your working directory:</p>
+<pre><code class="env">KRAKEN_API_KEY=your-api-key-here
+KRAKEN_API_SECRET=your-api-secret-here
+</code><button type="button">Copy</button></pre>
+
+<hr>
+<a id="md:🌐-browser--nodejs-support" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🌐 Browser &amp; Node.js Support<a href="#md:🌐-browser--nodejs-support" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p><strong>ts-kraken v5.0+</strong> works seamlessly in both environments with <strong>zero configuration</strong>.</p>
+<a id="md:how-it-works" class="tsd-anchor"></a><h3 class="tsd-anchor-link">How It Works<a href="#md:how-it-works" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>The library automatically detects your runtime and uses:</p>
+<ul>
+<li><strong>Node.js</strong>: Native <code>crypto</code> module</li>
+<li><strong>Browser</strong>: Web Crypto API (<code>crypto.subtle</code>)</li>
+</ul>
+<a id="md:browser-requirements" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Browser Requirements<a href="#md:browser-requirements" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>✅ Modern browser (Chrome, Firefox, Safari, Edge)</li>
+<li>✅ ES2020+ support</li>
+<li>✅ Web Crypto API (built into all modern browsers)</li>
+</ul>
+<a id="md:browser-security-best-practices" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Browser Security Best Practices<a href="#md:browser-security-best-practices" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>When using ts-kraken in the browser:</p>
+<p>⚠️ <strong>NEVER hardcode API keys</strong> in client-side code<br>
+✅ Store credentials in <strong>session storage only</strong> (not localStorage)<br>
+✅ Use <strong>separate API keys</strong> with limited permissions<br>
+✅ Consider using a <strong>backend proxy</strong> for sensitive operations<br>
+✅ Be aware that browser code is <strong>visible to users</strong></p>
+<a id="md:cors--proxy-setup" class="tsd-anchor"></a><h3 class="tsd-anchor-link">CORS &amp; Proxy Setup<a href="#md:cors--proxy-setup" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Some Kraken API endpoints may require a proxy due to CORS restrictions. The web playground handles this automatically in development mode.</p>
+<a id="md:bundler-configuration" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Bundler Configuration<a href="#md:bundler-configuration" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Most modern bundlers (Vite, Webpack, etc.) handle Node.js module externalization automatically. No configuration needed!</p>
+<details>
+<summary>📦 <strong>Vite Configuration (if needed)</strong></summary>
+<pre><code class="javascript"><span class="hl-5">// vite.config.ts</span><br/><span class="hl-4">export</span><span class="hl-1"> </span><span class="hl-4">default</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-6">resolve:</span><span class="hl-1"> {</span><br/><span class="hl-1">    </span><span class="hl-6">alias:</span><span class="hl-1"> {</span><br/><span class="hl-1">      </span><span class="hl-6">crypto:</span><span class="hl-1"> </span><span class="hl-2">&#39;crypto-browserify&#39;</span><span class="hl-1"> </span><span class="hl-5">// fallback if needed</span><br/><span class="hl-1">    }</span><br/><span class="hl-1">  }</span><br/><span class="hl-1">}</span>
 </code><button type="button">Copy</button></pre>
 
 </details>
-<br />
-<a id="md:ℹ️-about-this-project" class="tsd-anchor"></a><h2 class="tsd-anchor-link">ℹ️ About this project<a href="#md:ℹ️-about-this-project" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><details><summary>(click to extend 👇)</summary>
-<blockquote>
-<p><strong>ts-kraken</strong> is a <strong>strongly-typed</strong> <em>Typescript Library</em> that will help you
-operating via code or shell with
-<a href="https://kraken.com" target="_blank" class="external">the Kraken Crypto Exchange</a></p>
-</blockquote>
-<ul>
-<li>
-<p>Easily operate with Kraken
-<a href="https://docs.kraken.com/api/docs/category/rest-api/market-data" target="_blank" class="external">REST</a> and
-<a href="https://docs.kraken.com/websockets/" target="_blank" class="external">WebSocketV2</a> APIs</p>
-</li>
-<li>
-<p>Use
-<a href="https://yeikiu.github.io/ts-kraken/functions/getClosedOrders.html" target="_blank" class="external"><code>ts-kraken</code> helper methods</a>
-to build your own trading bots</p>
-</li>
-<li>
-<p>Subscribe to custom streams of data combining the RxJS Observables returned by
-the WebsocketV2 methods</p>
-</li>
-<li>
-<p>Get advantage of modern IDEs Typescript integrations (code autocompletion,
-suggested imports, etc.)</p>
-</li>
+<hr>
+<a id="md:📚-documentation" class="tsd-anchor"></a><h2 class="tsd-anchor-link">📚 Documentation<a href="#md:📚-documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:official-resources" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Official Resources<a href="#md:official-resources" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>📖 <a href="https://yeikiu.github.io/ts-kraken" target="_blank" class="external"><strong>ts-kraken API Documentation</strong></a> - Full SDK reference</li>
+<li>🔗 <a href="https://docs.kraken.com/api/docs/rest-api/add-order" target="_blank" class="external"><strong>Kraken REST API</strong></a> - Official REST docs</li>
+<li>🔗 <a href="https://docs.kraken.com/api/docs/websocket-v2/add_order" target="_blank" class="external"><strong>Kraken WebSocket v2</strong></a> - Official WS docs</li>
 </ul>
-<br />
-<blockquote>
-<p>It also features an <strong>interactive <em>node REPL-cli</em></strong> to operate via
-command-shell or leave a socket open printing all updates to the terminal with
-a nice <a href="https://jqlang.github.io/jq/" target="_blank" class="external">jq</a> format 🤓</p>
-</blockquote>
-<ul>
-<li>
-<p>Kraken UI down durig high traffic or maintenance? You can still use the APIs!</p>
-</li>
-<li>
-<p>Use any of the available REST methods directly from your terminal</p>
-</li>
-<li>
-<p>Print nicely formatted data updates coming directly from WebsocketV2
-subscriptions</p>
-</li>
+<a id="md:additional-tools" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Additional Tools<a href="#md:additional-tools" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><ul>
+<li>🛠️ <a href="https://stedolan.github.io/jq/manual" target="_blank" class="external"><strong>jq Manual</strong></a> - JSON query language</li>
+<li>🎮 <a href="https://jqkungfu.com/" target="_blank" class="external"><strong>jq Playground</strong></a> - Test jq filters online</li>
 </ul>
-</details>
-<br />
-<a id="md:🛠️-usage" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🛠️ Usage<a href="#md:🛠️-usage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><details><summary>(click to extend 👇)</summary>
-  <br />
-<a id="md:use-the-library-in-your-typescriptjs-project" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Use the library in your TypeScript/JS project:<a href="#md:use-the-library-in-your-typescriptjs-project" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>  <details open><summary>(click to extend 👇)</summary>
-<ul>
-<li><code>cd dependant/project/path &amp;&amp; npm i ts-kraken</code></li>
-</ul>
-  <img src="media/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
-  <br />
-<blockquote>
-<p>Get <em>IDE code-suggestions</em> for any REST or WS request you need</p>
-</blockquote>
-  <img src="media/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
-  </details>
-  <br />
-<a id="md:use-the-repl-cli" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Use the REPL-cli<a href="#md:use-the-repl-cli" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4>  <details><summary>(click to extend 👇)</summary>
-<blockquote>
-<p>You can create a <code>.env</code> file that the repl-cli will try to read from <code>cwd</code>
-(current working directory):</p>
-</blockquote>
-<ul>
-<li><code>touch .env</code></li>
-</ul>
-<p>Use the following format:</p>
-<pre><code><span class="hl-1"># .</span><span class="hl-2">env</span><span class="hl-3">&#39;s file content holding your API key/secre</span><span class="hl-9">t</span><br/><br/><span class="hl-7">KRAKEN_API_KEY</span><span class="hl-1">=</span><span class="hl-2">yourApiKey</span><br/><span class="hl-7">KRAKEN_API_SECRET</span><span class="hl-1">=</span><span class="hl-2">yourApiSecret</span>
-</code><button>Copy</button></pre>
-
-  <br />
-<a id="md:launch-the-repl-directly-on-your-terminal-with-npx" class="tsd-anchor"></a><h5 class="tsd-anchor-link">Launch the REPL directly on your terminal with <code>npx</code>:<a href="#md:launch-the-repl-directly-on-your-terminal-with-npx" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h5><blockquote>
-<p>Quickest way to test it! 🚀 (will automatically download the library as a
-global npm package if you don't run <code>npm i ts-kraken</code> first)</p>
-</blockquote>
-<ul>
-<li><code>npx ts-kraken</code></li>
-</ul>
-  <br />
-<a id="md:set-it-up-in-a-standalone-directory" class="tsd-anchor"></a><h5 class="tsd-anchor-link">Set it up in a standalone directory:<a href="#md:set-it-up-in-a-standalone-directory" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h5><blockquote>
-<p>Recommended if planning to use regularly and/or modify core functionality</p>
-</blockquote>
-<ul>
-<li>
-<p><code>git clone https://github.com/yeikiu/ts-kraken</code></p>
-</li>
-<li>
-<p><code>cd ts-kraken</code></p>
-</li>
-<li>
-<p><code>npm i</code></p>
-</li>
-<li>
-<p><code>npm run repl</code> or <code>npx kraken-repl</code></p>
-</li>
-</ul>
-<blockquote>
-<p>Open a PR with any addition/change proposal you have!</p>
-</blockquote>
-<p><img src="media/ts_kraken_demo.gif" alt="ts_kraken_demo"></p>
-  <br />
-<a id="md:repl-commands" class="tsd-anchor"></a><h5 class="tsd-anchor-link">REPL commands<a href="#md:repl-commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h5>  <details><summary>(click to extend 👇)</summary>
-<blockquote>
-<p>The following list includes only a subset sample of all possible commands you
-could generate for the .get and .post methods:</p>
-</blockquote>
-  <br />
-<pre><code><span class="hl-1">.</span><span class="hl-2">exit</span><span class="hl-1">       👉 </span><span class="hl-2">Exit</span><span class="hl-1"> </span><span class="hl-2">the</span><span class="hl-1"> </span><span class="hl-7">REPL</span><br/><br/><span class="hl-1">-----------------------------------------------------------------------------------------------------------------------------------------------------</span><br/><br/><span class="hl-1">.</span><span class="hl-2">help</span><span class="hl-1">       👉 </span><span class="hl-2">Print</span><span class="hl-1"> </span><span class="hl-5">this</span><span class="hl-1"> </span><span class="hl-2">help</span><span class="hl-1"> </span><span class="hl-2">message</span><br/><br/><span class="hl-1">-----------------------------------------------------------------------------------------------------------------------------------------------------</span><br/><br/><span class="hl-1">.</span><span class="hl-2">get</span><span class="hl-1">        👉 </span><span class="hl-2">Fetch</span><span class="hl-1"> </span><span class="hl-7">PUBLIC</span><span class="hl-1"> </span><span class="hl-7">REST</span><span class="hl-1"> </span><span class="hl-2">data</span><span class="hl-1">.</span><br/><br/><span class="hl-1">            </span><span class="hl-2">Usage</span><span class="hl-1">   &gt;&gt; .</span><span class="hl-2">get</span><span class="hl-1"> &lt;</span><span class="hl-2">PublicEndpoint</span><span class="hl-1">&gt;! &lt;</span><span class="hl-2">paramA</span><span class="hl-1">=</span><span class="hl-2">valueA</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value1</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value2</span><span class="hl-1">&gt;? &lt;</span><span class="hl-10">jqFilter</span><span class="hl-1">&gt;? &lt;-</span><span class="hl-10">table</span><span class="hl-1">&gt;?</span><br/><br/><span class="hl-1">            </span><span class="hl-2">i</span><span class="hl-1">.</span><span class="hl-2">e</span><span class="hl-1">.    &gt;&gt; .</span><span class="hl-2">get</span><span class="hl-1"> </span><span class="hl-2">Time</span><span class="hl-1"> .</span><span class="hl-2">rfc1123</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">get</span><span class="hl-1"> </span><span class="hl-2">AssetPairs</span><span class="hl-1"> . </span><span class="hl-2">as</span><span class="hl-1"> </span><span class="hl-2">$base</span><span class="hl-1">|</span><span class="hl-2">keys</span><span class="hl-1">|</span><span class="hl-4">map</span><span class="hl-1">(</span><span class="hl-2">$base</span><span class="hl-1">[.])|</span><span class="hl-4">map</span><span class="hl-1">({</span><span class="hl-2">wsname</span><span class="hl-1">,</span><span class="hl-2">tick_size</span><span class="hl-1">,</span><span class="hl-2">pair_decimals</span><span class="hl-1">,</span><span class="hl-2">ordermin</span><span class="hl-1">}) -</span><span class="hl-2">table</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">get</span><span class="hl-1"> </span><span class="hl-2">AssetPairs</span><span class="hl-1"> </span><span class="hl-2">pair</span><span class="hl-1">=</span><span class="hl-7">BTC</span><span class="hl-1">/</span><span class="hl-7">EUR</span><span class="hl-1"> . </span><span class="hl-2">as</span><span class="hl-1"> </span><span class="hl-2">$base</span><span class="hl-1">|</span><span class="hl-2">keys</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">]|</span><span class="hl-2">$base</span><span class="hl-1">[.]|{</span><span class="hl-2">wsname</span><span class="hl-1">,</span><span class="hl-2">tick_size</span><span class="hl-1">,</span><span class="hl-2">pair_decimals</span><span class="hl-1">,</span><span class="hl-2">ordermin</span><span class="hl-1">}</span><br/><br/><span class="hl-1">-----------------------------------------------------------------------------------------------------------------------------------------------------</span><br/><br/><span class="hl-1">.</span><span class="hl-2">post</span><span class="hl-1">       👉 </span><span class="hl-2">Fetch</span><span class="hl-1"> </span><span class="hl-7">PRIVATE</span><span class="hl-1"> </span><span class="hl-7">REST</span><span class="hl-1"> </span><span class="hl-2">data</span><span class="hl-1">.</span><br/><br/><span class="hl-1">            </span><span class="hl-2">Usage</span><span class="hl-1">   &gt;&gt; .</span><span class="hl-2">post</span><span class="hl-1"> &lt;</span><span class="hl-2">PrivateEndpoint</span><span class="hl-1">&gt;! &lt;</span><span class="hl-2">paramA</span><span class="hl-1">=</span><span class="hl-2">valueA</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value1</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value2</span><span class="hl-1">&gt;? &lt;</span><span class="hl-10">jqFilter</span><span class="hl-1">&gt;? &lt;-</span><span class="hl-10">table</span><span class="hl-1">&gt;?</span><br/><br/><span class="hl-1">            </span><span class="hl-2">i</span><span class="hl-1">.</span><span class="hl-2">e</span><span class="hl-1">.    &gt;&gt; .</span><span class="hl-2">post</span><span class="hl-1"> </span><span class="hl-2">OpenOrders</span><span class="hl-1"> .</span><span class="hl-2">open</span><span class="hl-1"> </span><span class="hl-0">as</span><span class="hl-1"> </span><span class="hl-10">$open</span><span class="hl-1">|.</span><span class="hl-10">open</span><span class="hl-1">|</span><span class="hl-10">keys</span><span class="hl-1">|</span><span class="hl-10">map</span><span class="hl-1">(</span><span class="hl-10">$open</span><span class="hl-1">[.].</span><span class="hl-10">descr</span><span class="hl-1">.</span><span class="hl-10">order</span><span class="hl-1">)</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">post</span><span class="hl-1"> </span><span class="hl-2">OpenOrders</span><span class="hl-1"> .</span><span class="hl-2">open</span><span class="hl-1"> </span><span class="hl-0">as</span><span class="hl-1"> </span><span class="hl-10">$open</span><span class="hl-1">|.</span><span class="hl-10">open</span><span class="hl-1">|</span><span class="hl-10">keys</span><span class="hl-1">|</span><span class="hl-10">map</span><span class="hl-1">(</span><span class="hl-10">$open</span><span class="hl-1">[.].</span><span class="hl-10">descr</span><span class="hl-1">) -</span><span class="hl-2">table</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">post</span><span class="hl-1"> </span><span class="hl-2">AddOrder</span><span class="hl-1"> </span><span class="hl-2">ordertype</span><span class="hl-1">=</span><span class="hl-2">market</span><span class="hl-1">&amp;</span><span class="hl-2">type</span><span class="hl-1">=</span><span class="hl-2">sell</span><span class="hl-1">&amp;</span><span class="hl-2">volume</span><span class="hl-1">=</span><span class="hl-8">0.002</span><span class="hl-1">&amp;</span><span class="hl-2">pair</span><span class="hl-1">=</span><span class="hl-7">ETHEUR</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">post</span><span class="hl-1"> </span><span class="hl-2">CancelAll</span><br/><br/><span class="hl-1">-----------------------------------------------------------------------------------------------------------------------------------------------------</span><br/><br/><span class="hl-1">.</span><span class="hl-2">privsub</span><span class="hl-1">    👉 </span><span class="hl-2">Subscribe</span><span class="hl-1"> </span><span class="hl-2">to</span><span class="hl-1"> </span><span class="hl-7">PRIVATE</span><span class="hl-1"> </span><span class="hl-7">WS</span><span class="hl-1"> </span><span class="hl-2">stream</span><span class="hl-1">.</span><br/><br/><span class="hl-1">            </span><span class="hl-2">Usage</span><span class="hl-1">   &gt;&gt; .</span><span class="hl-2">privsub</span><span class="hl-1"> &lt;</span><span class="hl-2">subscriptionName</span><span class="hl-1">&gt;! &lt;</span><span class="hl-2">paramA</span><span class="hl-1">=</span><span class="hl-2">valueA</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value1</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value2</span><span class="hl-1">&gt;? &lt;</span><span class="hl-10">jqFilter</span><span class="hl-1">&gt;? &lt;-</span><span class="hl-10">table</span><span class="hl-1">&gt;?</span><br/><br/><span class="hl-1">            </span><span class="hl-2">i</span><span class="hl-1">.</span><span class="hl-2">e</span><span class="hl-1">.    &gt;&gt; .</span><span class="hl-2">privsub</span><span class="hl-1"> </span><span class="hl-2">balances</span><span class="hl-1"> </span><span class="hl-2">snap_orders</span><span class="hl-1">=</span><span class="hl-5">true</span><span class="hl-1"> .</span><span class="hl-2">data</span><span class="hl-1">|</span><span class="hl-4">map</span><span class="hl-1">({ </span><span class="hl-2">asset</span><span class="hl-1">, </span><span class="hl-2">balance</span><span class="hl-1"> }) -</span><span class="hl-2">table</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">privsub</span><span class="hl-1"> </span><span class="hl-2">executions</span><span class="hl-1"> </span><span class="hl-2">snap_orders</span><span class="hl-1">=</span><span class="hl-5">true</span><span class="hl-1"> .</span><span class="hl-2">data</span><span class="hl-1">|</span><span class="hl-4">map</span><span class="hl-1">({</span><span class="hl-2">order_id</span><span class="hl-1">,</span><span class="hl-2">side</span><span class="hl-1">,</span><span class="hl-2">order_qty</span><span class="hl-1">,</span><span class="hl-2">symbol</span><span class="hl-1">,</span><span class="hl-2">order_type</span><span class="hl-1">,</span><span class="hl-2">limit_price</span><span class="hl-1">}) -</span><span class="hl-2">table</span><br/><br/><span class="hl-1">.</span><span class="hl-2">pubsub</span><span class="hl-1">     👉 </span><span class="hl-2">Subscribe</span><span class="hl-1"> </span><span class="hl-2">to</span><span class="hl-1"> </span><span class="hl-7">PUBLIC</span><span class="hl-1"> </span><span class="hl-7">WS</span><span class="hl-1"> </span><span class="hl-2">stream</span><span class="hl-1">.</span><br/><br/><span class="hl-1">            </span><span class="hl-2">Usage</span><span class="hl-1">   &gt;&gt; .</span><span class="hl-2">pubsub</span><span class="hl-1"> &lt;</span><span class="hl-2">subscriptionName</span><span class="hl-1">&gt;! &lt;</span><span class="hl-2">paramA</span><span class="hl-1">=</span><span class="hl-2">valueA</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value1</span><span class="hl-1">&amp;</span><span class="hl-2">param_list</span><span class="hl-1">[]=</span><span class="hl-2">value2</span><span class="hl-1">&gt;? &lt;</span><span class="hl-10">jqFilter</span><span class="hl-1">&gt;? &lt;-</span><span class="hl-10">table</span><span class="hl-1">&gt;?</span><br/><br/><span class="hl-1">            </span><span class="hl-2">i</span><span class="hl-1">.</span><span class="hl-2">e</span><span class="hl-1">.    &gt;&gt; .</span><span class="hl-2">pubsub</span><span class="hl-1"> </span><span class="hl-2">ticker</span><span class="hl-1"> </span><span class="hl-2">symbol</span><span class="hl-1">[]=</span><span class="hl-7">BTC</span><span class="hl-1">/</span><span class="hl-7">EUR</span><span class="hl-1"> .</span><span class="hl-2">data</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">].</span><span class="hl-2">last</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">pubsub</span><span class="hl-1"> </span><span class="hl-2">ticker</span><span class="hl-1"> </span><span class="hl-2">symbol</span><span class="hl-1">[]=</span><span class="hl-7">BTC</span><span class="hl-1">/</span><span class="hl-7">EUR</span><span class="hl-1">&amp;</span><span class="hl-2">symbol</span><span class="hl-1">[]=</span><span class="hl-7">ADA</span><span class="hl-1">/</span><span class="hl-7">BTC</span><span class="hl-1">&amp;</span><span class="hl-2">symbol</span><span class="hl-1">[]=</span><span class="hl-7">USDT</span><span class="hl-1">/</span><span class="hl-7">USD</span><span class="hl-1"> .</span><span class="hl-2">data</span><span class="hl-1">[</span><span class="hl-8">0</span><span class="hl-1">]|{</span><span class="hl-2">symbol</span><span class="hl-1">,</span><span class="hl-2">last</span><span class="hl-1">} -</span><span class="hl-2">table</span><br/><br/><span class="hl-1">-----------------------------------------------------------------------------------------------------------------------------------------------------</span><br/><br/><span class="hl-1">.</span><span class="hl-2">setkeys</span><span class="hl-1">    👉 </span><span class="hl-2">Load</span><span class="hl-1"> </span><span class="hl-7">API</span><span class="hl-1"> </span><span class="hl-2">key</span><span class="hl-1">/</span><span class="hl-4">secret</span><span class="hl-1"> (</span><span class="hl-2">non</span><span class="hl-1">-</span><span class="hl-2">persistent</span><span class="hl-1">, </span><span class="hl-2">use</span><span class="hl-1"> </span><span class="hl-2">a</span><span class="hl-1"> .</span><span class="hl-2">env</span><span class="hl-1"> </span><span class="hl-2">file</span><span class="hl-1"> </span><span class="hl-2">to</span><span class="hl-1"> </span><span class="hl-2">reuse</span><span class="hl-1"> </span><span class="hl-2">persistent</span><span class="hl-1"> </span><span class="hl-2">keys</span><span class="hl-1">)</span><br/><br/><span class="hl-1">.</span><span class="hl-2">showkeys</span><span class="hl-1">   👉 </span><span class="hl-2">Display</span><span class="hl-1"> </span><span class="hl-2">current</span><span class="hl-1"> </span><span class="hl-7">API</span><span class="hl-1"> </span><span class="hl-2">key</span><span class="hl-1">/</span><span class="hl-2">secret</span><span class="hl-1"> </span><span class="hl-5">in</span><span class="hl-1"> </span><span class="hl-2">use</span><br/><br/><span class="hl-1">-----------------------------------------------------------------------------------------------------------------------------------------------------</span><br/><br/><span class="hl-1">.</span><span class="hl-2">unsub</span><span class="hl-1">      👉 </span><span class="hl-2">Closes</span><span class="hl-1"> </span><span class="hl-2">WebSocket</span><span class="hl-1"> </span><span class="hl-2">stream</span><span class="hl-1"> </span><span class="hl-2">for</span><span class="hl-1"> </span><span class="hl-7">GIVEN</span><span class="hl-1"> </span><span class="hl-2">subscriptionName</span><span class="hl-1">.</span><br/><br/><span class="hl-1">            </span><span class="hl-2">i</span><span class="hl-1">.</span><span class="hl-2">e</span><span class="hl-1">.    &gt;&gt; .</span><span class="hl-2">unsub</span><span class="hl-1"> </span><span class="hl-2">ticker</span><br/><span class="hl-1">                    &gt;&gt; .</span><span class="hl-2">unsub</span><span class="hl-1"> </span><span class="hl-2">executions</span><br/><br/><span class="hl-1">.</span><span class="hl-2">unsuball</span><span class="hl-1">   👉 </span><span class="hl-2">Closes</span><span class="hl-1"> </span><span class="hl-2">WebSocket</span><span class="hl-1"> </span><span class="hl-2">stream</span><span class="hl-1"> </span><span class="hl-2">for</span><span class="hl-1"> </span><span class="hl-7">ALL</span><span class="hl-1"> </span><span class="hl-2">subscriptions</span><span class="hl-1">.</span><br/><br/><span class="hl-1">            </span><span class="hl-2">i</span><span class="hl-1">.</span><span class="hl-2">e</span><span class="hl-1">.    &gt;&gt; .</span><span class="hl-2">unsuball</span>
-</code><button>Copy</button></pre>
-
-  </details>
-</details>
-</details>
-<br />
-<a id="md:🔖-documentation" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🔖 Documentation<a href="#md:🔖-documentation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li>
-<p><a href="https://yeikiu.github.io/ts-kraken" target="_blank" class="external">ts-kraken Documentation</a></p>
-</li>
-<li>
-<p><a href="https://docs.kraken.com/api/docs/rest-api/add-order" target="_blank" class="external">Kraken REST API docs</a></p>
-</li>
-<li>
-<p><a href="https://docs.kraken.com/api/docs/websocket-v2/add_order" target="_blank" class="external">Kraken WebSocketsV2 API docs</a></p>
-</li>
-<li>
-<p><a href="https://stedolan.github.io/jq/manual" target="_blank" class="external">jq Manual</a></p>
-</li>
-<li>
-<p><a href="https://jqkungfu.com/" target="_blank" class="external">jq Playground</a></p>
-</li>
-</ul>
-<br />
+<hr>
+<a id="md:🎯-use-cases" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🎯 Use Cases<a href="#md:🎯-use-cases" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:🤖-trading-bots" class="tsd-anchor"></a><h3 class="tsd-anchor-link">🤖 Trading Bots<a href="#md:🤖-trading-bots" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Build automated trading strategies with full type safety and real-time data streams.</p>
+<a id="md:📊-market-analysis" class="tsd-anchor"></a><h3 class="tsd-anchor-link">📊 Market Analysis<a href="#md:📊-market-analysis" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Subscribe to multiple WebSocket feeds and analyze market data in real-time with RxJS operators.</p>
+<a id="md:⚡-emergency-trading" class="tsd-anchor"></a><h3 class="tsd-anchor-link">⚡ Emergency Trading<a href="#md:⚡-emergency-trading" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Use the REPL or web playground to execute trades when Kraken's UI is experiencing issues.</p>
+<a id="md:🧪-api-testing" class="tsd-anchor"></a><h3 class="tsd-anchor-link">🧪 API Testing<a href="#md:🧪-api-testing" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Quickly test and validate Kraken API endpoints before integrating into production.</p>
+<a id="md:📈-portfolio-management" class="tsd-anchor"></a><h3 class="tsd-anchor-link">📈 Portfolio Management<a href="#md:📈-portfolio-management" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>Monitor balances, open orders, and trade history with strongly-typed responses.</p>
+<hr>
 <a id="md:🙏-acknowledgments" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🙏 Acknowledgments<a href="#md:🙏-acknowledgments" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
-<li><a href="https://github.com/trasherdk" target="_blank" class="external">@trasherdk</a> | Contributor</li>
+<li><a href="https://github.com/trasherdk" target="_blank" class="external">@trasherdk</a> - Contributor</li>
+<li><a href="https://kraken.com" target="_blank" class="external">Kraken Exchange</a> - API documentation and support</li>
+<li>All contributors and users of this library</li>
 </ul>
-</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:🚀-quick-start"><span>🚀 <wbr/>Quick-<wbr/>Start</span></a><a href="#md:ℹ️-about-this-project"><span>ℹ️ <wbr/>About this project</span></a><a href="#md:🛠️-usage"><span>🛠️ <wbr/>Usage</span></a><ul><li><ul><li><a href="#md:use-the-library-in-your-typescriptjs-project"><span>Use the library in your <wbr/>Type<wbr/>Script/JS project:</span></a></li><li><a href="#md:use-the-repl-cli"><span>Use the REPL-<wbr/>cli</span></a></li><li><ul><li><a href="#md:launch-the-repl-directly-on-your-terminal-with-npx"><span>Launch the REPL directly on your terminal with npx:</span></a></li><li><a href="#md:set-it-up-in-a-standalone-directory"><span>Set it up in a standalone directory:</span></a></li><li><a href="#md:repl-commands"><span>REPL commands</span></a></li></ul></li></ul></li></ul><a href="#md:🔖-documentation"><span>🔖 <wbr/>Documentation</span></a><a href="#md:🙏-acknowledgments"><span>🙏 <wbr/>Acknowledgments</span></a></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>ts-kraken</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
+<hr>
+<a id="md:📄-license" class="tsd-anchor"></a><h2 class="tsd-anchor-link">📄 License<a href="#md:📄-license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>MIT License - see <a href="media/LICENSE">LICENSE</a> file for details</p>
+<hr>
+<a id="md:🔗-links" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🔗 Links<a href="#md:🔗-links" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>🐙 <a href="https://github.com/yeikiu/ts-kraken" target="_blank" class="external">GitHub Repository</a></li>
+<li>📦 <a href="https://www.npmjs.com/package/ts-kraken" target="_blank" class="external">npm Package</a></li>
+<li>📖 <a href="https://yeikiu.github.io/ts-kraken" target="_blank" class="external">Full Documentation</a></li>
+<li>🐛 <a href="https://github.com/yeikiu/ts-kraken/issues" target="_blank" class="external">Report Issues</a></li>
+</ul>
+<hr>
+<p align="center">
+  <strong>Made with 💙 for the Kraken developer community</strong>
+</p></div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:✨-features"><span>✨ <wbr/>Features</span></a><ul><li><a href="#md:🔧-typescript-library"><span>🔧 <wbr/>Type<wbr/>Script <wbr/>Library</span></a></li><li><a href="#md:💻-interactive-repl-cli"><span>💻 <wbr/>Interactive REPL CLI</span></a></li><li><a href="#md:🎮-web-playground"><span>🎮 <wbr/>Web <wbr/>Playground</span></a></li></ul><a href="#md:🚀-quick-start"><span>🚀 <wbr/>Quick <wbr/>Start</span></a><ul><li><a href="#md:📦-install"><span>📦 <wbr/>Install</span></a></li><li><a href="#md:🎯-use-in-your-code"><span>🎯 <wbr/>Use in <wbr/>Your <wbr/>Code</span></a></li></ul><a href="#md:🎮-interactive-playground"><span>🎮 <wbr/>Interactive <wbr/>Playground</span></a><a href="#md:💻-repl-cli"><span>💻 REPL CLI</span></a><ul><li><a href="#md:launch-instantly"><span>Launch <wbr/>Instantly</span></a></li><li><a href="#md:quick-examples"><span>Quick <wbr/>Examples</span></a></li><li><a href="#md:repl-commands-reference"><span>REPL <wbr/>Commands <wbr/>Reference</span></a></li><li><a href="#md:set-up-api-keys"><span>Set <wbr/>Up API <wbr/>Keys</span></a></li></ul><a href="#md:🌐-browser--nodejs-support"><span>🌐 <wbr/>Browser &amp; <wbr/>Node.js <wbr/>Support</span></a><ul><li><a href="#md:how-it-works"><span>How <wbr/>It <wbr/>Works</span></a></li><li><a href="#md:browser-requirements"><span>Browser <wbr/>Requirements</span></a></li><li><a href="#md:browser-security-best-practices"><span>Browser <wbr/>Security <wbr/>Best <wbr/>Practices</span></a></li><li><a href="#md:cors--proxy-setup"><span>CORS &amp; <wbr/>Proxy <wbr/>Setup</span></a></li><li><a href="#md:bundler-configuration"><span>Bundler <wbr/>Configuration</span></a></li></ul><a href="#md:📚-documentation"><span>📚 <wbr/>Documentation</span></a><ul><li><a href="#md:official-resources"><span>Official <wbr/>Resources</span></a></li><li><a href="#md:additional-tools"><span>Additional <wbr/>Tools</span></a></li></ul><a href="#md:🎯-use-cases"><span>🎯 <wbr/>Use <wbr/>Cases</span></a><ul><li><a href="#md:🤖-trading-bots"><span>🤖 <wbr/>Trading <wbr/>Bots</span></a></li><li><a href="#md:📊-market-analysis"><span>📊 <wbr/>Market <wbr/>Analysis</span></a></li><li><a href="#md:⚡-emergency-trading"><span>⚡ <wbr/>Emergency <wbr/>Trading</span></a></li><li><a href="#md:🧪-api-testing"><span>🧪 API <wbr/>Testing</span></a></li><li><a href="#md:📈-portfolio-management"><span>📈 <wbr/>Portfolio <wbr/>Management</span></a></li></ul><a href="#md:🙏-acknowledgments"><span>🙏 <wbr/>Acknowledgments</span></a><a href="#md:📄-license"><span>📄 <wbr/>License</span></a><a href="#md:🔗-links"><span>🔗 <wbr/>Links</span></a></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>ts-kraken</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
