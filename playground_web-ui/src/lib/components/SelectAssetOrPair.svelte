@@ -22,10 +22,18 @@
   let filterText = $state('');
   let showDropdown = $state(false);
   let selectRef: HTMLButtonElement;
+  let inputRef: HTMLInputElement;
 
   // Sync internal value when prop changes
   $effect(() => {
     internalValue = value;
+  });
+
+  // Autofocus input when dropdown opens
+  $effect(() => {
+    if (showDropdown && inputRef) {
+      setTimeout(() => inputRef?.focus(), 0);
+    }
   });
 
   const filteredItems = $derived.by(() => {
@@ -93,6 +101,7 @@
   {#if showDropdown && !disabled}
     <div class="dropdown">
       <input
+        bind:this={inputRef}
         type="text"
         class="filter-input"
         placeholder="Type to filter..."
