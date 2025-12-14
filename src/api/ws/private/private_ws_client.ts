@@ -2,7 +2,7 @@ import { webSocket } from 'rxjs/webSocket';
 import { Subject } from 'rxjs/internal/Subject';
 import { filter, first, timeout } from 'rxjs/operators';
 import { Observable, lastValueFrom } from 'rxjs';
-import { Heartbeat, Status } from '../../../types/ws';
+import { Heartbeat } from '../../../types/ws';
 import { ApiCredentials, ApiToken } from '../../../types/rest/private';
 import { PrivateSubscription, PrivateSubscriptionChannel, PrivateSubscriptionParams, PrivateSubscriptionUpdate, PrivateWsRequest, PrivateWsResponse } from '../../../types/ws/private';
 import { getWsAuthToken } from '../../rest/private/helpers';
