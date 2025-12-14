@@ -1,12 +1,9 @@
-import { config } from 'dotenv';
+import { isBrowser } from './util/is_browser';
 
-const { parsed, error: loadConfigError } = config();
-
-if (loadConfigError) {
-    console.error({ loadConfigError });
-} else {
-    globalThis.env = { ...parsed };
-}
+globalThis.env = !isBrowser() ? {
+    KRAKEN_API_KEY: process.env.KRAKEN_API_KEY,
+    KRAKEN_API_SECRET: process.env.KRAKEN_API_SECRET,
+} : {};
 
 /* Types exports */
 export type { PublicRestTypes, PrivateRestTypes, PublicWsTypes, PrivateWsTypes } from './types';
@@ -32,7 +29,6 @@ export {
     connected$ as privateWsConnected$,
     disconnected$ as privateWsDisconnected$,
     heartbeat$ as privateWsHeartbeat$,
-    status$ as privateWsStatus$,
 } from './api/ws/private/private_ws_client';
 
 export { getTickersPrices } from './api/rest/public/helpers/get_tickers_prices';

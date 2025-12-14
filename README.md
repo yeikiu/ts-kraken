@@ -6,281 +6,349 @@
 
 <h1 align="center">
   <br>
-  <img src=".github/ts_kraken_logo.png" width="640px" alt="ts-ts_kraken_logo" />
+  <img src=".github/ts_kraken_logo.png" width="640px" alt="ts-kraken logo" />
 </h1>
 
-<br /><br />
-
-<h4 align="center">A <i>strongly typed library</i> to operate with the <a href="https://kraken.com">Kraken Crypto Exchange</a></h4>
-<br />
+<h3 align="center">🦑 Strongly-Typed TypeScript SDK for Kraken Exchange</h3>
 
 <p align="center">
-  <a href="#-quick-start">Quick-Start</a> •
-  <a href="#ℹ%EF%B8%8F-about-this-project">About</a> •
-  <a href="#%EF%B8%8F-usage">Usage</a> •
-  <a href="#-documentation">Documentation</a> •
-  <a href="#-acknowledgments">Acknowledgments</a>
+  <strong>REST & WebSocket v2 APIs</strong> • <strong>Node.js & Browser</strong> • <strong>Full Type Safety</strong>
+</p>
+
+<p align="center">
+  <a href="#-features">Features</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-interactive-playground">Playground</a> •
+  <a href="#-browser--nodejs-support">Browser Support</a> •
+  <a href="#-documentation">Documentation</a>
 </p>
 
 <br />
 
-## 🚀 Quick-Start
-<details><summary>(click to extend 👇)</summary>
+---
 
-- Add the dependency to your js/ts project: `npm i ts-kraken`
+## ✨ Features
 
-- _Optionally_ add `KRAKEN_API_KEY` and `KRAKEN_API_SECRET` to your .env (only if you intend to use private methods, i.e. add orders or fetch balances)
+### 🔧 **TypeScript Library**
+- ✅ **Full type safety** with IntelliSense autocomplete
+- ✅ **REST & WebSocket v2** API support
+- ✅ **RxJS observables** for real-time data streams
+- ✅ **Helper methods** for common operations (orders, balances, tickers)
+- ✅ **Works in Node.js & browsers** (no code changes needed)
 
-- Test the repl-cli with `npx ts-kraken` or find code-snippets examples for the methods you want to import in [the documentation](https://yeikiu.github.io/ts-kraken).
+### 💻 **Interactive REPL CLI**
+- 🚀 Instant access via `npx ts-kraken`
+- 🎨 Beautiful terminal output with `jq` formatting
+- 🔌 Subscribe to WebSocket streams directly from your shell
+- 🔑 Load credentials from `.env` or set interactively
 
-```ts
-import {
-  getClosedOrders,
-  getWsAuthToken,
-  privateWsSubscription,
-  publicWsSubscription
-} from 'ts-kraken'
+### 🎮 **Web Playground**
+- 🌐 **Browser-based API testing interface**
+- 📊 Execute REST & WebSocket requests visually
+- ⚡ Quick actions for common operations
+- 💾 Session-only credential storage (secure)
+- 🎯 Perfect when Kraken UI is down or slow!
 
-getWsAuthToken()
-  .then(async token => {
-    console.log({ token })
+![Web Playground](.github/ts_kraken_playground.png)
 
-    /* Fetch latest 50 closed orders and logs them */
-    getClosedOrders().then(lastClosedOrdersArr => {
-      const closedOrders = lastClosedOrdersArr.map(
-        ({ orderid, descr: { order } }) => ({ orderid, order })
-      )
+---
 
-      console.table(closedOrders)
-    })
+## 🚀 Quick Start
 
-    /* Print any updates in the private `balances` channel */
-    const balances$ = await privateWsSubscription(
-      {
-        channel: 'balances',
-        params: { snapshot: true }
-      },
-      token
-    ) // Pass token here to save time as the library won't need to fetch one internally!
+### 📦 Install
 
-    balances$.subscribe(({ data }) => {
-      console.table(data)
-    })
-
-    /* Track 5m candles updates */
-    const fiveMinsBtcUsdCandles$ = publicWsSubscription({
-      channel: 'ohlc',
-      params: { symbol: ['BTC/USD'], interval: 5, snapshot: false }
-    })
-
-    fiveMinsBtcUsdCandles$.subscribe(
-      ({ data: [{ open, high, low, close }] }) => {
-        console.log({ open, high, low, close })
-      }
-    )
-  })
-  .catch(error => {
-    console.log({ error })
-  })
+```bash
+npm install ts-kraken
 ```
 
+**Optional:** Set up API credentials for private methods (trading, balances, orders):
+
+**Option 1:** Use environment variables in your npm scripts (Node.js only)
+```json
+{
+  "scripts": {
+    "start": "KRAKEN_API_KEY=xxx KRAKEN_API_SECRET=yyy node app.js"
+  }
+}
+```
+
+**Option 2:** Use a library like `dotenv` (Node.js only)
+```bash
+npm install dotenv
+```
+```env
+# .env
+KRAKEN_API_KEY=your-api-key-here
+KRAKEN_API_SECRET=your-api-secret-here
+```
+```typescript
+import 'dotenv/config';
+// Now process.env.KRAKEN_API_KEY is available
+```
+
+**Option 3:** Pass credentials directly in code (works in browser & Node.js)
+```typescript
+// See examples below - credentials passed as second parameter
+```
+
+### 🎯 Use in Your Code
+
+> 💡 **Note:** Examples use top-level `await` - requires ES2022+ or async context
+
+```typescript
+import {
+  publicRestRequest,
+  privateRestRequest,
+  publicWsSubscription,
+  privateWsSubscription
+} from 'ts-kraken';
+
+const KRAKEN_API_KEY = 'your-api-key-here';
+const KRAKEN_API_SECRET = 'your-api-secret-here';
+
+// 📈 Get BTC/USD ticker (public)
+const ticker = await publicRestRequest({
+  url: 'Ticker',
+  params: { pair: 'XBTUSD' }
+});
+
+// 💰 Get account balance (private)
+const balance = await privateRestRequest(
+  { url: 'Balance' },
+  {
+    apiKey: KRAKEN_API_KEY,
+    apiSecret: KRAKEN_API_SECRET
+  } /* Optional runtime override. In NodeJS, process.env values are used if not passed */
+);
+
+// 📡 Subscribe to live ticker updates
+const ticker$ = publicWsSubscription({
+  channel: 'ticker',
+  params: { symbol: ['BTC/USD'] }
+});
+
+ticker$.subscribe(({ data }) => {
+  console.log('Latest price:', data[0].last);
+});
+
+// 🔒 Subscribe to private executions feed
+const executions$ = await privateWsSubscription(
+  {
+    channel: 'executions',
+    params: { snapshot: true }
+  },
+  {
+    apiKey: KRAKEN_API_KEY,
+    apiSecret: KRAKEN_API_SECRET
+  } /* Optional runtime override. In NodeJS, process.env values are used if not passed */
+);
+
+executions$.subscribe(({ data }) => {
+  console.log('Trade executed:', data);
+});
+```
+
+<img src=".github/ts_kraken_IDE_2.png" width="640px" alt="IDE autocomplete" />
+
+> 💡 **Full IDE support** with autocomplete for all endpoints, parameters, and response types
+
+<img src=".github/ts_kraken_IDE.png" width="640px" alt="IDE type hints" />
+
+---
+
+## 🎮 Interactive Playground
+
+Launch the **browser-based API playground** to test endpoints visually:
+
+```bash
+npm run watch:web-ui
+```
+
+**Perfect for:**
+- 🔍 Testing API endpoints without writing code
+- 📊 Exploring available methods and parameters
+- 🚨 Trading when Kraken's official UI is down
+- 🎓 Learning the API structure
+
+The playground features:
+- **Quick Actions** - Common operations with one click
+- **Method Browser** - All REST & WebSocket endpoints organized by category
+- **Live Terminal** - See real-time responses
+- **Smart Forms** - Auto-generated parameter inputs with validation
+
+---
+
+## 💻 REPL CLI
+
+### Launch Instantly
+
+```bash
+npx ts-kraken
+```
+
+### Quick Examples
+
+```bash
+# 📊 Get current server time
+.get Time
+
+# 💱 Get BTC/EUR trading pair info
+.get AssetPairs pair=BTC/EUR
+
+# 💰 Check your balances (requires API keys)
+.post Balance
+
+# 📈 Subscribe to live BTC/USD ticker
+.pubsub ticker symbol[]=BTC/USD
+
+# 🔒 Subscribe to your trade executions
+.privsub executions snap_orders=true
+
+# 🛑 Unsubscribe from all streams
+.unsuball
+```
+
+![REPL Demo](.github/ts_kraken_demo.gif)
+
+### REPL Commands Reference
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `.get` | Fetch public REST data | `.get Ticker pair=BTC/USD` |
+| `.post` | Fetch private REST data | `.post OpenOrders` |
+| `.pubsub` | Subscribe to public WebSocket | `.pubsub ticker symbol[]=BTC/USD` |
+| `.privsub` | Subscribe to private WebSocket | `.privsub balances` |
+| `.unsub` | Unsubscribe from specific channel | `.unsub ticker` |
+| `.unsuball` | Unsubscribe from all channels | `.unsuball` |
+| `.setkeys` | Set API credentials (session only) | `.setkeys` |
+| `.showkeys` | Display current credentials | `.showkeys` |
+| `.help` | Show all commands | `.help` |
+| `.exit` | Exit the REPL | `.exit` |
+
+**💡 Pro tip:** Use `jq` filters and `-table` flag for formatted output:
+```bash
+.get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size}) -table
+```
+
+### Set Up API Keys
+
+Create a `.env` file in your working directory:
+
+```env
+KRAKEN_API_KEY=your-api-key-here
+KRAKEN_API_SECRET=your-api-secret-here
+```
+
+---
+
+## 🌐 Browser & Node.js Support
+
+**ts-kraken v5.0+** works seamlessly in both environments with **zero configuration**.
+
+### How It Works
+
+The library automatically detects your runtime and uses:
+- **Node.js**: Native `crypto` module
+- **Browser**: Web Crypto API (`crypto.subtle`)
+
+### Browser Requirements
+
+- ✅ Modern browser (Chrome, Firefox, Safari, Edge)
+- ✅ ES2020+ support
+- ✅ Web Crypto API (built into all modern browsers)
+
+### Browser Security Best Practices
+
+When using ts-kraken in the browser:
+
+⚠️ **NEVER hardcode API keys** in client-side code<br>
+✅ Store credentials in **session storage only** (not localStorage)<br>
+✅ Use **separate API keys** with limited permissions<br>
+✅ Consider using a **backend proxy** for sensitive operations<br>
+✅ Be aware that browser code is **visible to users**
+
+### CORS & Proxy Setup
+
+Some Kraken API endpoints may require a proxy due to CORS restrictions. The web playground handles this automatically in development mode.
+
+### Bundler Configuration
+
+Most modern bundlers (Vite, Webpack, etc.) handle Node.js module externalization automatically. No configuration needed!
+
+<details>
+<summary>📦 <strong>Vite Configuration (if needed)</strong></summary>
+
+```javascript
+// vite.config.ts
+export default {
+  resolve: {
+    alias: {
+      crypto: 'crypto-browserify' // fallback if needed
+    }
+  }
+}
+```
 </details>
 
-<br />
+---
 
-## ℹ️ About this project 
-<details><summary>(click to extend 👇)</summary>
+## 📚 Documentation
 
-> **ts-kraken** is a **strongly-typed** _Typescript Library_ that will help you
-> operating via code or shell with
-> [the Kraken Crypto Exchange](https://kraken.com)
+### Official Resources
 
-- Easily operate with Kraken
-  [REST](https://docs.kraken.com/api/docs/category/rest-api/market-data) and
-  [WebSocketV2](https://docs.kraken.com/websockets/) APIs
+- 📖 [**ts-kraken API Documentation**](https://yeikiu.github.io/ts-kraken) - Full SDK reference
+- 🔗 [**Kraken REST API**](https://docs.kraken.com/api/docs/rest-api/add-order) - Official REST docs
+- 🔗 [**Kraken WebSocket v2**](https://docs.kraken.com/api/docs/websocket-v2/add_order) - Official WS docs
 
-- Use
-  [`ts-kraken` helper methods](https://yeikiu.github.io/ts-kraken/functions/getClosedOrders.html)
-  to build your own trading bots
+### Additional Tools
 
-- Subscribe to custom streams of data combining the RxJS Observables returned by
-  the WebsocketV2 methods
+- 🛠️ [**jq Manual**](https://stedolan.github.io/jq/manual) - JSON query language
+- 🎮 [**jq Playground**](https://jqkungfu.com/) - Test jq filters online
 
-- Get advantage of modern IDEs Typescript integrations (code autocompletion,
-  suggested imports, etc.)
+---
 
-<br />
+## 🎯 Use Cases
 
-> It also features an **interactive _node REPL-cli_** to operate via
-> command-shell or leave a socket open printing all updates to the terminal with
-> a nice [jq](https://jqlang.github.io/jq/) format 🤓
+### 🤖 Trading Bots
+Build automated trading strategies with full type safety and real-time data streams.
 
-- Kraken UI down durig high traffic or maintenance? You can still use the APIs!
+### 📊 Market Analysis
+Subscribe to multiple WebSocket feeds and analyze market data in real-time with RxJS operators.
 
-- Use any of the available REST methods directly from your terminal
+### ⚡ Emergency Trading
+Use the REPL or web playground to execute trades when Kraken's UI is experiencing issues.
 
-- Print nicely formatted data updates coming directly from WebsocketV2
-  subscriptions
-</details>
+### 🧪 API Testing
+Quickly test and validate Kraken API endpoints before integrating into production.
 
-<br />
+### 📈 Portfolio Management
+Monitor balances, open orders, and trade history with strongly-typed responses.
 
-## 🛠️ Usage 
-<details><summary>(click to extend 👇)</summary>
-
-  <br />
-
-  #### Use the library in your TypeScript/JS project:
-  <details open><summary>(click to extend 👇)</summary>
-
-  - `cd dependant/project/path && npm i ts-kraken`
-
-  <img src=".github/ts_kraken_IDE_2.png" width="640px" alt="ts_kraken_ide" />
-
-  <br />
-
-  > Get _IDE code-suggestions_ for any REST or WS request you need
-
-  <img src=".github/ts_kraken_IDE.png" width="640px" alt="ts_kraken_ide" />
-
-  </details>
-
-  <br />
-  
-  #### Use the REPL-cli
-  <details><summary>(click to extend 👇)</summary>
-
-  > You can create a `.env` file that the repl-cli will try to read from `cwd`
-  > (current working directory):
-
-  - `touch .env`
-
-  Use the following format:
-
-  ```
-  # .env's file content holding your API key/secret
-
-  KRAKEN_API_KEY=yourApiKey
-  KRAKEN_API_SECRET=yourApiSecret
-  ```
-
-  <br />
-
-  ##### Launch the REPL directly on your terminal with `npx`:
-
-  > Quickest way to test it! 🚀 (will automatically download the library as a
-  > global npm package if you don't run `npm i ts-kraken` first)
-
-  - `npx ts-kraken`
-
-  <br />
-
-  ##### Set it up in a standalone directory:
-
-  > Recommended if planning to use regularly and/or modify core functionality
-
-  - `git clone https://github.com/yeikiu/ts-kraken`
-
-  - `cd ts-kraken`
-
-  - `npm i`
-
-  - `npm run repl` or `npx kraken-repl`
-
-  > Open a PR with any addition/change proposal you have!
-
-  ![ts_kraken_demo](.github/ts_kraken_demo.gif)
-
-  <br />
-
-  ##### REPL commands
-  <details><summary>(click to extend 👇)</summary>
-
-  > The following list includes only a subset sample of all possible commands you
-  > could generate for the .get and .post methods:
-
-  <br />
-
-  ```
-  .exit       👉 Exit the REPL
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  .help       👉 Print this help message
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  .get        👉 Fetch PUBLIC REST data.
-
-              Usage   >> .get <PublicEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
-
-              i.e.    >> .get Time .rfc1123
-                      >> .get AssetPairs . as $base|keys|map($base[.])|map({wsname,tick_size,pair_decimals,ordermin}) -table
-                      >> .get AssetPairs pair=BTC/EUR . as $base|keys[0]|$base[.]|{wsname,tick_size,pair_decimals,ordermin}
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  .post       👉 Fetch PRIVATE REST data.
-
-              Usage   >> .post <PrivateEndpoint>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
-
-              i.e.    >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr.order)
-                      >> .post OpenOrders .open as $open|.open|keys|map($open[.].descr) -table
-                      >> .post AddOrder ordertype=market&type=sell&volume=0.002&pair=ETHEUR
-                      >> .post CancelAll
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  .privsub    👉 Subscribe to PRIVATE WS stream.
-
-              Usage   >> .privsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
-
-              i.e.    >> .privsub balances snap_orders=true .data|map({ asset, balance }) -table
-                      >> .privsub executions snap_orders=true .data|map({order_id,side,order_qty,symbol,order_type,limit_price}) -table
-
-  .pubsub     👉 Subscribe to PUBLIC WS stream.
-
-              Usage   >> .pubsub <subscriptionName>! <paramA=valueA&param_list[]=value1&param_list[]=value2>? <jqFilter>? <-table>?
-
-              i.e.    >> .pubsub ticker symbol[]=BTC/EUR .data[0].last
-                      >> .pubsub ticker symbol[]=BTC/EUR&symbol[]=ADA/BTC&symbol[]=USDT/USD .data[0]|{symbol,last} -table
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  .setkeys    👉 Load API key/secret (non-persistent, use a .env file to reuse persistent keys)
-
-  .showkeys   👉 Display current API key/secret in use
-
-  -----------------------------------------------------------------------------------------------------------------------------------------------------
-
-  .unsub      👉 Closes WebSocket stream for GIVEN subscriptionName.
-
-              i.e.    >> .unsub ticker
-                      >> .unsub executions
-
-  .unsuball   👉 Closes WebSocket stream for ALL subscriptions.
-
-              i.e.    >> .unsuball
-  ```
-
-  </details>
-</details>
-</details>
-
-<br />
-
-## 🔖 Documentation
-
-- [ts-kraken Documentation](https://yeikiu.github.io/ts-kraken)
-
-- [Kraken REST API docs](https://docs.kraken.com/api/docs/rest-api/add-order)
-- [Kraken WebSocketsV2 API docs](https://docs.kraken.com/api/docs/websocket-v2/add_order)
-
-- [jq Manual](https://stedolan.github.io/jq/manual)
-- [jq Playground](https://jqkungfu.com/)
-
-<br />
+---
 
 ## 🙏 Acknowledgments
 
-- [@trasherdk](https://github.com/trasherdk) | Contributor
+- [@trasherdk](https://github.com/trasherdk) - Contributor
+- [Kraken Exchange](https://kraken.com) - API documentation and support
+- All contributors and users of this library
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details
+
+---
+
+## 🔗 Links
+
+- 🐙 [GitHub Repository](https://github.com/yeikiu/ts-kraken)
+- 📦 [npm Package](https://www.npmjs.com/package/ts-kraken)
+- 📖 [Full Documentation](https://yeikiu.github.io/ts-kraken)
+- 🐛 [Report Issues](https://github.com/yeikiu/ts-kraken/issues)
+
+---
+
+<p align="center">
+  <strong>Made with 💙 for the Kraken developer community</strong>
+</p>

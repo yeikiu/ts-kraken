@@ -1,8 +1,11 @@
+/* Load credentials from .env file; Requires dotenv dependency. */
+import 'dotenv/config';
+
 import {
     getClosedOrders,
     getWsAuthToken,
     privateWsSubscription,
-} from '..';
+} from '../src';
 
 getWsAuthToken().then(async (token) => {
     console.log({ token });

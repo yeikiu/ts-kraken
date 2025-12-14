@@ -1,19 +1,5 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-explicit-any,import/order */
-
-import { config } from 'dotenv';
-try {
-    const { parsed, error: loadConfigError } = config();
-    
-    if (loadConfigError) {
-        console.warn('Remember you can set and .env file setting KRAKEN_API_KEY & KRAKEN_API_SECRET values in order to authenticate private requests');
-        globalThis.env = {};
-    } else {
-        globalThis.env = { ...parsed };
-    }    
-} catch {
-    globalThis.env = {};
-}
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 import repl from 'repl';
 import { parse } from 'qs'; /* https://stackoverflow.com/a/9547490 */
@@ -63,7 +49,7 @@ function* iter(obj) {
 }
 
 console.log(purpleText(krakenHeader));
-const myRepl = repl.start(purpleText('kraken-repl >> '));
+const myRepl = repl.start(purpleText('ts-kraken REPL >> '));
 
 // Modify core methods (bit hacky, these are readonly)
 ['save', 'load', 'editor', 'clear', 'break'].forEach(c => delete (myRepl.commands as unknown)[c]);

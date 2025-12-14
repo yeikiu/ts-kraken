@@ -4,13 +4,24 @@ import { filter, first, timeout } from 'rxjs/operators';
 import { Observable, lastValueFrom } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { webSocket } from 'rxjs/webSocket';
-import WebSocketCtor from 'ws';
 import { PublicSubscription, PublicSubscriptionChannel, PublicSubscriptionParams, PublicSubscriptionUpdate, PublicWsRequest, PublicWsResponse } from '../../../types/ws/public';
 import { Heartbeat, Status } from '../../../types/ws';
+import { isBrowser } from '../../../util/is_browser';
+
+// Use native WebSocket in browser, ws package in Node.js
+let WebSocketCtor: typeof WebSocket;
+if (isBrowser()) {
+    // Browser environment - use native WebSocket
+    WebSocketCtor = WebSocket;
+} else {
+    // Node.js environment - use ws package
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    WebSocketCtor = require('ws');
+}
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
- * 
+ *
  * @example
  * ```ts
     import { PublicWs } from 'ts-kraken';
@@ -24,23 +35,28 @@ export const connected$ = new Subject();
 
 /**
  * You can call `.subscribe()` on this {@link https://rxjs.dev/api/index/class/Observable | RxJS Observable}.
- * 
+ *
  * @example
  * ```ts
     import { PublicWs } from 'ts-kraken';
 
     PublicWs.disconnected$.subscribe(() => {
         console.log('Public WebsocketV2 connection closed!\n');
-        
+
         // Code to handle connection lost here...
     });
 * ```
 */
 export const disconnected$ = new Subject();
 
+// WebSockets don't have CORS restrictions, so we can connect directly in both environments
+const getWsURL = () => {
+    return 'wss://ws.kraken.com/v2';
+};
+
 const publicWsClient = webSocket({
     protocol: 'v1',
-    url: 'wss://ws.kraken.com/v2',
+    url: getWsURL(),
     WebSocketCtor,
     openObserver: connected$,
     closeObserver: disconnected$

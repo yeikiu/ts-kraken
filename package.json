@@ -1,9 +1,9 @@
 {
 	"name": "ts-kraken",
-	"version": "4.0.14",
+	"version": "5.0.0",
 	"description": "A strongly typed library to operate with the Kraken Crypto Exchange",
 	"engines": {
-	  "node": ">= 22.20.0"
+		"node": ">= 22.20.0"
 	},
 	"keywords": [
 		"kraken",
@@ -32,20 +32,22 @@
 	"types": "dist/index.d.ts",
 	"license": "CC0-1.0",
 	"bin": {
-		"kraken-repl": "dist/repl/repl_cli.js"
+		"ts-kraken": "dist/repl/repl_cli.js"
 	},
 	"scripts": {
 		"build": "npm run lint && rimraf dist && tsc -p .",
 		"lint": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\" --quiet --fix",
 		"lint:warn": "tsc -p . --noEmit && eslint \"src/**/*.{js,ts}\"",
-		"watch": "nodemon",
-		"repl": "ts-node src/repl/repl_cli.ts",
-		"sync:badges": "npx setup-gh-badges"
+		"sync:badges": "npx setup-gh-badges",
+		"watch:node": "nodemon",
+		"watch:repl": "ts-node -r dotenv/config src/repl/repl_cli.ts",
+		"watch:web-ui": "cd playground_web-ui && npm install && npm run dev"
 	},
 	"devDependencies": {
 		"@types/node": "^18.11.9",
 		"@typescript-eslint/eslint-plugin": "^7.16.1",
 		"@typescript-eslint/parser": "^7.16.1",
+		"dotenv": "^17.2.3",
 		"eslint": "^8.57.0",
 		"eslint-plugin-import": "^2.29.1",
 		"nodemon": "^3.0.2",
@@ -57,7 +59,6 @@
 	"dependencies": {
 		"axios": "^1.13.1",
 		"chalk": "^4.1.2",
-		"dotenv": "^16.0.3",
 		"node-jq": "^6.0.1",
 		"qs": "^6.11.0",
 		"rxjs": "^7.8.1",

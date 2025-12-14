@@ -2,20 +2,21 @@ import axios, { AxiosInstance } from 'axios';
 import { stringify } from 'qs';
 import { ApiCredentials, PrivateRestEndpoint } from '../../../types/rest/private';
 import { PrivateRestTypes } from '../../..';
+import { isBrowser } from '../../../util/is_browser';
 import { getMessageSignature } from './message_signature';
-import { apiVersion, krakenAxiosConfig } from './../axios_config';
+import { apiVersion, getBaseURL, krakenAxiosBrowserConfig, krakenAxiosNodeConfig } from './../axios_config';
 
-const createPrivateRestClient = (apiKey = globalThis.env.KRAKEN_API_KEY, apiSecret = globalThis.env.KRAKEN_API_SECRET): AxiosInstance => {
+const createPrivateRestClient = (apiKey?: string, apiSecret?: string): AxiosInstance => {
     if (!apiKey || !apiSecret) {
         return null;
     }
-
+    const krakenAxiosConfig = isBrowser() ? krakenAxiosBrowserConfig : krakenAxiosNodeConfig;
     const privateApiClient: AxiosInstance = axios.create(krakenAxiosConfig);
-    privateApiClient.defaults.baseURL = `${privateApiClient.defaults.baseURL}/private`;
+    privateApiClient.defaults.baseURL = `${getBaseURL()}/private`;
     privateApiClient.defaults.headers['API-Key'] = apiKey;
     privateApiClient.defaults.method = 'POST';
 
-    privateApiClient.interceptors.request.use((config) => {
+    privateApiClient.interceptors.request.use(async (config) => {
         const { url } = config;
         const nonce = new Date().getTime() * 1000;
 
@@ -23,7 +24,7 @@ const createPrivateRestClient = (apiKey = globalThis.env.KRAKEN_API_KEY, apiSecr
             ...config.data,
             nonce
         };
-        config.headers['API-Sign'] = getMessageSignature({
+        config.headers['API-Sign'] = await getMessageSignature({
             path: `/${apiVersion}/private/${url}`,
             payload,
             nonce,
@@ -38,7 +39,14 @@ const createPrivateRestClient = (apiKey = globalThis.env.KRAKEN_API_KEY, apiSecr
     return privateApiClient;
 };
 
-const defaultClient = createPrivateRestClient();
+// Lazy initialization to avoid accessing globalThis.env at module load time
+let defaultClient: AxiosInstance | null = null;
+const getDefaultClient = (): AxiosInstance => {
+    if (defaultClient === null) {
+        defaultClient = createPrivateRestClient(globalThis.env?.KRAKEN_API_KEY, globalThis.env?.KRAKEN_API_SECRET);
+    }
+    return defaultClient;
+};
 
 /**
  * Sends a Rest request to a private Endpoint @ `https://api.kraken.com/0/private/<Endpoint>`
@@ -57,14 +65,12 @@ const defaultClient = createPrivateRestClient();
  */
 export async function privateRestRequest<E extends PrivateRestEndpoint>(privateRequest: PrivateRestTypes.PrivateRestRequest<E>, runtimeApiKeys?: ApiCredentials): Promise<PrivateRestTypes.PrivateRestResult<E>> {
     const { apiKey, apiSecret } = runtimeApiKeys ?? {};
-    const apiClient = (apiKey !== '' && apiSecret !== '') ? createPrivateRestClient(apiKey, apiSecret) : defaultClient;
+    const apiClient = (apiKey && apiKey !== '' && apiSecret && apiSecret !== '') ? createPrivateRestClient(apiKey, apiSecret) : getDefaultClient();
 
     if (apiClient === null) {
         console.error(
             '\n%s\n\n%s\n%s\n',
-            '❌ Private methods require API credentials.',
-            'You can learn more about configuring ts-kraken to access private methods here:',
-            '   👉 https://github.com/yeikiu/ts-kraken#demo-playground-snippet'
+            '❌ Private methods require API credentials.'
         );
         throw new Error('Auth Error');
     }
