@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
   import { authState, terminalState, methodState, assetPairsState } from '../stores/app-state.svelte';
   import { KrakenClient } from '../kraken-client';
   import SelectAssetOrPair from './SelectAssetOrPair.svelte';
+  import { getUrlParam, setUrlParam } from '../utils/url-params';
 
   interface QuickActionDef {
     id: string;
@@ -22,6 +24,19 @@
   // Track heartbeat monitoring state
   let publicHeartbeatSub = $state<any>(null);
   let privateHeartbeatSub = $state<any>(null);
+
+  // Initialize selectedPair from URL on mount
+  onMount(() => {
+    const pairFromUrl = getUrlParam('pair');
+    if (pairFromUrl) {
+      selectedPair = pairFromUrl;
+    }
+  });
+
+  // Update URL whenever selectedPair changes
+  $effect(() => {
+    setUrlParam('pair', selectedPair);
+  });
 
   const quickActions = $derived<QuickActionDef[]>([
     // Monitoring

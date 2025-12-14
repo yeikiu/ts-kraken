@@ -6,6 +6,7 @@
   import SelectAssetOrPair from './SelectAssetOrPair.svelte';
   import SelectAssetOrPairList from './SelectAssetOrPairList.svelte';
   import Toggle from './Toggle.svelte';
+  import { getUrlParam, setUrlParam } from '../utils/url-params';
 
   let loading = $state(false);
   let showJsonPreview = $state(false);
@@ -32,6 +33,20 @@
   const activeWsSubscription = $derived.by(() => {
     if (!selectedMethodDef || !isWebSocketMethod) return null;
     return wsState.activeSubscriptions.find(sub => sub.methodName === selectedMethodDef.name);
+  });
+
+  // Initialize pair/symbol from URL when method changes
+  $effect(() => {
+    if (selectedMethodDef) {
+      const pairFromUrl = getUrlParam('pair');
+      if (pairFromUrl) {
+        // Find the pair or symbol parameter
+        const pairParam = selectedMethodDef.params?.find(p => p.name === 'pair' || p.name === 'symbol');
+        if (pairParam && !methodState.formData[pairParam.name]) {
+          methodState.updateFormField(pairParam.name, pairFromUrl);
+        }
+      }
+    }
   });
 
   // Check if snapshot param is enabled (check formData or default value)
@@ -294,6 +309,11 @@
 
   function handleFieldChange(fieldName: string, value: unknown) {
     methodState.updateFormField(fieldName, value);
+
+    // Update URL param when pair/symbol field changes
+    if ((fieldName === 'pair' || fieldName === 'symbol') && typeof value === 'string') {
+      setUrlParam('pair', value);
+    }
   }
 
   function toggleJsonPreview() {
