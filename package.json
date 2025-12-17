@@ -1,6 +1,6 @@
 {
 	"name": "ts-kraken",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"description": "A strongly typed library to operate with the Kraken Crypto Exchange",
 	"engines": {
 		"node": ">= 22.20.0"
