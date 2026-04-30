@@ -2,3 +2,18 @@
 node_modules
 .env
 .claude
+
+# Dev assets not needed in published package
+.github
+.ci_badges
+src
+playground_web-ui
+
+# Dev config files
+.eslintrc
+.gitattributes
+.nvmrc
+nodemon.json
+tsconfig.json
+typedoc.json
+CHANGELOG.md
