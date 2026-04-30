@@ -158,6 +158,14 @@ executions$.subscribe(({ data }) => {
 
 ## 🎮 Interactive Playground
 
+Clone this repo (the built npm package doesn't bring the playground module).
+
+```bash
+git clone https://github.com/yeikiu/ts-kraken.git
+cd ts-kraken
+npm install
+```
+
 Launch the **browser-based API playground** to test endpoints visually:
 
 ```bash
