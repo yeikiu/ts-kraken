@@ -2,6 +2,12 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v5.0.8
+
+    - #### hotfix:
+        - Fixed `RetrieveExport`: the endpoint returns a binary ZIP archive, not the usual JSON envelope. `privateRestRequest` now requests it as an `arraybuffer` and returns the raw bytes as a `Buffer` (ready to `writeFileSync` straight to a `.zip`). Kraken-reported errors (invalid/expired export `id`, etc.) are still surfaced as thrown `Error`s by sniffing the response for the ZIP magic bytes.
+        - `RetrieveExport.Result` type corrected from `DataView` to `Buffer` to match the actual runtime value.
+
 - ### v5.0.0
 
     - #### features:

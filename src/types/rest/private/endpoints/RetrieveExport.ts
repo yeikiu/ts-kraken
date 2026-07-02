@@ -2,14 +2,15 @@
  * Reference: {@link https://docs.kraken.com/api/docs/rest-api/retrieve-export | Retrieve Data Export}
  * 
  * @example
- * ```ts 
+ * ```ts
+    import { writeFileSync } from 'fs';
     import { privateRestRequest } from 'ts-kraken';
 
     privateRestRequest({
         url: 'RetrieveExport',
         data: { id: 'YOUR_EXPORT_ID' }
-    }).then((binaryDataZip) => {
-        writeFileSync('export.zip',  binaryDataZip);
+    }).then((zipBuffer) => {
+        writeFileSync('export.zip', zipBuffer);
     });
  * ```
  */
@@ -25,6 +26,10 @@ export namespace RetrieveExport {
         id: string;
     }
 
-    /** {@inheritDoc RetrieveExport} */
-    export type Result = DataView;
+    /**
+     * Raw bytes of the export report ZIP archive.
+     *
+     * {@inheritDoc RetrieveExport}
+     */
+    export type Result = Buffer;
 }

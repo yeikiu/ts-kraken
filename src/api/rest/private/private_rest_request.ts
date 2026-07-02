@@ -75,6 +75,20 @@ export async function privateRestRequest<E extends PrivateRestEndpoint>(privateR
         throw new Error('Auth Error');
     }
 
+    // `RetrieveExport` returns a binary ZIP payload, not the usual JSON envelope.
+    // Request it as an ArrayBuffer and hand back the raw bytes untouched. Kraken
+    // still reports errors as JSON, so we sniff the ZIP magic (`PK`) to tell a
+    // real report apart from an error response.
+    if (privateRequest.url === 'RetrieveExport') {
+        const { data } = await apiClient.request<ArrayBuffer>({ ...privateRequest, responseType: 'arraybuffer' });
+        const buffer = Buffer.from(data);
+        if (!(buffer[0] === 0x50 && buffer[1] === 0x4b)) { // 'PK' → ZIP local file header
+            const { error } = JSON.parse(buffer.toString('utf-8')) as PrivateRestTypes.PrivateRestResponse<E>;
+            throw new Error(error?.length > 0 ? error.join(' ') : 'RetrieveExport: unexpected non-ZIP response');
+        }
+        return buffer as PrivateRestTypes.PrivateRestResult<E>;
+    }
+
     const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.PrivateRestResponse<E>>(privateRequest);
 
     if (privateResterror?.length > 0) {
