@@ -20,8 +20,9 @@ export namespace Assets {
 
     /** {@inheritDoc Assets} */
     export type Params = {
-        asset: string;
+        asset?: string; // Comma-delimited list of assets; defaults to all assets
         aclass?: string;
+        assetVersion?: number;
     }
 
     /** {@inheritDoc Assets} */
@@ -32,6 +33,7 @@ export namespace Assets {
             decimals: number;
             display_decimals: number;
             collateral_value: number;
+            margin_rate?: number;
             status: 'enabled' | 'deposit_only' | 'withdrawal_only' | 'funding_temporarily_disabled';
         }
     }

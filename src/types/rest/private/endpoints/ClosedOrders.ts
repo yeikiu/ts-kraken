@@ -1,8 +1,8 @@
 import { RestOpenOrder } from './OpenOrders';
 
 export type RestClosedOrder = RestOpenOrder & {
-    closetm: number; // unix timestamp of when order was placed
-    reason: string;
+    closetm: number; // unix timestamp of when order was closed
+    reason?: string | null; // additional info on status (if any)
 };
 
 export type IRestClosedOrder = RestClosedOrder & { orderid: string; };
@@ -45,5 +45,6 @@ export namespace ClosedOrders {
     /** {@inheritDoc ClosedOrders} */
     export type Result = {
         closed: Record<string, RestClosedOrder>;
+        count: number;
     }
 }

@@ -67,13 +67,11 @@ export namespace AddOrderBatch {
     /** {@inheritDoc AddOrderBatch} */
     export type Result = {
         orders: {
-            txid: string[];
-            descr: {
+            txid?: string; // single transaction ID; only present when the batch item succeeded
+            descr?: {
                 order: string;
-                // close: string;
             };
-            close: string; // TODO: review this field. Docs show it here for `AddOrderBatch` and under `descr` for `AddOrder`
-            error: string;
+            error?: string; // only present when the batch item failed
         }[];
     };
 }

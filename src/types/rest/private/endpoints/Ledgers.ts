@@ -1,6 +1,20 @@
+export type RestLedgerEntryType = 'none' | 'trade' | 'deposit' | 'withdrawal' | 'transfer' | 'margin' | 'adjustment' | 'rollover' | 'spend' | 'receive' | 'settled' | 'credit' | 'staking' | 'reward' | 'dividend' | 'sale' | 'conversion' | 'nfttrade' | 'nftcreatorfee' | 'nftrebate' | 'custodytransfer';
+
+export type RestLedgerEntry = {
+    refid: string;
+    time: number;
+    type: RestLedgerEntryType;
+    subtype?: string;
+    aclass: string;
+    asset: string;
+    amount: string;
+    fee: string;
+    balance: string;
+};
+
 /**
- * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-account-balance | Get Account Balance}
- * 
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-ledgers-info | Get Ledgers Info}
+ *
  * @example
  * ```ts 
     import { privateRestRequest } from 'ts-kraken';
@@ -23,7 +37,7 @@ export namespace Ledgers {
     export type Params = {
         asset?: string;
         aclass?: string;
-        type?: 'all' | 'deposit' | 'withdrawal' | 'tarde' | 'margin';
+        type?: 'all' | 'trade' | 'deposit' | 'withdrawal' | 'transfer' | 'margin' | 'adjustment' | 'rollover' | 'credit' | 'settled' | 'staking' | 'dividend' | 'sale' | 'nft_rebate';
         start?: number;
         end?: number;
         ofs?: number;
@@ -32,17 +46,7 @@ export namespace Ledgers {
 
     /** {@inheritDoc Ledgers} */
     export type Result = {
-        ledger: Record<string, {
-            refid: string;
-            time: number;
-            type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
-            subtype: string;
-            aclass: string;
-            asset: string;
-            amount: string;
-            fee: string;
-            balance: string;
-        }>;
+        ledger: Record<string, RestLedgerEntry>;
         count: number;
     }
 }

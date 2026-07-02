@@ -59,8 +59,8 @@ export namespace AddOrder {
         txid: string[];
         descr: {
             order: string;
-            close: string;
+            close?: string; // conditional close order description, if applicable
         };
-        validation: string;
+        validation?: string; // only present when `validate: true` is requested (undocumented)
     }
 }

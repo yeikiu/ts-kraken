@@ -23,9 +23,17 @@ export namespace AssetPairs {
         pair?: string; // Asset pairs to get data for. Example: pair=XXBTCZUSD,XETHXXBT
         info?: 'info' | 'leverage' | 'fees' | 'margin';
         country_code?: string;
+        assetVersion?: number;
+        aclass_base?: string;
+        execution_venue?: string; // 'international' | 'bitnomial_exchange', or a comma-delimited list of both
     }
 
-    /** {@inheritDoc AssetPairs} */
+    /**
+     * Note: field presence assumes the default `info: 'info'` request; the
+     * `leverage`/`fees`/`margin` variants return partial objects.
+     *
+     * {@inheritDoc AssetPairs}
+     */
     export type Result = {
         [pair: string]: {
             altname: string;
@@ -51,6 +59,9 @@ export namespace AssetPairs {
             status: 'online' | 'cancel_only' | 'post_only' | 'limit_only' | 'reduce_only';
             long_position_limit: number;
             short_position_limit: number;
+            execution_venue?: 'international' | 'bitnomial_exchange';
+            /** @deprecated */
+            lot?: string;
         }
     }
 }

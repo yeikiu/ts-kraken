@@ -33,7 +33,7 @@ export namespace Trades {
 
     /** {@inheritDoc Trades} */
     export type Result = {
-        [pair: string]: [string, string, number, string, string, string][];
+        [pair: string]: [price: string, volume: string, time: number, buySell: string, marketLimit: string, misc: string, tradeId: number][];
 
     } & { last: string; } // ID to be used as since when polling for new trade data
 }

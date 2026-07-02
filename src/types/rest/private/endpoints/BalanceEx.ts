@@ -23,8 +23,8 @@ export namespace BalanceEx {
     export type Result = {
         [asset: string]: {
             balance: string;
-            credit: string;
-            credit_used: string;
+            credit?: string; // only present if the account has a credit line
+            credit_used?: string; // only present if the account has a credit line
             hold_trade: string;
         };
     }

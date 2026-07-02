@@ -1,5 +1,7 @@
+import { RestLedgerEntry } from './Ledgers';
+
 /**
- * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-ledgers-info | Query Ledgers}
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-ledgers | Query Ledgers}
  * 
  * @example
  * ```ts 
@@ -27,15 +29,5 @@ export namespace QueryLedgers {
     }
 
     /** {@inheritDoc QueryLedgers} */
-    export type Result = Record<string, {
-        refid: string;
-        time: number;
-        type: 'trade' | 'deposit' | 'withdraw' | 'transfer' | 'margin' | 'rollover' | 'spend' | 'receive' | 'settled' | 'adjustment';
-        subtype: string;
-        aclass: string;
-        asset: string;
-        amount: string;
-        fee: string;
-        balance: string;
-    }>;
+    export type Result = Record<string, RestLedgerEntry>;
 }

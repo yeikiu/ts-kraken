@@ -41,19 +41,19 @@ export namespace EditOrder {
 
     /** {@inheritDoc EditOrder} */
     export type Result = {
-        txid: string;
-        descr: {
+        txid?: string; // New transaction ID (only if order was added successfully)
+        descr?: {
             order: string;
         };
-        newuserref: string; // Original userref if passed with the request
-        olduserref: string; // Original userref if passed with the request
-        orders_cancelled: number; // Number of orders cancelled (either 0 or 1)
-        originaltxid: string; // Original transaction ID
         status: string; // Status of the order: Ok or Err
-        volume: string; // Updated volume
-        price: string; // Updated price
-        price2: string; // Updated price2
-        error_message: string;
-        validation: string;
+        newuserref?: string; // New userref if passed with the request
+        olduserref?: string; // Original userref if passed with the request
+        orders_cancelled?: number; // Number of orders cancelled (either 0 or 1)
+        originaltxid?: string; // Original transaction ID
+        volume?: string; // Updated volume
+        price?: string; // Updated price
+        price2?: string; // Updated price2
+        error_message?: string;
+        validation?: string; // only present when `validate: true` is requested (undocumented)
     };
 }

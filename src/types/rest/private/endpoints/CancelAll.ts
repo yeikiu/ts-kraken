@@ -22,6 +22,6 @@ export namespace CancelAll {
     /** {@inheritDoc CancelAll} */
     export type Result = {
         count: number;
-        pending: number;
+        pending: boolean; // if true, orders are pending cancellation
     }
 }

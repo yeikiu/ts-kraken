@@ -32,7 +32,7 @@ export namespace RemoveExport {
 
     /** {@inheritDoc RemoveExport} */
     export type Result = {
-        delete: boolean;
-        cancel: boolean
+        delete?: boolean; // only present when request `type` was 'delete'
+        cancel?: boolean; // only present when request `type` was 'cancel'
     };
 }

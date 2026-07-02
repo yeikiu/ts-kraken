@@ -1,7 +1,7 @@
 /* https://docs.kraken.com/api/docs/rest-api/get-server-time */
 
 /**
- * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-closed-orders | Get Server Time}
+ * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-server-time | Get Server Time}
  * 
  * @example
  * ```ts 

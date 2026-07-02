@@ -1,3 +1,5 @@
+import { RestOrderDirection, RestOrderType } from './OpenOrders';
+
 /**
  * Reference: {@link https://docs.kraken.com/api/docs/rest-api/get-trades-info | Query Trades Info}
  * 
@@ -35,25 +37,28 @@ export namespace QueryTrades {
         postxid: string;
         pair: string;
         time: number;
-        type: 'buy' | 'sell';
-        ordertype: 'market' | 'limit' | 'stop-loss' | 'take-profit' | 'stop-loss-limit' | 'take-profit-limit' | 'settle-position';
+        type: RestOrderDirection;
+        ordertype: RestOrderType;
         price: string; // primary price
-        cost: string; // total cost (quote currency unless unless viqc set in oflags)
+        cost: string; // total cost (quote currency unless viqc set in oflags)
         fee: string; // total fee (quote currency)
-        vol: string; // volume of order (base currency unless viqc set in oflags)      
-        margin: string;
-        leverage: string;
-        misc: string;
-        ledgers: string[];
-        trade_id: number;
-        maker: boolean;
-        posstatus: 'open' | 'closed';
-        cprice: string;
-        ccost: string;
-        cfee: string; // total fee (quote currency)
-        cvol: string; // volume of order (base currency unless viqc set in oflags)      
-        cmargin: string;
-        net: string;
-        trades: string[];
+        vol: string; // volume of order (base currency unless viqc set in oflags)
+        margin?: string;
+        leverage?: string;
+        misc?: string;
+        aclass?: string;
+        tradeordertype?: string;
+        ledgers?: string[]; // list of ledger ids for entries associated with the trade (only when TradesHistory is called with `ledgers: true`)
+        trade_id?: number;
+        maker?: boolean;
+        // The following fields are only present for trades related to a position
+        posstatus?: 'open' | 'closed';
+        cprice?: string;
+        ccost?: string;
+        cfee?: string; // total fee (quote currency)
+        cvol?: string; // volume of order (base currency unless viqc set in oflags)
+        cmargin?: string;
+        net?: string;
+        trades?: string[]; // list of trade ids related to the position (only when `trades: true` is requested)
     }>;
 }

@@ -26,15 +26,16 @@ export namespace TradeBalance {
 
     /** {@inheritDoc TradeBalance} */
     export type Result = {
-        eb: string;
-        tb: string;
-        m: string;
-        n: string;
-        c: string;
-        v: string;
-        e: string;
-        mf: string;
-        ml: string;
-        uv: string;
+        eb: string; // equivalent balance
+        tb: string; // trade balance
+        m: string; // margin amount of open positions
+        n: string; // unrealized net profit/loss of open positions
+        c: string; // cost basis of open positions
+        v: string; // current floating valuation of open positions
+        e: string; // equity
+        mf: string; // free margin
+        mfo?: string; // margin free for orders
+        ml?: string; // margin level; only present when margin positions are open
+        uv?: string; // unexecuted value
     }
 }

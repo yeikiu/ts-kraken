@@ -2,6 +2,24 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v6.0.0
+
+    > ⚠️ No runtime behaviour changes (besides the browser-safe `RetrieveExport`), but the type corrections below are compile-time **breaking** for TypeScript consumers — hence the major bump: several `Result` fields changed shape, and conditionally-returned fields are now optional (add null-checks under `strictNullChecks`).
+
+    - #### breaking type fixes:
+        - Full audit of every REST endpoint `Result` type against the official Kraken API docs; fixed shape bugs:
+            - `Depth`: `asks`/`bids` corrected from a single tuple to an **array** of `[price, volume, timestamp]` tuples.
+            - `Trades` (public): trade tuples gain the missing 7th element `trade_id` (number).
+            - `CancelAll`: `pending` corrected from `number` to `boolean`.
+            - `AddOrderBatch`: per-order `txid` corrected from `string[]` to `string`; `txid`/`descr`/`error` now optional (success vs failure items); removed undocumented `close` field.
+            - `ClosedOrders`: added missing `count` field to the result.
+            - `Ledgers`/`QueryLedgers`: ledger entry `type` enum corrected (`withdraw` → `withdrawal`) and extended with the missing documented values (`credit`, `staking`, `reward`, `dividend`, `sale`, `conversion`, `nfttrade`, `nftcreatorfee`, `nftrebate`, `custodytransfer`, `none`); shared `RestLedgerEntry` type; fixed `Ledgers.Params.type` typo (`tarde` → `trade`).
+        - Added missing documented fields: `margin_rate` (Assets), `execution_venue`/`lot` (AssetPairs), `mfo` (TradeBalance), `class` (OpenPositions), `inputs`/`asset_class`/`volume_subaccounts`/`schedules` (TradeVolume), `error`/`endtm`/`asset_classes`/`delete` + deprecated fields (ExportStatus), `aclass`/`tradeordertype` (QueryTrades), `time_in_force`/`descr.aclass` + `iceberg`/`trailing-stop`/`trailing-stop-limit` order types (shared order model).
+        - Corrected optionality across private endpoints: fields Kraken only returns conditionally are now optional (`BalanceEx.credit*`, `TradeBalance.ml/uv`, `OpenPositions.value/net`, closed-position fields in `QueryTrades`/`TradesHistory`, `TradeVolume.fees*`, `ExportStatus` fields, `RemoveExport.delete/cancel` (mutually exclusive), `AddOrder.descr.close`, most `EditOrder` fields, `trades`/`trigger`/`margin`/etc. in the order model).
+        - Request `Params` brought up to date with the docs: `Assets.asset` now optional; new `assetVersion` (Assets/AssetPairs), `aclass_base`/`execution_venue` (AssetPairs), `fee_schedule`/`rebase_multiplier` (TradeVolume) params; `Ledgers.Params.type` extended with the missing documented values (`transfer`, `adjustment`, `rollover`, `credit`, `settled`, `staking`, `dividend`, `sale`, `nft_rebate`).
+        - `QueryOrders` now reuses the shared `RestOpenOrder` model (plus `closetm`/`reason` for closed orders) instead of a drifted inline copy.
+        - `RetrieveExport` made browser-safe: the ZIP sniffing no longer requires Node's `Buffer` (uses `Uint8Array`/`TextDecoder`); returns a `Buffer` in Node and a plain `Uint8Array` in browsers (`Result` type is now `Uint8Array`). Malformed non-ZIP/non-JSON responses now throw a descriptive error instead of a raw `SyntaxError`.
+
 - ### v5.0.8
 
     - #### hotfix:

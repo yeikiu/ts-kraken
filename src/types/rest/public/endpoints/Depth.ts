@@ -27,11 +27,14 @@ export namespace Depth {
         count?: number; // maximum number of asks/bids: 1 .. 500
     }
 
+    /** @ignore */
+    export type DepthLevel = [price: string, volume: string, timestamp: number];
+
     /** {@inheritDoc Depth} */
     export type Result = {
         [pair: string]: {
-            asks: [string, string, number];
-            bids: [string, string, number];
+            asks: DepthLevel[];
+            bids: DepthLevel[];
         }
     }
 }

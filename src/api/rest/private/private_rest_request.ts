@@ -81,12 +81,20 @@ export async function privateRestRequest<E extends PrivateRestEndpoint>(privateR
     // real report apart from an error response.
     if (privateRequest.url === 'RetrieveExport') {
         const { data } = await apiClient.request<ArrayBuffer>({ ...privateRequest, responseType: 'arraybuffer' });
-        const buffer = Buffer.from(data);
-        if (!(buffer[0] === 0x50 && buffer[1] === 0x4b)) { // 'PK' → ZIP local file header
-            const { error } = JSON.parse(buffer.toString('utf-8')) as PrivateRestTypes.PrivateRestResponse<E>;
-            throw new Error(error?.length > 0 ? error.join(' ') : 'RetrieveExport: unexpected non-ZIP response');
+        // In Node use a Buffer view (still a Uint8Array) for direct `writeFileSync` usage;
+        // in the browser `Buffer` doesn't exist, so use a plain Uint8Array.
+        const bytes = typeof Buffer !== 'undefined' ? Buffer.from(data) : new Uint8Array(data);
+        if (!(bytes[0] === 0x50 && bytes[1] === 0x4b)) { // 'PK' → ZIP local file header
+            let errorMessage = 'RetrieveExport: unexpected non-ZIP response';
+            try {
+                const { error } = JSON.parse(new TextDecoder().decode(bytes)) as PrivateRestTypes.PrivateRestResponse<E>;
+                if (error?.length > 0) {
+                    errorMessage = error.join(' ');
+                }
+            } catch { /* non-JSON body; keep the generic message */ }
+            throw new Error(errorMessage);
         }
-        return buffer as PrivateRestTypes.PrivateRestResult<E>;
+        return bytes as PrivateRestTypes.PrivateRestResult<E>;
     }
 
     const { data: { result, error: privateResterror } } = await apiClient.request<PrivateRestTypes.PrivateRestResponse<E>>(privateRequest);

@@ -28,17 +28,27 @@ export namespace ExportStatus {
     /** {@inheritDoc ExportStatus} */
     export type Result = {
         id: string;
-        descr: string;
-        format: string;
-        report: string;
-        subtype: string;
-        status: 'Queued' | 'Processing' | 'Processed';
-        fields: string;
-        createdtm: string;
-        starttm: string;
-        completedtm: string;
-        datastarttm: string;
-        dataendtm: string;
-        asset: string;
+        descr?: string;
+        format?: string;
+        report?: string;
+        subtype?: string;
+        status?: 'Queued' | 'Processing' | 'Processed';
+        fields?: string;
+        error?: string;
+        createdtm?: string;
+        starttm?: string;
+        endtm?: string;
+        completedtm?: string;
+        datastarttm?: string;
+        dataendtm?: string;
+        asset?: string;
+        asset_classes?: string[];
+        delete?: boolean;
+        /** @deprecated */
+        flags?: string;
+        /** @deprecated */
+        expiretm?: string;
+        /** @deprecated */
+        aclass?: string;
     }[];
 }

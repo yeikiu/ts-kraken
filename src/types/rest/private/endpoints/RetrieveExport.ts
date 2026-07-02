@@ -28,8 +28,10 @@ export namespace RetrieveExport {
 
     /**
      * Raw bytes of the export report ZIP archive.
+     * In Node the runtime value is a `Buffer` (a `Uint8Array` subclass) ready to
+     * `writeFileSync` straight to a `.zip`; in the browser it is a plain `Uint8Array`.
      *
      * {@inheritDoc RetrieveExport}
      */
-    export type Result = Buffer;
+    export type Result = Uint8Array;
 }
