@@ -25,6 +25,10 @@ jobs:
           git add .ci_badges
           git add docs
           touch docs/.nojekyll
+          if git diff --cached --quiet; then
+            echo "Sin cambios en .ci_badges ni docs: no hay nada que commitear"
+            exit 0
+          fi
           git commit -m "[CI:deploy] sync_badges_and_docs job"
 
       - uses: ad-m/github-push-action@master
