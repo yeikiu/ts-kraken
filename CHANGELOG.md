@@ -2,6 +2,27 @@
 
 > All major changes will be added to this file top-to-bottom
 
+- ### v6.0.3
+
+    - #### hotfix:
+        - Security patch for 32 Dependabot alerts. Production chain (the only part that reaches ts-kraken consumers): `axios` `^1.13.1` → `^1.20.0` and `qs` `^6.11.0` → `^6.16.0` (minimums raised in `package.json` so consumers can no longer resolve a vulnerable version), plus `follow-redirects` 1.16.2 via `axios`.
+        - Refreshed dev lockfiles: root (`js-yaml`, `markdown-it`, `brace-expansion`) and `playground_web-ui/` (`vite`, `devalue`, `source-map-js`, `nanoid`).
+        - No runtime or type changes.
+
+- ### v6.0.2
+
+    > Not published to npm; its changes ship with v6.0.3.
+
+    - #### hotfix:
+        - Bumped dev dependency `js-yaml` 4.3.0 → 4.3.1 (lockfile only).
+
+- ### v6.0.1
+
+    > Not published to npm; its changes ship with v6.0.3.
+
+    - #### hotfix:
+        - Patched 5 security alerts via lockfile refresh (semver ranges in `package.json` unchanged): `tar` 7.5.19 → 7.5.22 (production chain via `node-jq`), `brace-expansion` 1.1.18/2.1.4 (dev), and `postcss` 8.5.25 / `immutable` 5.1.9 in `playground_web-ui/`.
+
 - ### v6.0.0
 
     > ⚠️ No runtime behaviour changes (besides the browser-safe `RetrieveExport`), but the type corrections below are compile-time **breaking** for TypeScript consumers — hence the major bump: several `Result` fields changed shape, and conditionally-returned fields are now optional (add null-checks under `strictNullChecks`).
