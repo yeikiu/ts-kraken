@@ -1,5 +1,6 @@
 name: release_to_npm
 on:
+  workflow_dispatch:
   release:
     types:
      - published
